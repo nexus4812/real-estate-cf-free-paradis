@@ -1,149 +1,81 @@
 'use client';
-import React, { useState } from 'react';
-import PropertyPriceInput from '@/components/PropertyPriceInput';
-import {ReturnRateInput} from "@/components/ReturnRateInput";
 
-type SimulationData = {
-    propertyPrice: number;
-    returnRate: number;
-    structure: string;
-    age: number;
-    area: number;
-    selfFunds: number;
-    interestRate: number;
-    loanTerm: number;
-    occupancyRate: number;
-    annualIncome: number;
-    rentIncreaseRate: string;
-    annualCost: number;
-};
+import React from 'react';
+import PropertyPriceInput from '@/components/PropertyPriceInput';
+import { ReturnRateInput } from "@/components/ReturnRateInput";
+import { StructureInput } from "@/components/StructureInput";
+import { AgeInput } from "@/components/AgeInput";
+import { AreaInput } from "@/components/AreaInput";
+import { SelfFundsInput } from "@/components/SelfFundsInput";
+import { InterestRateInput } from "@/components/InterestRateInput";
+import { LoanTermInput } from "@/components/LoanTermInput";
+import { AnnualIncomeInput } from "@/components/AnnualIncomeInput";
+import { RentIncreaseRateInput } from "@/components/RentIncreaseRateInput";
+import { AnnualCostInput } from "@/components/AnnualCostInput";
+import { SimulationResult } from "@/components/SimulationResult";
+import { useSimulationStore } from "@/store/usePropertyStore";
 
 const PropertySimulation = () => {
-    // State to store simulation inputs
-    const [data, setData] = useState<SimulationData>({
-        propertyPrice: 0,
-        returnRate: 0,
-        structure: 'RC',
-        age: 0,
-        area: 0,
-        selfFunds: 0,
-        interestRate: 2,
-        loanTerm: 20,
-        occupancyRate: 90,
-        annualIncome: 0,
-        rentIncreaseRate: '-1%',
-        annualCost: 62.2,
-    });
+  const { reset } = useSimulationStore();
 
-    // Handle input changes
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setData(prevData => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+  // シミュレーションをリセットする関数
+  const handleReset = () => {
+    reset();
+  };
 
-    // Calculate simulation result (simple example)
-    const calculateSimulation = () => {
-        const { propertyPrice, returnRate, selfFunds, interestRate, loanTerm, annualIncome, annualCost } = data;
-        const loanAmount = propertyPrice + annualIncome - selfFunds; // Simplified formula
-        const monthlyPayment = loanAmount * (interestRate / 100) / 12 * loanTerm; // Simplified loan formula
-        return monthlyPayment;
-    };
-
-    return (
-        <div>
-            <h2>不動産投資シミュレーション</h2>
-            <div>
-                <h3>物件情報</h3>
-                <PropertyPriceInput />
-                <ReturnRateInput />
-                <label>物件構造:</label>
-                <select name="structure" value={data.structure} onChange={handleInputChange}>
-                    <option value="RC">RC造</option>
-                    <option value="SRC">SRC造</option>
-                    <option value="Steel">鉄骨造</option>
-                    <option value="Wood">木造</option>
-                </select>
-                <label>築年数 (年):</label>
-                <input
-                    type="number"
-                    name="age"
-                    value={data.age}
-                    onChange={handleInputChange}
-                />
-                <label>建物面積 (㎡):</label>
-                <input
-                    type="number"
-                    name="area"
-                    value={data.area}
-                    onChange={handleInputChange}
-                />
-            </div>
-
-            <div>
-                <h3>融資条件</h3>
-                <label>自己資金 (万円):</label>
-                <input
-                    type="number"
-                    name="selfFunds"
-                    value={data.selfFunds}
-                    onChange={handleInputChange}
-                />
-                <label>金利 (%):</label>
-                <input
-                    type="number"
-                    name="interestRate"
-                    value={data.interestRate}
-                    onChange={handleInputChange}
-                />
-                <label>ローン期間 (年):</label>
-                <input
-                    type="number"
-                    name="loanTerm"
-                    value={data.loanTerm}
-                    onChange={handleInputChange}
-                />
-            </div>
-
-            <div>
-                <h3>収入条件</h3>
-                <label>年間収入 (万円):</label>
-                <input
-                    type="number"
-                    name="annualIncome"
-                    value={data.annualIncome}
-                    onChange={handleInputChange}
-                />
-                <label>家賃増減率 (%/年):</label>
-                <select name="rentIncreaseRate" value={data.rentIncreaseRate} onChange={handleInputChange}>
-                    <option>-5%</option>
-                    <option>-4.5%</option>
-                    <option>-4%</option>
-                    {/* Add more options as needed */}
-                </select>
-            </div>
-
-            <div>
-                <h3>支出条件</h3>
-                <label>年間経費 (万円):</label>
-                <input
-                    type="number"
-                    name="annualCost"
-                    value={data.annualCost}
-                    onChange={handleInputChange}
-                />
-            </div>
-
-            <div>
-                <h3>シミュレーション結果</h3>
-                <p>月々の返済額: {calculateSimulation()} 円</p>
-            </div>
-
-            <button onClick={calculateSimulation}>シミュレーションする</button>
+  return (
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-6">不動産投資シミュレーション</h2>
+      
+      <div className="bg-white p-4 rounded shadow mb-6">
+        <h3 className="text-xl font-semibold mb-4">物件情報</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PropertyPriceInput />
+          <ReturnRateInput />
+          <StructureInput />
+          <AgeInput />
+          <AreaInput />
         </div>
-    );
+      </div>
+
+      <div className="bg-white p-4 rounded shadow mb-6">
+        <h3 className="text-xl font-semibold mb-4">融資条件</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <SelfFundsInput />
+          <InterestRateInput />
+          <LoanTermInput />
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded shadow mb-6">
+        <h3 className="text-xl font-semibold mb-4">収入条件</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <AnnualIncomeInput />
+          <RentIncreaseRateInput />
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded shadow mb-6">
+        <h3 className="text-xl font-semibold mb-4">支出条件</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <AnnualCostInput />
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded shadow mb-6">
+        <SimulationResult />
+      </div>
+
+      <div className="flex justify-center mt-6">
+        <button 
+          onClick={handleReset}
+          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-4"
+        >
+          リセット
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default PropertySimulation;
