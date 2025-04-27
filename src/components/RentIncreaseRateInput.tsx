@@ -10,7 +10,9 @@ export const RentIncreaseRateInput = () => {
   const { data, setData } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setData({ rentIncreaseRate: e.target.value });
+    // 文字列から%を除去し、数値に変換
+    const value = parseFloat(e.target.value.replace('%', '')) / 100;
+    setData({ rentIncreaseRate: value });
   };
 
   return (
@@ -19,7 +21,7 @@ export const RentIncreaseRateInput = () => {
       <select
         id="rentIncreaseRate"
         name="rentIncreaseRate"
-        value={data.rentIncreaseRate}
+        value={`${(data.props.rentIncreaseRate * 100).toFixed(1)}%`}
         onChange={handleChange}
       >
         <option value="-5%">-5%</option>

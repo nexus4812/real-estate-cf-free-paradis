@@ -23,7 +23,7 @@ export const AnnualCostInput = () => {
         id="annualCost"
         type="number"
         name="annualCost"
-        value={data.annualCost}
+        value={data.props.annualCost}
         onChange={handleChange}
       />
     </div>

@@ -8,31 +8,14 @@ import { useSimulationStore } from "@/store/usePropertyStore";
 export const SimulationResult = () => {
   const { data } = useSimulationStore();
 
-  // シミュレーション結果を計算する関数
-  const calculateSimulation = () => {
-    const { propertyPrice, returnRate, selfFunds, interestRate, loanTerm, annualIncome, annualCost } = data;
-    
-    // 入力値がない場合は0を返す
-    if (!propertyPrice || !interestRate || !loanTerm) return 0;
-    
-    const loanAmount = propertyPrice - selfFunds; // ローン金額 = 物件価格 - 自己資金
-    
-    // 月利計算 (年利 ÷ 12)
-    const monthlyInterestRate = interestRate / 100 / 12;
-    
-    // 月々の返済額計算 (元利均等返済方式)
-    const totalPayments = loanTerm * 12; // 返済回数
-    const monthlyPayment = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalPayments) / (Math.pow(1 + monthlyInterestRate, totalPayments) - 1);
-    
-    return isNaN(monthlyPayment) ? 0 : Math.round(monthlyPayment);
+  // 月々のローン返済額を計算
+  const calculateMonthlyPayment = () => {
+    return data.calculateMonthlyLoanPayment();
   };
 
-  // 年間の収支計算
+  // 年間の収支計算（初年度）
   const calculateAnnualBalance = () => {
-    const { annualIncome, annualCost } = data;
-    const monthlyPayment = calculateSimulation();
-    const annualPayment = monthlyPayment * 12;
-    return (annualIncome || 0) - (annualCost || 0) - annualPayment;
+    return data.calculateAnnualBalance(0);
   };
 
   // 表示用にフォーマットする関数
@@ -40,7 +23,7 @@ export const SimulationResult = () => {
     return new Intl.NumberFormat('ja-JP').format(amount);
   };
 
-  const monthlyPayment = calculateSimulation();
+  const monthlyPayment = calculateMonthlyPayment();
   const annualBalance = calculateAnnualBalance();
 
   return (
@@ -75,7 +58,7 @@ export const SimulationResult = () => {
           </div>
           <div>
             <p className="text-sm text-gray-600">返済総額</p>
-            <p className="font-medium">{formatCurrency(monthlyPayment * (data.loanTerm || 0) * 12)} 円</p>
+            <p className="font-medium">{formatCurrency(monthlyPayment * (data.props.loanTerm || 0) * 12)} 円</p>
           </div>
         </div>
       </div>

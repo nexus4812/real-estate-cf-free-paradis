@@ -7,6 +7,7 @@ import { create } from 'zustand';
 export type SimulationStore = {
     data: SimulationEntity;
     update: (updater: (simulation: SimulationEntity) => void) => void;
+    setData: (data: Partial<SimulationProps>) => void;
     reset: () => void;
 };
 
@@ -20,7 +21,7 @@ const initialData: SimulationProps = {
     interestRate: 0,
     loanTerm: 0,
     occupancyRate: 0,
-    rentIncreaseRate: '',
+    rentIncreaseRate: 0,
     annualCost: 0,
 };
 
@@ -32,6 +33,15 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
             updater(state.data);
             return { data: state.data };
         }),
+
+        setData: (newData) =>
+            set((state) => {
+                const updatedProps = {
+                    ...state.data.props,
+                    ...newData
+                };
+                return { data: new SimulationEntity(updatedProps) };
+            }),
 
     reset: () => new SimulationEntity(initialData),
 }));
