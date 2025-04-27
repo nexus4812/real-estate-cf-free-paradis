@@ -1,48 +1,37 @@
 'use client';
 
+import { SimulationEntity, SimulationProps } from '@/domain/entities/simulationEntity';
+import { Structure } from '@/domain/values/structure';
 import { create } from 'zustand';
 
-export type SimulationData = {
-    propertyPrice: number|null;
-    returnRate: number;
-    structure: string;
-    age: number;
-    area: number;
-    selfFunds: number;
-    interestRate: number;
-    loanTerm: number;
-    occupancyRate: number;
-    annualIncome: number;
-    rentIncreaseRate: string;
-    annualCost: number;
-};
-
-type SimulationStore = {
-    data: SimulationData;
-    setData: (data: Partial<SimulationData>) => void;
+export type SimulationStore = {
+    data: SimulationEntity;
+    update: (updater: (simulation: SimulationEntity) => void) => void;
     reset: () => void;
 };
 
-const initialData: SimulationData = {
-    propertyPrice: null,
+const initialData: SimulationProps = {
+    propertyPrice: 0,
     returnRate: 0,
-    structure: '',
+    structure: Structure.create("RC"),
     age: 0,
     area: 0,
     selfFunds: 0,
     interestRate: 0,
     loanTerm: 0,
     occupancyRate: 0,
-    annualIncome: 0,
     rentIncreaseRate: '',
     annualCost: 0,
 };
 
-export const useSimulationStore = create<SimulationStore>((set) => ({
-    data: initialData,
-    setData: (newData) =>
-        set((state) => ({
-            data: { ...state.data, ...newData },
-        })),
-    reset: () => set({ data: initialData }),
+export const useSimulationStore = create<SimulationStore>((set, get) => ({
+    data: new SimulationEntity(initialData),
+
+    update: (updater) =>
+        set((state) => {
+            updater(state.data);
+            return { data: state.data };
+        }),
+
+    reset: () => new SimulationEntity(initialData),
 }));

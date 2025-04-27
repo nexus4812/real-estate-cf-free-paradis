@@ -1,5 +1,6 @@
 "use client";
 
+import { Structure } from "@/domain/values/structure";
 import { useSimulationStore } from "@/store/usePropertyStore";
 import { ChangeEvent } from "react";
 
@@ -7,16 +8,18 @@ import { ChangeEvent } from "react";
  * 物件構造の選択コンポーネント
  */
 export const StructureInput = () => {
-  const { data, setData } = useSimulationStore();
+  const { data, update } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setData({ structure: e.target.value });
+    update((data) => {
+      data.props.structure = Structure.create(e.target.value)
+    })
   };
 
   return (
     <div className="mb-4">
-      <label 
-        htmlFor="structure" 
+      <label
+        htmlFor="structure"
         className="input-label flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -28,7 +31,7 @@ export const StructureInput = () => {
       <select
         id="structure"
         name="structure"
-        value={data.structure}
+        value={data.structure ?? ""}
         onChange={handleChange}
         className="input-field"
       >
