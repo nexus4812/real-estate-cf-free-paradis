@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 
 export type SimulationData = {
-    propertyPrice: number;
+    propertyPrice: number|null;
     returnRate: number;
     structure: string;
     age: number;
@@ -24,7 +24,7 @@ type SimulationStore = {
 };
 
 const initialData: SimulationData = {
-    propertyPrice: 0,
+    propertyPrice: null,
     returnRate: 0,
     structure: '',
     age: 0,

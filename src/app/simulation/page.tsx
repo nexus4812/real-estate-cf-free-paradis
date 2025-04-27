@@ -25,11 +25,11 @@ const PropertySimulation = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 border-b pb-4">不動産投資シミュレーション</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 border-b pb-4 animate-fade-in">不動産投資シミュレーション</h2>
       
-      <div className="card p-6 mb-8">
+      <div className="card p-6 mb-8 animate-fade-in">
         <h3 className="section-title flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
           </svg>
           物件情報
@@ -43,9 +43,9 @@ const PropertySimulation = () => {
         </div>
       </div>
 
-      <div className="card p-6 mb-8">
+      <div className="card p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
         <h3 className="section-title flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
             <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
             <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
           </svg>
@@ -58,9 +58,9 @@ const PropertySimulation = () => {
         </div>
       </div>
 
-      <div className="card p-6 mb-8">
+      <div className="card p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
         <h3 className="section-title flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
           </svg>
           収入条件
@@ -71,9 +71,9 @@ const PropertySimulation = () => {
         </div>
       </div>
 
-      <div className="card p-6 mb-8">
+      <div className="card p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.3s' }}>
         <h3 className="section-title flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm4.707 3.707a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 9H10a3 3 0 013 3v1a1 1 0 102 0v-1a5 5 0 00-5-5H8.414l1.293-1.293z" clipRule="evenodd" />
           </svg>
           支出条件
@@ -83,11 +83,11 @@ const PropertySimulation = () => {
         </div>
       </div>
 
-      <div className="result-card mb-8">
+      <div className="result-card mb-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
         <SimulationResult />
       </div>
 
-      <div className="flex justify-center mt-8 space-x-4">
+      <div className="flex justify-center mt-8 space-x-4 animate-fade-in" style={{ animationDelay: '0.5s' }}>
         <button 
           onClick={handleReset}
           className="btn btn-danger flex items-center"
