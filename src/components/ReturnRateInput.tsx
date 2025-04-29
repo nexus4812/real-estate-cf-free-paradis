@@ -1,7 +1,12 @@
 "use client";
 
 import {useSimulationStore} from "@/store/usePropertyStore";
-import {ChangeEvent} from "react";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
+
+type FormValues = {
+    returnRate: number;
+};
 
 /**
  * 表面利回り
@@ -9,13 +14,32 @@ import {ChangeEvent} from "react";
  */
 export const ReturnRateInput = () => {
     const { simulation, setData } = useSimulationStore();
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        const value = Number(e.target.value);
-        if (!isNaN(value)) {
-            setData({ returnRate: value});
+    
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        watch
+    } = useForm<FormValues>({
+        mode: "onChange",
+        defaultValues: {
+            returnRate: simulation.props.returnRate
         }
-    };
+    });
+
+    // 値が変更されたときにストアを更新
+    const returnRateValue = watch("returnRate");
+    useEffect(() => {
+        if (!isNaN(returnRateValue)) {
+            setData({ returnRate: Number(returnRateValue) });
+        }
+    }, [returnRateValue, setData]);
+
+    // ストアの値が外部から変更された場合にフォームの値を更新
+    useEffect(() => {
+        setValue("returnRate", simulation.props.returnRate);
+    }, [simulation.props.returnRate, setValue]);
 
     return (
         <div className="mb-4">
@@ -31,16 +55,32 @@ export const ReturnRateInput = () => {
             <div className="input-group">
                 <input
                     id="returnRate"
-                    
-                    value={simulation.props.returnRate}
-                    onChange={handleChange}
-                    className="input-field"
+                    {...register("returnRate", {
+                        required: "表面利回りは必須です",
+                        valueAsNumber: true,
+                        min: {
+                            value: 0,
+                            message: "表面利回りは0%以上で入力してください"
+                        },
+                        max: {
+                            value: 100,
+                            message: "表面利回りは300%以下で入力してください"
+                        },
+                        validate: {
+                            isNumber: value => !isNaN(Number(value)) || "数値を入力してください"
+                        }
+                    })}
+                    className={`input-field ${errors.returnRate ? "border-red-500" : ""}`}
                     placeholder="表面利回りを入力"
                     min="0"
                     step="0.1"
+                    type="number"
                 />
                 <span className="input-addon">%</span>
             </div>
+            {errors.returnRate && (
+                <p className="text-red-500 text-sm mt-1">{errors.returnRate.message}</p>
+            )}
         </div>
     );
 };
