@@ -30,7 +30,7 @@ export const InterestRateInput = () => {
       <div className="relative">
         <input
           id="interestRate"
-          type="number"
+          
           name="interestRate"
           value={simulation.props.interestRate}
           onChange={handleChange}

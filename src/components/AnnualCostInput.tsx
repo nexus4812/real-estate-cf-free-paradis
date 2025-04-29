@@ -21,7 +21,7 @@ export const AnnualCostInput = () => {
       <label htmlFor="annualCost">年間経費 (万円):</label>
       <input
         id="annualCost"
-        type="number"
+        
         name="annualCost"
         value={simulation.props.annualCost}
         onChange={handleChange}

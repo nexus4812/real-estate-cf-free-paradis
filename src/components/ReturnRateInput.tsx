@@ -31,7 +31,7 @@ export const ReturnRateInput = () => {
             <div className="input-group">
                 <input
                     id="returnRate"
-                    type="number"
+                    
                     value={simulation.props.returnRate}
                     onChange={handleChange}
                     className="input-field"

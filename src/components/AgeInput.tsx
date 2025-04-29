@@ -30,7 +30,7 @@ export const AgeInput = () => {
       <div className="relative">
         <input
           id="age"
-          type="number"
+          
           name="age"
           value={simulation.props.age}
           onChange={handleChange}

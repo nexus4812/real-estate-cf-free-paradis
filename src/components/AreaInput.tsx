@@ -30,7 +30,7 @@ export const AreaInput = () => {
       <div className="relative">
         <input
           id="area"
-          type="number"
+          
           name="area"
           value={simulation.props.area}
           onChange={handleChange}

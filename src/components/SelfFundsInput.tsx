@@ -31,7 +31,7 @@ export const SelfFundsInput = () => {
       <div className="input-group">
         <input
           id="selfFunds"
-          type="number"
+          
           name="selfFunds"
           value={simulation.props.selfFunds}
           onChange={handleChange}

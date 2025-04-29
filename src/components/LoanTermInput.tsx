@@ -30,7 +30,7 @@ export const LoanTermInput = () => {
       <div className="relative">
         <input
           id="loanTerm"
-          type="number"
+          
           name="loanTerm"
           value={simulation.props.loanTerm}
           onChange={handleChange}

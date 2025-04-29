@@ -13,7 +13,7 @@ export default function PropertyPriceInput() {
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const value = Number(e.target.value);
         if (!isNaN(value)) {
-            setData({ propertyPrice: value});
+            setData({ propertyPrice: value * 10000});
         }
     };
 
@@ -32,7 +32,7 @@ export default function PropertyPriceInput() {
             <div className="input-group">
                 <input
                     id="propertyPrice"
-                    value={simulation.props.propertyPrice ?? ""}
+                    value={simulation.props.propertyPrice / 10000}
                     onChange={handleChange}
                     className="input-field"
                     placeholder="物件価格を入力"
