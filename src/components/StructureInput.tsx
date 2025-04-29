@@ -8,7 +8,7 @@ import { ChangeEvent } from "react";
  * 物件構造の選択コンポーネント
  */
 export const StructureInput = () => {
-  const { data, update } = useSimulationStore();
+  const { simulation, update } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     update((data) => {
@@ -31,15 +31,11 @@ export const StructureInput = () => {
       <select
         id="structure"
         name="structure"
-        value={data.structure ?? ""}
+        value={simulation.props.structure.value ?? ""}
         onChange={handleChange}
         className="input-field"
       >
-        <option value="">選択してください</option>
-        <option value="RC">RC造</option>
-        <option value="SRC">SRC造</option>
-        <option value="Steel">鉄骨造</option>
-        <option value="Wood">木造</option>
+        {Structure.all().map(item => (<option key={item.value} value={item.value}>{item.getReadableName()}</option>))}
       </select>
     </div>
   );

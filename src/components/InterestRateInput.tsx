@@ -7,7 +7,7 @@ import { ChangeEvent } from "react";
  * 金利の入力コンポーネント
  */
 export const InterestRateInput = () => {
-  const { data, setData } = useSimulationStore();
+  const { simulation, setData } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value);
@@ -18,8 +18,8 @@ export const InterestRateInput = () => {
 
   return (
     <div className="mb-4">
-      <label 
-        htmlFor="interestRate" 
+      <label
+        htmlFor="interestRate"
         className="input-label flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -32,7 +32,7 @@ export const InterestRateInput = () => {
           id="interestRate"
           type="number"
           name="interestRate"
-          value={data.interestRate}
+          value={simulation.props.interestRate}
           onChange={handleChange}
           className="input-field"
           min="0"

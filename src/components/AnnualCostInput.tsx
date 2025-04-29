@@ -7,7 +7,7 @@ import { ChangeEvent } from "react";
  * 年間経費の入力コンポーネント
  */
 export const AnnualCostInput = () => {
-  const { data, setData } = useSimulationStore();
+  const { simulation, setData } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value);
@@ -23,7 +23,7 @@ export const AnnualCostInput = () => {
         id="annualCost"
         type="number"
         name="annualCost"
-        value={data.props.annualCost}
+        value={simulation.props.annualCost}
         onChange={handleChange}
       />
     </div>

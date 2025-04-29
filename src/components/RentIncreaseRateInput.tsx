@@ -7,7 +7,7 @@ import { ChangeEvent } from "react";
  * 家賃増減率の選択コンポーネント
  */
 export const RentIncreaseRateInput = () => {
-  const { data, setData } = useSimulationStore();
+  const { simulation, setData } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     // 文字列から%を除去し、数値に変換
@@ -21,7 +21,7 @@ export const RentIncreaseRateInput = () => {
       <select
         id="rentIncreaseRate"
         name="rentIncreaseRate"
-        value={`${(data.props.rentIncreaseRate * 100).toFixed(1)}%`}
+        value={`${(simulation.props.rentIncreaseRate * 100).toFixed(1)}%`}
         onChange={handleChange}
       >
         <option value="-5%">-5%</option>

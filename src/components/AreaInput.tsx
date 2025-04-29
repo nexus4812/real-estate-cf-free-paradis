@@ -7,7 +7,7 @@ import { ChangeEvent } from "react";
  * 建物面積の入力コンポーネント
  */
 export const AreaInput = () => {
-  const { data, setData } = useSimulationStore();
+  const { simulation, setData } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value);
@@ -18,8 +18,8 @@ export const AreaInput = () => {
 
   return (
     <div className="mb-4">
-      <label 
-        htmlFor="area" 
+      <label
+        htmlFor="area"
         className="input-label flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -32,7 +32,7 @@ export const AreaInput = () => {
           id="area"
           type="number"
           name="area"
-          value={data.area}
+          value={simulation.props.area}
           onChange={handleChange}
           className="input-field"
           min="0"

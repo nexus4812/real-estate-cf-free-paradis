@@ -8,7 +8,7 @@ import {ChangeEvent} from "react";
  * @constructor
  */
 export const ReturnRateInput = () => {
-    const { data, setData } = useSimulationStore();
+    const { simulation, setData } = useSimulationStore();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const value = Number(e.target.value);
@@ -19,8 +19,8 @@ export const ReturnRateInput = () => {
 
     return (
         <div className="mb-4">
-            <label 
-                htmlFor="returnRate" 
+            <label
+                htmlFor="returnRate"
                 className="input-label flex items-center"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -32,7 +32,7 @@ export const ReturnRateInput = () => {
                 <input
                     id="returnRate"
                     type="number"
-                    value={data.returnRate}
+                    value={simulation.props.returnRate}
                     onChange={handleChange}
                     className="input-field"
                     placeholder="表面利回りを入力"

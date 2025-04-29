@@ -7,7 +7,7 @@ import { ChangeEvent } from "react";
  * 自己資金の入力コンポーネント
  */
 export const SelfFundsInput = () => {
-  const { data, setData } = useSimulationStore();
+  const { simulation, setData } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value);
@@ -18,8 +18,8 @@ export const SelfFundsInput = () => {
 
   return (
     <div className="mb-4">
-      <label 
-        htmlFor="selfFunds" 
+      <label
+        htmlFor="selfFunds"
         className="input-label flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -33,7 +33,7 @@ export const SelfFundsInput = () => {
           id="selfFunds"
           type="number"
           name="selfFunds"
-          value={data.selfFunds}
+          value={simulation.props.selfFunds}
           onChange={handleChange}
           className="input-field"
           min="0"

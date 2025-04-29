@@ -8,7 +8,7 @@ import { ChangeEvent } from 'react';
  * @constructor
  */
 export default function PropertyPriceInput() {
-    const { data, setData } = useSimulationStore();
+    const { simulation, setData } = useSimulationStore();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const value = Number(e.target.value);
@@ -32,7 +32,7 @@ export default function PropertyPriceInput() {
             <div className="input-group">
                 <input
                     id="propertyPrice"
-                    value={data.propertyPrice ?? ""}
+                    value={simulation.props.propertyPrice ?? ""}
                     onChange={handleChange}
                     className="input-field"
                     placeholder="物件価格を入力"

@@ -6,16 +6,16 @@ import { useSimulationStore } from "@/store/usePropertyStore";
  * シミュレーション結果を表示するコンポーネント
  */
 export const SimulationResult = () => {
-  const { data } = useSimulationStore();
+  const { simulation } = useSimulationStore();
 
   // 月々のローン返済額を計算
   const calculateMonthlyPayment = () => {
-    return data.calculateMonthlyLoanPayment();
+    return simulation.calculateMonthlyLoanPayment();
   };
 
   // 年間の収支計算（初年度）
   const calculateAnnualBalance = () => {
-    return data.calculateAnnualBalance(0);
+    return simulation.calculateAnnualBalance(0);
   };
 
   // 表示用にフォーマットする関数
@@ -34,13 +34,13 @@ export const SimulationResult = () => {
         </svg>
         シミュレーション結果
       </h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500">
           <h4 className="text-lg font-semibold mb-2 text-gray-700">月々の返済額</h4>
           <p className="text-3xl font-bold text-blue-600">{formatCurrency(monthlyPayment)} <span className="text-sm text-gray-500">円/月</span></p>
         </div>
-        
+
         <div className={`bg-white p-4 rounded-lg shadow-md border-l-4 ${annualBalance >= 0 ? 'border-green-500' : 'border-red-500'}`}>
           <h4 className="text-lg font-semibold mb-2 text-gray-700">年間収支</h4>
           <p className={`text-3xl font-bold ${annualBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -48,7 +48,7 @@ export const SimulationResult = () => {
           </p>
         </div>
       </div>
-      
+
       <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
         <h4 className="text-md font-semibold mb-2 text-gray-700">詳細情報</h4>
         <div className="grid grid-cols-2 gap-4">
@@ -58,7 +58,7 @@ export const SimulationResult = () => {
           </div>
           <div>
             <p className="text-sm text-gray-600">返済総額</p>
-            <p className="font-medium">{formatCurrency(monthlyPayment * (data.props.loanTerm || 0) * 12)} 円</p>
+            <p className="font-medium">{formatCurrency(monthlyPayment * (simulation.props.loanTerm || 0) * 12)} 円</p>
           </div>
         </div>
       </div>

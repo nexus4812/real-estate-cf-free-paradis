@@ -5,7 +5,7 @@ import { Structure } from '@/domain/values/structure';
 import { create } from 'zustand';
 
 export type SimulationStore = {
-    data: SimulationEntity;
+    simulation: SimulationEntity;
     update: (updater: (simulation: SimulationEntity) => void) => void;
     setData: (data: Partial<SimulationProps>) => void;
     reset: () => void;
@@ -26,22 +26,22 @@ const initialData: SimulationProps = {
 };
 
 export const useSimulationStore = create<SimulationStore>((set, get) => ({
-    data: new SimulationEntity(initialData),
+    simulation: new SimulationEntity(initialData),
 
     update: (updater) =>
         set((state) => {
-            updater(state.data);
-            return { data: state.data };
+            updater(state.simulation);
+            return { simulation: state.simulation };
         }),
 
-        setData: (newData) =>
-            set((state) => {
-                const updatedProps = {
-                    ...state.data.props,
-                    ...newData
-                };
-                return { data: new SimulationEntity(updatedProps) };
-            }),
+    setData: (newData) =>
+        set((state) => {
+            const updatedProps = {
+                ...state.simulation.props,
+                ...newData
+            };
+            return { simulation: new SimulationEntity(updatedProps) };
+        }),
 
     reset: () => new SimulationEntity(initialData),
 }));
