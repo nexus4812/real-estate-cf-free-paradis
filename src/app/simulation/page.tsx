@@ -11,6 +11,7 @@ import { InterestRateInput } from "@/components/InterestRateInput";
 import { LoanTermInput } from "@/components/LoanTermInput";
 import { AnnualIncomeInput } from "@/components/AnnualIncomeInput";
 import { RentIncreaseRateInput } from "@/components/RentIncreaseRateInput";
+import { OccupancyRateInput } from "@/components/OccupancyRateInput";
 import { AnnualCostInput } from "@/components/AnnualCostInput";
 import { SimulationResult } from "@/components/SimulationResult";
 import { useSimulationStore } from "@/store/usePropertyStore";
@@ -68,6 +69,7 @@ const PropertySimulation = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <AnnualIncomeInput />
           <RentIncreaseRateInput />
+          <OccupancyRateInput />
         </div>
       </div>
 

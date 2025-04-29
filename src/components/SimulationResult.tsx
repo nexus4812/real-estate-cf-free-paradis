@@ -18,6 +18,26 @@ export const SimulationResult = () => {
     return simulation.calculateAnnualBalance(0);
   };
 
+  // 実質年間収入を計算（初年度）
+  const calculateRealAnnualIncome = () => {
+    return simulation.calculateRealAnnualIncome(0);
+  };
+
+  // 年間支出を計算（初年度）
+  const calculateAnnualExpenditure = () => {
+    return simulation.calculateAnnualExpenditure(0);
+  };
+
+  // 所得税を計算（初年度）
+  const calculateIncomeTax = () => {
+    return simulation.calculateIncomeTax(0);
+  };
+
+  // 大規模修繕費を計算（初年度）
+  const calculateMajorRepairCost = () => {
+    return simulation.calculateMajorRepairCost(0);
+  };
+
   // 表示用にフォーマットする関数
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ja-JP').format(amount);
@@ -25,6 +45,11 @@ export const SimulationResult = () => {
 
   const monthlyPayment = calculateMonthlyPayment();
   const annualBalance = calculateAnnualBalance();
+  const realAnnualIncome = calculateRealAnnualIncome();
+  const annualExpenditure = calculateAnnualExpenditure();
+  const incomeTax = calculateIncomeTax();
+  const majorRepairCost = calculateMajorRepairCost();
+  const annualLoanPayment = simulation.calculateAnnualLoanPayment();
 
   return (
     <div className="p-4">
@@ -54,11 +79,27 @@ export const SimulationResult = () => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-600">年間返済額</p>
-            <p className="font-medium">{formatCurrency(monthlyPayment * 12)} 円</p>
+            <p className="font-medium">{formatCurrency(annualLoanPayment)} 円</p>
           </div>
           <div>
             <p className="text-sm text-gray-600">返済総額</p>
-            <p className="font-medium">{formatCurrency(monthlyPayment * (simulation.props.loanTerm || 0) * 12)} 円</p>
+            <p className="font-medium">{formatCurrency(annualLoanPayment * (simulation.props.loanTerm || 0))} 円</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">実質年間収入（初年度）</p>
+            <p className="font-medium">{formatCurrency(realAnnualIncome)} 円</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">年間支出（初年度）</p>
+            <p className="font-medium">{formatCurrency(annualExpenditure)} 円</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">所得税（初年度）</p>
+            <p className="font-medium">{formatCurrency(incomeTax)} 円</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">大規模修繕費（初年度）</p>
+            <p className="font-medium">{formatCurrency(majorRepairCost)} 円</p>
           </div>
         </div>
       </div>
