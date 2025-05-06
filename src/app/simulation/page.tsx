@@ -1,20 +1,20 @@
 'use client';
 
 import React from 'react';
-import PropertyPriceInput from '@/components/PropertyPriceInput';
-import { ReturnRateInput } from "@/components/ReturnRateInput";
-import { StructureInput } from "@/components/StructureInput";
-import { AgeInput } from "@/components/AgeInput";
-import { AreaInput } from "@/components/AreaInput";
-import { SelfFundsInput } from "@/components/SelfFundsInput";
-import { InterestRateInput } from "@/components/InterestRateInput";
-import { LoanTermInput } from "@/components/LoanTermInput";
-import { AnnualIncomeInput } from "@/components/AnnualIncomeInput";
-import { RentIncreaseRateInput } from "@/components/RentIncreaseRateInput";
-import { OccupancyRateInput } from "@/components/OccupancyRateInput";
-import { AnnualCostInput } from "@/components/AnnualCostInput";
-import { SimulationResult } from "@/components/SimulationResult";
-import { SimulationChart } from "@/components/SimulationChart";
+import PropertyPriceInput from '@/components/molecules/PropertyPriceInput';
+import { ReturnRateInput } from "@/components/molecules/ReturnRateInput";
+import { StructureInput } from "@/components/molecules/StructureInput";
+import { AgeInput } from "@/components/molecules/AgeInput";
+import { AreaInput } from "@/components/molecules/AreaInput";
+import { SelfFundsInput } from "@/components/molecules/SelfFundsInput";
+import { InterestRateInput } from "@/components/molecules/InterestRateInput";
+import { LoanTermInput } from "@/components/molecules/LoanTermInput";
+import { AnnualIncomeInput } from "@/components/molecules/AnnualIncomeInput";
+import { RentIncreaseRateInput } from "@/components/molecules/RentIncreaseRateInput";
+import { OccupancyRateInput } from "@/components/molecules/OccupancyRateInput";
+import { AnnualCostInput } from "@/components/molecules/AnnualCostInput";
+import { SimulationResult } from "@/components/organism/SimulationResult";
+import { SimulationChart } from "@/components/organism/SimulationChart";
 import { useSimulationStore } from "@/store/usePropertyStore";
 
 const PropertySimulation = () => {
