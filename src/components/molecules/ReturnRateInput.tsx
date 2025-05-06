@@ -21,11 +21,11 @@ export const ReturnRateInput = () => {
   });
 
   return (
-    <div className="mb-4">
-      <label htmlFor="returnRate" className="input-label flex items-center">
+    <div className="mb-2">
+      <label htmlFor="returnRate" className="input-label flex items-center text-xs mb-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 mr-2 text-blue-500"
+          className="h-3 w-3 mr-1 text-blue-500"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -60,7 +60,7 @@ export const ReturnRateInput = () => {
           render={({ field }) => (
             <input
               {...field}
-              className={`input-field ${errors.returnRate ? "border-red-500" : ""}`}
+              className={`input-field py-2 px-3 text-sm ${errors.returnRate ? "border-red-500" : ""}`}
               placeholder="表面利回りを入力"
               onChange={(e) => {
                 field.onChange(e.target.value);
@@ -72,13 +72,12 @@ export const ReturnRateInput = () => {
             />
           )}
         />
-        <span className="input-addon">%</span>
+        <span className="input-addon text-xs">%</span>
       </div>
 
-
-        <p className="text-sm mt-1 min-h-[1.5rem] text-red-500">
-            {errors.returnRate?.message ?? "\u00A0" /* &nbsp;で領域を確保し、エラー時におけるズレを軽減する */}
-        </p>
+      <p className="text-xs mt-0.5 min-h-[1.25rem] text-red-500">
+        {errors.returnRate?.message ?? "\u00A0" /* &nbsp;で領域を確保し、エラー時におけるズレを軽減する */}
+      </p>
     </div>
   );
 };

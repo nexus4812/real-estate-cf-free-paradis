@@ -17,12 +17,12 @@ export const AgeInput = () => {
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-2">
       <label
         htmlFor="age"
-        className="input-label flex items-center"
+        className="input-label flex items-center text-xs mb-1"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
         </svg>
         築年数 (年):
@@ -30,11 +30,10 @@ export const AgeInput = () => {
       <div className="relative">
         <input
           id="age"
-          
           name="age"
           value={simulation.props.age}
           onChange={handleChange}
-          className="input-field"
+          className="input-field py-2 px-3 text-sm"
           min="0"
           placeholder="築年数を入力"
         />
