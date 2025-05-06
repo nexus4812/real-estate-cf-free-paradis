@@ -15,27 +15,27 @@ export const SimulationResult = () => {
 
   // 年間の収支計算（初年度）
   const calculateAnnualBalance = () => {
-    return simulation.calculateAnnualBalance(0);
+    return simulation.calculateAnnualBalance(1);
   };
 
   // 実質年間収入を計算（初年度）
   const calculateRealAnnualIncome = () => {
-    return simulation.calculateRealAnnualIncome(0);
+    return simulation.calculateRealAnnualIncome(1);
   };
 
   // 年間支出を計算（初年度）
   const calculateAnnualExpenditure = () => {
-    return simulation.calculateAnnualExpenditure(0);
+    return simulation.calculateAnnualExpenditure(1);
   };
 
   // 所得税を計算（初年度）
   const calculateIncomeTax = () => {
-    return simulation.calculateIncomeTax(0);
+    return simulation.calculateIncomeTax(1);
   };
 
   // 大規模修繕費を計算（初年度）
   const calculateMajorRepairCost = () => {
-    return simulation.calculateMajorRepairCost(0);
+    return simulation.calculateMajorRepairCost(1);
   };
 
   // 表示用にフォーマットする関数
