@@ -14,6 +14,7 @@ import { RentIncreaseRateInput } from "@/components/RentIncreaseRateInput";
 import { OccupancyRateInput } from "@/components/OccupancyRateInput";
 import { AnnualCostInput } from "@/components/AnnualCostInput";
 import { SimulationResult } from "@/components/SimulationResult";
+import { SimulationChart } from "@/components/SimulationChart";
 import { useSimulationStore } from "@/store/usePropertyStore";
 
 const PropertySimulation = () => {
@@ -42,6 +43,15 @@ const PropertySimulation = () => {
           <AgeInput />
           <AreaInput />
         </div>
+      </div>
+
+
+      {/* <div className="result-card mb-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <SimulationResult />
+      </div> */}
+
+      <div className="chart-card mb-8 animate-fade-in" style={{ animationDelay: '0.45s' }}>
+        <SimulationChart />
       </div>
 
       <div className="card p-6 mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
@@ -83,10 +93,6 @@ const PropertySimulation = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <AnnualCostInput />
         </div>
-      </div>
-
-      <div className="result-card mb-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-        <SimulationResult />
       </div>
 
       <div className="flex justify-center mt-8 space-x-4 animate-fade-in" style={{ animationDelay: '0.5s' }}>
