@@ -1,6 +1,15 @@
-import {Structure} from "@/domain/values/structure"
+import {SimulationInput} from "@/domain/entities/SimulationInput"
 import {RealAnnualIncome} from "@/domain/values/realAnnualIncome"
 import {Expenditure} from "@/domain/values/expenditure"
+import {LoanPlan} from "@/domain/values/LoanPlan"
+import {PropertyPrice} from "@/domain/values/PropertyPrice"
+import {YieldRate} from "@/domain/values/YieldRate"
+import {Structure} from "@/domain/entities/Structure"
+import {Age} from "@/domain/values/Age"
+import {Area} from "@/domain/values/Area"
+import {RentTrend} from "@/domain/values/RentTrend"
+import {OccupancyRate} from "@/domain/values/OccupancyRate"
+import {AnnualCost} from "@/domain/values/AnnualCost"
 
 export type SimulationProps = {
     /**

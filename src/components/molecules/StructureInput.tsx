@@ -31,7 +31,7 @@ export const StructureInput = () => {
       <select
         id="structure"
         name="structure"
-        value={simulation.props.structure.value ?? ""}
+        value={simulation.props.structure.type ?? ""}
         onChange={handleChange}
         className="input-field py-2 px-3 text-sm"
       >
