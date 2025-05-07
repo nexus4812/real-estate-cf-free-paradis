@@ -1,6 +1,6 @@
 "use client";
 
-import { Structure } from "@/domain/values/structure";
+import { Structure } from "@/domain/values/property/Structure";
 import { useSimulationStore } from "@/store/usePropertyStore";
 import { ChangeEvent } from "react";
 

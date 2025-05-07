@@ -1,7 +1,7 @@
 'use client';
 
 import { SimulationEntity, SimulationProps } from '@/domain/entities/simulationEntity';
-import { Structure } from '@/domain/values/structure';
+import { Structure } from '@/domain/values/property/Structure';
 import { create } from 'zustand';
 
 export type SimulationStore = {
