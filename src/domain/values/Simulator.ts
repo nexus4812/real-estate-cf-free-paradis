@@ -4,9 +4,9 @@ import { OperationCost } from "@/domain/values/operation/OperationCost";
 
 export class Simulator {
     constructor(
-        public property: Property,
-        public loan: Loan,
-        public cost: OperationCost
+        public readonly property: Property,
+        public readonly loan: Loan,
+        public readonly cost: OperationCost
     ) {}
 
     calculateYearlyBalance(year: number): number {
