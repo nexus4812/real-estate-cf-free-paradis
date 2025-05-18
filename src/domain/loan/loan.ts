@@ -33,6 +33,17 @@ export class Loan {
   }
 
   /**
+   * 総額の支払い額を計算します。
+   * @returns {number} 
+   */
+  public calculateTotalPaymentAmount(): number
+  {
+    return [...Array(this.term)].map((_, i) => i + 1)
+        .map<number>(year => this.calculatePaymentAmountForYear(year))
+        .reduce<number>((acc, curr) => acc + curr, 0);
+  }
+
+  /**
    * 指定された年度の年間支払額（元利均等返済）を計算します。
    * @param year - 計算対象の年度（1年目からterm年目まで）
    * @returns {number} その年度の年間支払額。借入期間外の場合は0を返します。
