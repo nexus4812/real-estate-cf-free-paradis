@@ -6,10 +6,6 @@ import { BuildingStructure } from "./buildingStructure";
  */
 export class Property {
   /**
-   * 物件価格（建物価格 + 土地価格）。
-   */
-  public readonly price: number;
-  /**
    * 土地価格。
    */
   public readonly landPrice: number;
@@ -39,26 +35,26 @@ export class Property {
    * @param buildingArea - 延べ床面積（㎡）
    */
   constructor(
-    price: number,
     landPrice: number,
     buildingPrice: number,
     buildingStructure: BuildingStructure,
     constructionYear: number,
     buildingArea: number,
   ) {
-    if (price <= 0) throw new Error("物件価格は0より大きい値を入力してください。");
     if (landPrice < 0) throw new Error("土地価格は0以上の値を入力してください。");
     if (buildingPrice <= 0) throw new Error("建物価格は0より大きい値を入力してください。");
-    if (price !== landPrice + buildingPrice) throw new Error("物件価格の合計が土地価格と建物価格の合計と一致しません。");
     if (constructionYear < 0) throw new Error("築年数は0以上の値を入力してください。");
     if (buildingArea <= 0) throw new Error("延べ床面積は0より大きい値を入力してください。");
 
-    this.price = price;
     this.landPrice = landPrice;
     this.buildingPrice = buildingPrice;
     this.buildingStructure = buildingStructure;
     this.constructionYear = constructionYear;
     this.buildingArea = buildingArea;
+  }
+
+  public getPrice(): number{
+    return this.landPrice + this.buildingPrice;
   }
 
   /**
@@ -69,7 +65,7 @@ export class Property {
   public estimateInitialCosts(): number {
     // 仲介手数料(3% + 6万円 + 消費税)、登記費用、印紙税、不動産取得税などを考慮
     // 簡略化のため、物件価格の7%とする
-    return this.price * 0.07;
+    return this.getPrice() * 0.07;
   }
 
   /**

@@ -76,28 +76,13 @@ export class SRC extends BuildingStructure {
  * 骨格材の厚みによって耐用年数が変わるため、コンストラクタで指定します。
  */
 export class Steel extends BuildingStructure {
-  private readonly years: number;
-
-  /**
-   * @param {number} thickness - 骨格材の厚み(mm)。4mm超なら34年、3mm超4mm以下なら27年、3mm以下なら19年。
-   */
-  constructor(thickness: number) {
-    super();
-    if (thickness > 4) {
-      this.years = 34;
-    } else if (thickness > 3) {
-      this.years = 27;
-    } else {
-      this.years = 19;
-    }
-  }
 
   /**
    * 鉄骨造の法定耐用年数を取得します。
    * @returns {number} 骨格材の厚みに応じた耐用年数
    */
   getDepreciationYears(): number {
-    return this.years;
+    return 34; // 骨格材の厚み(mm)。4mm超なら34年、3mm超4mm以下なら27年、3mm以下なら19年ではあるが、一旦大半が4mm以上なので34とする
   }
 
   /**
@@ -129,3 +114,10 @@ export class Wood extends BuildingStructure {
     return "木造";
   }
 }
+
+export const allBuildingStructures: BuildingStructure[] = [
+    new SRC(),
+    new RC(),
+    new Steel(),
+    new Wood(),
+]

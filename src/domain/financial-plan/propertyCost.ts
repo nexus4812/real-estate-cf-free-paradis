@@ -65,7 +65,7 @@ export class PropertyCost {
    */
   public calculatePropertyTax(property: Property, year: number): number {
     // 土地と建物の評価額を分けて計算することもできるが、ここでは物件価格全体に対する割合で簡略化
-    const assessmentValue = property.price * this.propertyAssessmentRatio;
+    const assessmentValue = property.getPrice() * this.propertyAssessmentRatio;
     // TODO: 経年減価補正を考慮する場合は、yearに応じて建物の評価額を減額する
     // TODO: 新築住宅の軽減措置、小規模住宅用地の特例なども考慮できるとより正確
     return Math.round(assessmentValue * this.propertyTaxRate);

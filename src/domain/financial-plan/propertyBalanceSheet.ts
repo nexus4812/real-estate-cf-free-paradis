@@ -61,10 +61,10 @@ export class PropertyBalanceSheet {
    */
   public calculateGrossYieldForYear(year: number): number {
     if (year <= 0) return 0;
-    if (this.property.price === 0) return 0; // 0除算を防ぐ
+    if (this.property.getPrice() === 0) return 0; // 0除算を防ぐ
 
     const potentialAnnualRent = this.income.calculatePotentialAnnualRent(year);
-    return potentialAnnualRent / this.property.price;
+    return potentialAnnualRent / this.property.getPrice();
   }
 
 
@@ -93,7 +93,7 @@ export class PropertyBalanceSheet {
     const operatingExpenses = managementFee + regularRepairCost + propertyTax + largeScaleRepairCostForYear;
 
     const netOperatingIncome = annualIncome - operatingExpenses;
-    const totalInvestment = this.property.price + this.property.estimateInitialCosts();
+    const totalInvestment = this.property.getPrice() + this.property.estimateInitialCosts();
 
     if (totalInvestment === 0) return 0; // 0除算を防ぐ
 
