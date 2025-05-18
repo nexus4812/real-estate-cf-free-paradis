@@ -64,8 +64,8 @@ export class Property {
    */
   public estimateInitialCosts(): number {
     // 仲介手数料(3% + 6万円 + 消費税)、登記費用、印紙税、不動産取得税などを考慮
-    // 簡略化のため、物件価格の7%とする
-    return this.getPrice() * 0.07;
+    // 簡略化のため、物件価格の8%とする
+    return Math.ceil(this.getPrice() * 0.08);
   }
 
   /**
