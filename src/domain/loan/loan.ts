@@ -1,5 +1,46 @@
 // src/domain/loan/loan.ts
 
+type MonthlyRepayment = {
+  month: number;
+  payment: number;
+  principal: number;
+  interest: number;
+  balance: number;
+};
+
+function simulateEqualRepayment(
+  loanAmount: number,
+  annualInterestRate: number,
+  loanPeriodYears: number
+): MonthlyRepayment[] {
+  const monthlyInterestRate = annualInterestRate / 100 / 12;
+  const totalMonths = loanPeriodYears * 12;
+
+  const monthlyPayment = loanAmount * monthlyInterestRate /
+    (1 - Math.pow(1 + monthlyInterestRate, -totalMonths));
+
+  let balance = loanAmount;
+
+  return Array.from({ length: totalMonths }, (_, i) => {
+    const interest = balance * monthlyInterestRate;
+    const principal = monthlyPayment - interest;
+    balance -= principal;
+
+    // 最終月は誤差を調整
+    if (i === totalMonths - 1 && Math.abs(balance) < 0.01) {
+      balance = 0;
+    }
+
+    return {
+      month: i + 1,
+      payment: parseFloat(monthlyPayment.toFixed(2)), // 支払い金額
+      principal: parseFloat(principal.toFixed(2)), // 支払い額における元金の金額
+      interest: parseFloat(interest.toFixed(2)), // 支払い額における金利の金額
+      balance: parseFloat(balance.toFixed(2)) // 残りのローン残高
+    };
+  });
+}
+
 /**
  * 融資に関する情報を保持し、返済額計算などを行うクラス。
  */
@@ -18,6 +59,12 @@ export class Loan {
   public readonly term: number;
 
   /**
+   * 内部的に保持するシュミレーション結果
+   * 本来あまりコンストラクタで計算すべきではないが、事前に計算しておかないとgetterにロジックが散らばるのでこうした
+   */
+  private readonly simulate: MonthlyRepayment[]; 
+
+  /**
    * @param amount - 借入金額
    * @param interestRate - 金利（年利、例: 0.015）
    * @param term - 借入年数
@@ -30,6 +77,7 @@ export class Loan {
     this.amount = amount;
     this.interestRate = interestRate;
     this.term = term;
+    this.simulate = simulateEqualRepayment(this.amount, this.interestRate, this.term)
   }
 
   /**
