@@ -1,0 +1,134 @@
+私は不動産投資シミュレータを開発しています。以下に提供するのは、クラスごとのプロパティとメソッドを記述したUMLベースの設計書です。
+この設計書に基づき、TypeScriptでモデルクラスを定義してください。
+ファイルはsrc/domain/配下にディレクトリを新設して設置してください（この配下のディレクトリ設計はUMLを元にお願いします）
+計算ロジックに関しても省略せず実装してください
+
+
+--- 以下がUMLです ---
+
+@startuml
+
+
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+
+' --- 物件そのものの情報を保持 ---
+class Property {
+  ' 購入時の物件価格（建物+土地）
+  - price: number
+
+  ' 土地価格
+  - landPrice: number
+
+  ' 建物価格
+  - buildingPrice: number
+
+  ' 建物構造（例: 木造、鉄骨造など）
+  - buildingStructure: BuildingStructure
+
+  ' 築年数（購入時点での）
+  - constructionYear: number
+
+  ' 延べ床面積（㎡）
+  - buildingArea: number
+
+  ' 登記費用や仲介手数料など、初期費用の推定
+  + estimateInitialCosts(): number
+
+  ' 減価償却の対象年数を計算する
+  + calculateYearsToDepreciation(): number
+}
+
+' --- 建物構造 ---
+abstract class BuildingStructure {
+  ' 耐用年数を取得する
+  + getDepreciationYears(): number
+
+  ' 建物構造の日本語名を取得する
+  + label(): string
+
+  ' 残耐用年数を計算する
+  + calculateRemainingUsefulLifeForYear(year: number): number
+}
+class RC extends BuildingStructure
+class SRC extends BuildingStructure
+class Steel extends BuildingStructure
+class Wood extends BuildingStructure
+
+' --- 年度ごとの収入を計算 ---
+class PropertyIncome {
+  ' 家賃の増減率（年ごと）
+  - rentIncreaseRate: number
+
+  ' 空室率
+  - vacancyRate: number
+
+  ' 指定年度の実質収入を計算する
+  + calculateAnnualIncome(property: Property, year: number): number
+}
+
+' --- 年度ごとの支出を計算 ---
+class PropertyCost {
+  ' 管理費率（収入に対する割合）
+  - managementFeeRatio: number
+
+  ' 修繕費率（収入に対する割合）
+  - repairCostRatio: number
+
+  ' 融資金額
+  - loan: ?Loan
+
+  ' 大規模修繕の予定（複数回も考慮）
+  - LargeScaleRepairPlan: LargeScaleRepairPlan[]
+
+  ' 管理費や修繕費など、年間の運営コストを計算する（概算の固定資産税も含む）
+  + calculateAnnualCosts(property: Property, income: number, year: number): number
+
+  ' 固定資産税を概算で計算する
+  + calculatePropertyTax(property: Property, year: number): number
+}
+
+' --- 大規模修繕計画 ---
+class LargeScaleRepairPlan {
+  ' 大規模修繕をする費用
+  - repairCost: number
+
+  ' 大規模修繕をする年度
+  - repairYear: number
+}
+
+' --- 融資関連 ---
+class Loan {
+  ' 借入金額
+  - amount: number
+  
+  ' 金利
+  - interestRate: number
+  
+  ' 借入年数
+  - term: number
+
+  ' その年度の支払い金額を計算する（元利均等返済）
+  - calculatePaymentAmountForYear(year: number): number
+}
+
+' --- 年度ごとの収支を計算 ---
+class PropertyBalanceSheet {
+
+  ' 物件情報
+  - property: Property
+
+  ' 収入に関わる情報
+  - income: PropertyIncome
+
+  ' 支出に関わる情報
+  - cost: PropertyCost
+
+  ' その年度の収支
+  + calculateAnnualBalanceForYear(year: number): number
+
+  ' その年度の利回り
+  + calculateRealYieldForYear(year: number): number
+}
+
+
+@enduml
