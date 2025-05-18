@@ -70,19 +70,9 @@ export class Property {
 
   /**
    * 減価償却の対象年数を計算します。
-   * 建物構造の法定耐用年数から築年数を引いたものですが、
-   * 法定耐用年数を超過している場合は、法定耐用年数の20%を償却年数とします。
    * @returns {number} 減価償却の対象年数
    */
   public calculateYearsToDepreciation(): number {
-    const usefulLife = this.buildingStructure.getDepreciationYears();
-    const remainingUsefulLife = usefulLife - this.constructionYear;
-
-    if (remainingUsefulLife > 0) {
-      return remainingUsefulLife;
-    } else {
-      // 法定耐用年数を超過している場合
-      return Math.floor(usefulLife * 0.2);
-    }
+    return this.buildingStructure.calculateYearsToDepreciation(this.constructionYear)
   }
 }

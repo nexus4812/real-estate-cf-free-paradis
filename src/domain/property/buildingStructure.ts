@@ -27,6 +27,32 @@ export abstract class BuildingStructure {
     const remainingLife = depreciationYears - ageOfBuilding;
     return Math.max(0, remainingLife);
   }
+
+    /**
+     * 減価償却の対象年数を計算します。
+     * 建物構造の法定耐用年数と経過年数に基づき、
+     * ・法定耐用年数を超えていない場合は「法定耐用年数 - 経過年数」
+     * ・超過している場合は「法定耐用年数 × 20%（ただし最低2年）」
+     * を減価償却年数として返します。
+     *
+     * @param {number} elapsedYear 建築からの経過年数
+     * @returns {number} 減価償却に使う耐用年数
+     */
+    public calculateYearsToDepreciation(elapsedYear: number): number {
+        const lawYears = this.getDepreciationYears(); // 法定耐用年数
+        const remainingYears = Math.floor(lawYears - elapsedYear);
+
+        if (remainingYears > 2) {
+            return remainingYears;
+        }
+
+        if (remainingYears >= 0) {
+            return 2;
+        }
+
+        const simpleYears = Math.floor(lawYears * 0.2);
+        return Math.max(simpleYears, 2); // 最低2年
+    }
 }
 
 /**

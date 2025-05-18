@@ -64,4 +64,32 @@ describe('BuildingStructure Tests', () => {
     expect(wood.calculateRemainingUsefulLifeForYear(10)).toBe(12);
     expect(wood.calculateRemainingUsefulLifeForYear(22)).toBe(0);
   });
+
+  test('RCの減価償却年数を計算する', () => {
+    expect(rc.calculateYearsToDepreciation(10)).toBe(37);
+    expect(rc.calculateYearsToDepreciation(44)).toBe(3);
+    expect(rc.calculateYearsToDepreciation(47)).toBe(2);
+    expect(rc.calculateYearsToDepreciation(48)).toBe(9);
+  });
+
+  test('SRCの減価償却年数を計算する', () => {
+    expect(src.calculateYearsToDepreciation(10)).toBe(37);
+    expect(src.calculateYearsToDepreciation(44)).toBe(3);
+    expect(src.calculateYearsToDepreciation(47)).toBe(2);
+    expect(src.calculateYearsToDepreciation(48)).toBe(9);
+  });
+
+  test('Steelの減価償却年数を計算する', () => {
+    expect(steel.calculateYearsToDepreciation(10)).toBe(24);
+    expect(steel.calculateYearsToDepreciation(31)).toBe(3);
+    expect(steel.calculateYearsToDepreciation(34)).toBe(2);
+    expect(steel.calculateYearsToDepreciation(35)).toBe(6);
+  });
+
+  test('Woodの減価償却年数を計算する', () => {
+    expect(wood.calculateYearsToDepreciation(10)).toBe(12);
+    expect(wood.calculateYearsToDepreciation(19)).toBe(3);
+    expect(wood.calculateYearsToDepreciation(22)).toBe(2);
+    expect(wood.calculateYearsToDepreciation(23)).toBe(4);
+  });
 });
