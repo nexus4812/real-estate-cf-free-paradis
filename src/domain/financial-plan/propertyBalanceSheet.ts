@@ -137,8 +137,7 @@ export class PropertyBalanceSheet {
     });
 
     const operatingExpensesForTax = managementFee + regularRepairCost + propertyTax + loanInterestPayment + largeScaleRepairCostForYear;
-    const depreciation = this.cost.calculateDepreciationCost(this.property);
 
-    return annualIncome - operatingExpensesForTax - depreciation;
+    return annualIncome - operatingExpensesForTax;
   }
 }

@@ -8,6 +8,10 @@ import { LargeScaleRepairPlan } from "./largeScaleRepairPlan";
  */
 export class PropertyCost {
   /**
+   * 物件価格
+   */
+  public readonly propertyPrice: number;
+  /**
    * 管理費率（収入に対する割合、小数表記 例: 5% -> 0.05）。
    */
   public readonly managementFeeRatio: number;
@@ -19,7 +23,7 @@ export class PropertyCost {
   /**
    * 融資情報。融資がない場合は undefined。
    */
-  public readonly loan?: Loan;
+  public readonly loan?: Loan = undefined;
   /**
    * 大規模修繕計画のリスト。
    */
@@ -36,20 +40,24 @@ export class PropertyCost {
   private readonly propertyTaxRate: number = 0.017; // 1.4% + 0.3%
 
   /**
+   * @param propertyPrice - 物件価格
    * @param managementFeeRatio - 管理費率
    * @param repairCostRatio - 修繕費率
    * @param largeScaleRepairPlans - 大規模修繕計画のリスト
    * @param loan - 融資情報 (任意)
    */
   constructor(
+    propertyPrice: number, 
     managementFeeRatio: number,
     repairCostRatio: number,
     largeScaleRepairPlans: LargeScaleRepairPlan[] = [],
     loan?: Loan,
   ) {
+    if (propertyPrice < 1) throw new Error("物件価格は1以上の数字を入力してください");
     if (managementFeeRatio < 0 || managementFeeRatio > 1) throw new Error("管理費率は0から1の間の値を入力してください。");
     if (repairCostRatio < 0 || repairCostRatio > 1) throw new Error("修繕費率は0から1の間の値を入力してください。");
 
+    this.propertyPrice = propertyPrice
     this.managementFeeRatio = managementFeeRatio;
     this.repairCostRatio = repairCostRatio;
     this.loan = loan;
@@ -69,21 +77,6 @@ export class PropertyCost {
     // TODO: 経年減価補正を考慮する場合は、yearに応じて建物の評価額を減額する
     // TODO: 新築住宅の軽減措置、小規模住宅用地の特例なども考慮できるとより正確
     return Math.round(assessmentValue * this.propertyTaxRate);
-  }
-
-  /**
-   * 指定年度の減価償却費を計算します。
-   * 定額法で計算。
-   * @param property - 物件情報
-   * @returns {number} 年間減価償却費
-   */
-  public calculateDepreciationCost(property: Property): number {
-    const depreciationYears = property.calculateYearsToDepreciation();
-    if (depreciationYears <= 0) {
-      return 0;
-    }
-    // 建物価格のみが減価償却の対象
-    return Math.round(property.buildingPrice / depreciationYears);
   }
 
   /**
@@ -119,8 +112,6 @@ export class PropertyCost {
 
     // 減価償却費は会計上の費用であり、キャッシュアウトを伴わないため、
     // ここでの「支出」には含めないのが一般的。別途税金計算などで考慮する。
-    // 含める場合はコメントアウトを解除
-    // const depreciation = this.calculateDepreciationCost(property);
 
     const totalCosts =
       managementFee +
@@ -128,7 +119,6 @@ export class PropertyCost {
       propertyTax +
       loanPayment +
       largeScaleRepairCostForYear;
-      // + depreciation;
 
     return Math.round(totalCosts);
   }
