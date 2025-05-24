@@ -1,4 +1,3 @@
-// src/domain/financial_plan/propertyBalanceSheet.ts
 import { Property } from "../property/property";
 import { PropertyIncome } from "./propertyIncome";
 import { PropertyCost } from "./propertyCost";
@@ -43,7 +42,7 @@ export class PropertyBalanceSheet {
   public calculateAnnualBalanceForYear(year: number): number {
     if (year <= 0) return 0;
 
-    const annualIncome = this.income.calculateAnnualIncome(this.property, year);
+    const annualIncome = this.income.calculateAnnualIncome(year);
     const annualCosts = this.cost.calculateAnnualCosts(
       this.property,
       annualIncome, // PropertyCostの計算には、その年の収入が必要
@@ -67,7 +66,6 @@ export class PropertyBalanceSheet {
     return potentialAnnualRent / this.property.getPrice();
   }
 
-
   /**
    * 指定された年度の実質利回りを計算します。
    * 実質利回り = (年間家賃収入 - 年間諸経費) / (物件価格 + 購入時諸経費)
@@ -78,7 +76,7 @@ export class PropertyBalanceSheet {
   public calculateRealYieldForYear(year: number): number {
     if (year <= 0) return 0;
 
-    const annualIncome = this.income.calculateAnnualIncome(this.property, year);
+    const annualIncome = this.income.calculateAnnualIncome(year);
 
     // 実質利回り計算用の経費：ローン返済元金・金利、減価償却費は含めない
     const managementFee = annualIncome * this.cost.managementFeeRatio;
@@ -108,7 +106,7 @@ export class PropertyBalanceSheet {
    */
   public calculatePreTaxCashFlowForYear(year: number): number {
     if (year <= 0) return 0;
-    const annualIncome = this.income.calculateAnnualIncome(this.property, year);
+    const annualIncome = this.income.calculateAnnualIncome(year);
     const annualCosts = this.cost.calculateAnnualCosts(this.property, annualIncome, year); // これにはローン返済も含まれる
     return annualIncome - annualCosts;
   }
@@ -121,7 +119,7 @@ export class PropertyBalanceSheet {
    */
   public calculateTaxableIncomeForYear(year: number): number {
     if (year <= 0) return 0;
-    const annualIncome = this.income.calculateAnnualIncome(this.property, year);
+    const annualIncome = this.income.calculateAnnualIncome(year);
 
     // 運営費（ローン金利は含むが、元金返済は含まない）
     const managementFee = annualIncome * this.cost.managementFeeRatio;

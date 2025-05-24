@@ -1,4 +1,3 @@
-// src/domain/financial_plan/propertyIncome.ts
 import { Property } from "../property/property";
 
 /**
@@ -19,19 +18,21 @@ export class PropertyIncome {
   public readonly vacancyRate: number;
 
   /**
-   * @param initialAnnualRent - 初期年間家賃収入
+   * @param propertyPrice - 物件価格
+   * @param surfaceYield - 表面利回り
    * @param rentIncreaseRate - 家賃の増減率（年ごと）
    * @param vacancyRate - 空室率
    */
   constructor(
-    initialAnnualRent: number,
+    propertyPrice: number,
+    surfaceYield: number,
     rentIncreaseRate: number,
     vacancyRate: number,
   ) {
-    if (initialAnnualRent < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。");
-    if (vacancyRate < 0 || vacancyRate > 1) throw new Error("空室率は0から1の間の値を入力してください。");
+    if (propertyPrice < 0) throw new Error("物件価格は0以上の値を入力してください。");
+    if (surfaceYield < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。"); // 修正
 
-    this.initialAnnualRent = initialAnnualRent;
+    this.initialAnnualRent = propertyPrice * surfaceYield;
     this.rentIncreaseRate = rentIncreaseRate;
     this.vacancyRate = vacancyRate;
   }
@@ -49,11 +50,10 @@ export class PropertyIncome {
 
   /**
    * 指定年度の実質収入（空室損を考慮した収入）を計算します。
-   * @param property - 物件情報（現在は未使用ですが、将来的な拡張性を考慮して引数に含めます）
    * @param year - 計算対象の年度（1年目から）
    * @returns {number} その年度の実質収入
    */
-  public calculateAnnualIncome(property: Property, year: number): number {
+  public calculateAnnualIncome(year: number): number {
     if (year <= 0) return 0;
     const potentialRent = this.calculatePotentialAnnualRent(year);
     return Math.round(potentialRent * (1 - this.vacancyRate));
