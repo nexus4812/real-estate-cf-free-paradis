@@ -27,7 +27,6 @@ export class Property {
   public readonly buildingArea: number;
 
   /**
-   * @param price - 購入時の物件価格（建物+土地）
    * @param landPrice - 土地価格
    * @param buildingPrice - 建物価格
    * @param buildingStructure - 建物構造
