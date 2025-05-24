@@ -43,10 +43,7 @@ export class PropertyBalanceSheet {
     if (year <= 0) return 0;
 
     const annualIncome = this.income.calculateAnnualIncome(year);
-    const annualCosts = this.cost.calculateAnnualCosts(
-      annualIncome, // PropertyCostの計算には、その年の収入が必要
-      year,
-    );
+    const annualCosts = this.cost.calculateAnnualCosts(year);
 
     return annualIncome - annualCosts;
   }
