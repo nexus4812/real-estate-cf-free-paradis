@@ -30,7 +30,7 @@ export class PropertyIncome {
     vacancyRate: number,
   ) {
     if (propertyPrice < 0) throw new Error("物件価格は0以上の値を入力してください。");
-    if (surfaceYield < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。"); // 修正
+    if (surfaceYield < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。"); 
 
     this.initialAnnualRent = propertyPrice * surfaceYield;
     this.rentIncreaseRate = rentIncreaseRate;
@@ -39,13 +39,14 @@ export class PropertyIncome {
 
   /**
    * 指定年度の想定家賃収入を計算します。
+   * 
    * @param year - 計算対象の年度（1年目から）
    * @returns {number} その年度の想定家賃収入
    */
   public calculatePotentialAnnualRent(year: number): number {
     if (year <= 0) return 0;
-    // (1 + 増減率) の (経過年数-1) 乗を初期家賃に乗算
-    return Math.round(this.initialAnnualRent * Math.pow(1 + this.rentIncreaseRate, year - 1));
+    // (1 + 増減率) の (経過年数-1) を初期家賃に乗算
+    return Math.round(this.initialAnnualRent * (1 + (this.rentIncreaseRate * (year))));
   }
 
   /**
