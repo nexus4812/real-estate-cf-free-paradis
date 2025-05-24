@@ -44,7 +44,6 @@ export class PropertyBalanceSheet {
 
     const annualIncome = this.income.calculateAnnualIncome(year);
     const annualCosts = this.cost.calculateAnnualCosts(
-      this.property,
       annualIncome, // PropertyCostの計算には、その年の収入が必要
       year,
     );
@@ -81,7 +80,7 @@ export class PropertyBalanceSheet {
     // 実質利回り計算用の経費：ローン返済元金・金利、減価償却費は含めない
     const managementFee = annualIncome * this.cost.managementFeeRatio;
     const regularRepairCost = annualIncome * this.cost.repairCostRatio;
-    const propertyTax = this.cost.calculatePropertyTax(this.property, year);
+    const propertyTax = this.cost.calculatePropertyTax(year);
     let largeScaleRepairCostForYear = 0;
     this.cost.largeScaleRepairPlans.forEach(plan => {
       if (plan.repairYear === year) {
@@ -107,7 +106,7 @@ export class PropertyBalanceSheet {
   public calculatePreTaxCashFlowForYear(year: number): number {
     if (year <= 0) return 0;
     const annualIncome = this.income.calculateAnnualIncome(year);
-    const annualCosts = this.cost.calculateAnnualCosts(this.property, annualIncome, year); // これにはローン返済も含まれる
+    const annualCosts = this.cost.calculateAnnualCosts(year);
     return annualIncome - annualCosts;
   }
 
@@ -124,7 +123,7 @@ export class PropertyBalanceSheet {
     // 運営費（ローン金利は含むが、元金返済は含まない）
     const managementFee = annualIncome * this.cost.managementFeeRatio;
     const regularRepairCost = annualIncome * this.cost.repairCostRatio;
-    const propertyTax = this.cost.calculatePropertyTax(this.property, year);
+    const propertyTax = this.cost.calculatePropertyTax(year);
     let loanInterestPayment = 0;
     if (this.cost.loan) {
         loanInterestPayment = this.cost.loan.calculateInterestPaymentForYear(year);
