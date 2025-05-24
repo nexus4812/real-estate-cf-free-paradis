@@ -82,7 +82,7 @@ export class PropertyCost {
     const assessmentValue = this.propertyPrice * this.propertyAssessmentRatio;
     // TODO: 経年減価補正を考慮する場合は、yearに応じて建物の評価額を減額する
     // TODO: 新築住宅の軽減措置、小規模住宅用地の特例なども考慮できるとより正確
-    return Math.round(assessmentValue * this.propertyTaxRate);
+    return Math.round(assessmentValue * this.propertyTaxRate); // 1.7%を適用
   }
 
   /**
@@ -96,7 +96,15 @@ export class PropertyCost {
    * 年間の修繕費を計算します
    */
   public calculateRealRepairCost(): number {
-    return Math.round(this.annualIncome * this.managementFeeRatio)
+    return Math.round(this.annualIncome * this.repairCostRatio)
+  }
+
+  /**
+   * 対象年度の対規模修繕にかかる費用を取得します
+   */
+  public getLargeScaleRepairCostForYear(year: number): number {
+    return this.largeScaleRepairPlans
+      .find(plan => plan.repairYear === year)?.repairCost ?? 0
   }
 
   /**
@@ -115,18 +123,12 @@ export class PropertyCost {
     const managementFee = this.calculateRealAnnualManagementFee();
     const regularRepairCost = this.calculateRealRepairCost();
     const propertyTax = this.calculatePropertyTax(year);
+    const largeScaleRepairCost = this.getLargeScaleRepairCostForYear(year)
 
     let loanPayment = 0;
     if (this.loan) {
       loanPayment = this.loan.calculatePaymentAmountForYear(year);
     }
-
-    let largeScaleRepairCostForYear = 0;
-    this.largeScaleRepairPlans.forEach(plan => {
-      if (plan.repairYear === year) {
-        largeScaleRepairCostForYear += plan.repairCost;
-      }
-    });
 
     // 減価償却費は会計上の費用であり、キャッシュアウトを伴わないため、
     // ここでの「支出」には含めないのが一般的。別途税金計算などで考慮する。
@@ -136,7 +138,7 @@ export class PropertyCost {
       regularRepairCost +
       propertyTax +
       loanPayment +
-      largeScaleRepairCostForYear;
+      largeScaleRepairCost;
 
     return Math.round(totalCosts);
   }
