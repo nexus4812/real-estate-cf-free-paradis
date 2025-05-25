@@ -1,6 +1,6 @@
 import { PropertyBalanceSheet } from './propertyBalanceSheet';
 import { Property } from '../property/property';
-import { PropertyIncome } from './propertyIncome'; 
+import { PropertyIncome } from '../propertyIncome/propertyIncome'; 
 import { PropertyCost } from './propertyCost';
 import { Wood } from '../property/buildingStructure';
 

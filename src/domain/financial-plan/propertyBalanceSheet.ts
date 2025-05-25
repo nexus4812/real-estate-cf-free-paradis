@@ -1,5 +1,5 @@
 import { Property } from "../property/property";
-import { PropertyIncome } from "./propertyIncome";
+import { PropertyIncome } from "../propertyIncome/propertyIncome";
 import { PropertyCost } from "./propertyCost";
 
 /**
