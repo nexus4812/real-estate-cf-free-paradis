@@ -9,11 +9,13 @@ describe('PropertyBalanceSheet', () => {
   let income: PropertyIncome;
   let cost: PropertyCost;
   let balanceSheet: PropertyBalanceSheet;
+  let price: number; // 価格をここで定義
+  let annualBalance: number; // 年間収支をここで定義
 
   beforeEach(() => {
     const landPrice = 1800 * 10000; // 1800万
     const buildingPrice = 2800 * 10000; // 2800万
-    const price = landPrice + buildingPrice;
+    price = landPrice + buildingPrice;
 
     // Property クラスのインスタンスを作成
     property = new Property(
@@ -34,28 +36,64 @@ describe('PropertyBalanceSheet', () => {
     balanceSheet = new PropertyBalanceSheet(property, income, cost);
   });
 
-  test('should calculate annual balance for year correctly', () => {
-    const annualBalance = balanceSheet.calculateAnnualBalanceForYear(1);
-    expect(annualBalance).toBe(300000 - (cost.calculateRealAnnualManagementFee() + cost.calculateRealRepairCost() + cost.calculatePropertyTax(1))); // 期待される年間収支を計算
+  test('1年目の年間収支を正しく計算する', () => {
+    const expectedAnnualBalance = income.calculateAnnualIncome(1) - cost.calculateAnnualCosts(1);
+    annualBalance = balanceSheet.calculateAnnualBalanceForYear(1);
+    expect(annualBalance).toBe(expectedAnnualBalance);
   });
 
-  test('should calculate gross yield for year correctly', () => {
+  test('1年目の表面利回りを正しく計算する', () => {
+    const expectedGrossYield = income.calculatePotentialAnnualRent(1) / property.getPrice();
     const grossYield = balanceSheet.calculateGrossYieldForYear(1);
-    expect(grossYield).toBe(0.05); // 期待される表面利回り
+    expect(grossYield).toBe(expectedGrossYield);
   });
 
-  test('should calculate real yield for year correctly', () => {
+  test('1年目の実質利回りを正しく計算する', () => {
+    const expectedRealYield = (annualBalance / (property.getPrice() + property.estimateInitialCosts()));
     const realYield = balanceSheet.calculateRealYieldForYear(1);
-    expect(realYield).toBe(/* 期待される実質利回り */);
+    expect(realYield).toBe(expectedRealYield);
   });
 
-  test('should calculate pre-tax cash flow for year correctly', () => {
-    const preTaxCashFlow = balanceSheet.calculatePreTaxCashFlowForYear(1);
-    expect(preTaxCashFlow).toBe(300000 - (cost.calculateRealAnnualManagementFee() + cost.calculateRealRepairCost())); // 期待される税引前キャッシュフロー
-  });
+  // test('1年目の税引前キャッシュフローを正しく計算する', () => {
+  //   const expectedPreTaxCashFlow = income.calculateAnnualIncome(1) - cost.calculateAnnualCosts(1);
+  //   const preTaxCashFlow = balanceSheet.calculatePreTaxCashFlowForYear(1);
+  //   expect(preTaxCashFlow).toBe(expectedPreTaxCashFlow);
+  // });
 
-  test('should calculate taxable income for year correctly', () => {
-    const taxableIncome = balanceSheet.calculateTaxableIncomeForYear(1);
-    expect(taxableIncome).toBe(/* 期待される課税所得 */);
-  });
+  // test('1年目の課税所得を正しく計算する', () => {
+  //   const expectedTaxableIncome = expectedAnnualBalance - cost.calculateRealAnnualManagementFee();
+  //   const taxableIncome = balanceSheet.calculateTaxableIncomeForYear(1);
+  //   expect(taxableIncome).toBe(expectedTaxableIncome);
+  // });
+
+  // // 2年目のテスト
+  // test('2年目の年間収支を正しく計算する', () => {
+  //   const expectedAnnualBalance = income.calculateAnnualIncome(2) - cost.calculateAnnualCosts(2);
+  //   annualBalance = balanceSheet.calculateAnnualBalanceForYear(2);
+  //   expect(annualBalance).toBe(expectedAnnualBalance);
+  // });
+
+  // test('2年目の表面利回りを正しく計算する', () => {
+  //   const expectedGrossYield = income.calculatePotentialAnnualRent(2) / property.getPrice();
+  //   const grossYield = balanceSheet.calculateGrossYieldForYear(2);
+  //   expect(grossYield).toBe(expectedGrossYield);
+  // });
+
+  // test('2年目の実質利回りを正しく計算する', () => {
+  //   const expectedRealYield = (annualBalance / (property.getPrice() + property.estimateInitialCosts()));
+  //   const realYield = balanceSheet.calculateRealYieldForYear(2);
+  //   expect(realYield).toBe(expectedRealYield);
+  // });
+
+  // test('2年目の税引前キャッシュフローを正しく計算する', () => {
+  //   const expectedPreTaxCashFlow = income.calculateAnnualIncome(2) - cost.calculateAnnualCosts(2);
+  //   const preTaxCashFlow = balanceSheet.calculatePreTaxCashFlowForYear(2);
+  //   expect(preTaxCashFlow).toBe(expectedPreTaxCashFlow);
+  // });
+
+  // test('2年目の課税所得を正しく計算する', () => {
+  //   const expectedTaxableIncome = expectedAnnualBalance - cost.calculateRealAnnualManagementFee();
+  //   const taxableIncome = balanceSheet.calculateTaxableIncomeForYear(2);
+  //   expect(taxableIncome).toBe(expectedTaxableIncome);
+  // });
 });

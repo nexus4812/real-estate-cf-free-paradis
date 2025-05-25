@@ -73,20 +73,7 @@ export class PropertyBalanceSheet {
     if (year <= 0) return 0;
 
     const annualIncome = this.income.calculateAnnualIncome(year);
-
-    // 実質利回り計算用の経費：ローン返済元金・金利、減価償却費は含めない
-    const managementFee = annualIncome * this.cost.managementFeeRatio;
-    const regularRepairCost = annualIncome * this.cost.repairCostRatio;
-    const propertyTax = this.cost.calculatePropertyTax(year);
-    let largeScaleRepairCostForYear = 0;
-    this.cost.largeScaleRepairPlans.forEach(plan => {
-      if (plan.repairYear === year) {
-        largeScaleRepairCostForYear += plan.repairCost;
-      }
-    });
-    const operatingExpenses = managementFee + regularRepairCost + propertyTax + largeScaleRepairCostForYear;
-
-    const netOperatingIncome = annualIncome - operatingExpenses;
+    const netOperatingIncome = annualIncome - this.cost.calculateAnnualCosts(year);
     const totalInvestment = this.property.getPrice() + this.property.estimateInitialCosts();
 
     if (totalInvestment === 0) return 0; // 0除算を防ぐ
