@@ -1,11 +1,22 @@
+import { Wood } from '../property/buildingStructure';
+import { Property } from '../property/property';
 import { PropertyIncome } from './propertyIncome';
 
 describe('PropertyIncome', () => {
   let propertyIncome: PropertyIncome;
+  let property: Property
 
   beforeEach(() => {
+    const property = new Property(
+      5000000,
+      5000000,
+      new Wood(),
+      33,
+      200
+    );
+
     propertyIncome = new PropertyIncome(
-        10000000,  // 物件価格(1000万)
+      property,  // 物件価格(1000万)
         0.05,      // 表面利回り
         -0.01,     // 家賃増減率
         0.1        // 空室率
@@ -13,9 +24,13 @@ describe('PropertyIncome', () => {
   });
 
   test('コンストラクタのテスト', () => {
-    expect(() => new PropertyIncome(-10000000, 0.05, 0.1, 0.1)).toThrow("物件価格は0以上の値を入力してください。");
-    expect(() => new PropertyIncome(10000000, -0.05, 0.1, 0.1)).toThrow("初期年間家賃収入は0以上の値を入力してください。");
-    expect(propertyIncome.initialAnnualRent).toBe(500000); // 10000000 * 0.05
+    expect(() => new PropertyIncome(new Property(
+      5000000,
+      5000000,
+      new Wood(),
+      33,
+      200
+    ), -0.05, 0.1, 0.1)).toThrow("初期年間家賃収入は0以上の値を入力してください。");
   });
 
   test('家賃下落率を除いた、指定年度の想定家賃収入が正しい値であること', () => {

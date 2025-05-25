@@ -5,9 +5,15 @@ import { Property } from "../property/property";
  */
 export class PropertyIncome {
   /**
-   * 初期年間家賃収入。
+   * 物件
    */
-  public readonly initialAnnualRent: number;
+  public readonly property: Property;
+
+  /**
+   * 表面利回り（物件購入時点の）
+   */
+  public readonly surfaceYield: number
+
   /**
    * 家賃の増減率（年ごと、小数表記 例: 1%増 -> 0.01, 1%減 -> -0.01）。
    */
@@ -18,23 +24,31 @@ export class PropertyIncome {
   public readonly vacancyRate: number;
 
   /**
-   * @param propertyPrice - 物件価格
+   * @param property - 物件
    * @param surfaceYield - 表面利回り
    * @param rentIncreaseRate - 家賃の増減率（年ごと）
    * @param vacancyRate - 空室率
    */
   constructor(
-    propertyPrice: number,
+    property: Property,
     surfaceYield: number,
     rentIncreaseRate: number,
     vacancyRate: number,
   ) {
-    if (propertyPrice < 0) throw new Error("物件価格は0以上の値を入力してください。");
+    this.property = property;
     if (surfaceYield < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。"); 
-
-    this.initialAnnualRent = propertyPrice * surfaceYield;
+    this.surfaceYield = surfaceYield;
     this.rentIncreaseRate = rentIncreaseRate;
     this.vacancyRate = vacancyRate;
+  }
+
+  /**
+   * 表面利回りに基づいた最大の賃貸収入を計算します（初年度）
+   * 
+   * @returns 
+   */
+  public calculateInitialAnnualRent(): number {
+    return this.property.getPrice() * this.surfaceYield
   }
 
   /**
@@ -46,7 +60,7 @@ export class PropertyIncome {
   public calculatePotentialAnnualRent(year: number): number {
     if (year <= 0) return 0;
     // (1 + 増減率) の (経過年数-1) を初期家賃に乗算
-    return Math.round(this.initialAnnualRent * (1 + (this.rentIncreaseRate * (year))));
+    return Math.round(this.calculateInitialAnnualRent() * (1 + (this.rentIncreaseRate * (year))));
   }
 
   /**

@@ -27,7 +27,7 @@ describe('PropertyBalanceSheet', () => {
     );
 
     // PropertyIncome クラスのインスタンスを作成
-    income = new PropertyIncome(price, 0.05, 0.02, 0.1); // 例として引数を指定
+    income = new PropertyIncome(property, 0.05, 0.02, 0.1); // 例として引数を指定
 
     // PropertyCost クラスのインスタンスを作成
     cost = new PropertyCost(price, 300000, 0.05, 0.02); // 例として引数を指定
