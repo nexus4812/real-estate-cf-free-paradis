@@ -1,5 +1,5 @@
 import { PropertyCost } from './propertyCost';
-import { Loan } from '../loan/loan';
+import { Loan } from './loan';
 import { LargeScaleRepairPlan } from './largeScaleRepairPlan';
 
 describe('PropertyCost', () => {

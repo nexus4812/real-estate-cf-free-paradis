@@ -1,6 +1,6 @@
 import { Property } from "../property/property";
 import { PropertyIncome } from "../propertyIncome/propertyIncome";
-import { PropertyCost } from "./propertyCost";
+import { PropertyCost } from "../propertyCost/propertyCost";
 
 /**
  * 物件の年度ごとの収支と利回りを計算するクラス。

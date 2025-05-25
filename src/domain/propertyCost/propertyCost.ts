@@ -1,6 +1,6 @@
 // src/domain/financial_plan/propertyCost.ts
 import { Property } from "../property/property";
-import { Loan } from "../loan/loan";
+import { Loan } from "./loan";
 import { LargeScaleRepairPlan } from "./largeScaleRepairPlan";
 
 /**

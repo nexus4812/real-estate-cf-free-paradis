@@ -1,7 +1,7 @@
 import { PropertyBalanceSheet } from './propertyBalanceSheet';
 import { Property } from '../property/property';
 import { PropertyIncome } from '../propertyIncome/propertyIncome'; 
-import { PropertyCost } from './propertyCost';
+import { PropertyCost } from '../propertyCost/propertyCost';
 import { Wood } from '../property/buildingStructure';
 
 describe('PropertyBalanceSheet', () => {
