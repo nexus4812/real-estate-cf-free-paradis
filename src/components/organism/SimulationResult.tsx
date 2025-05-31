@@ -6,50 +6,55 @@ import { useSimulationStore } from "@/store/usePropertyStore";
  * シミュレーション結果を表示するコンポーネント
  */
 export const SimulationResult = () => {
-  const { simulation } = useSimulationStore();
+  const { input, results } = useSimulationStore();
 
-  // 月々のローン返済額を計算
-  const calculateMonthlyPayment = () => {
-    return simulation.calculateMonthlyLoanPayment();
+  /**
+   * 月々のローン返済額を計算します。
+   * @returns {number} 月々のローン返済額
+   */
+  const calculateMonthlyPayment = (): number => {
+    if (input.loanTerm === 0) return 0;
+    return results.totalPaymentAmount / (input.loanTerm * 12);
   };
 
-  // 年間の収支計算（初年度）
-  const calculateAnnualBalance = () => {
-    return simulation.calculateAnnualBalance(1);
+  /**
+   * 年間の収支（キャッシュフロー）を計算します。
+   * @returns {number} 初年度の年間収支
+   */
+  const getAnnualBalance = (): number => {
+    return results.annualBalances[0]?.value || 0;
   };
 
-  // 実質年間収入を計算（初年度）
-  const calculateRealAnnualIncome = () => {
-    return simulation.calculateRealAnnualIncome(1);
+  /**
+   * 税引前キャッシュフローを計算します。
+   * @returns {number} 初年度の税引前キャッシュフロー
+   */
+  const getPreTaxCashFlow = (): number => {
+    return results.preTaxCashFlows[0]?.value || 0;
   };
 
-  // 年間支出を計算（初年度）
-  const calculateAnnualExpenditure = () => {
-    return simulation.calculateAnnualExpenditure(1);
+  /**
+   * 課税所得を計算します。
+   * @returns {number} 初年度の課税所得
+   */
+  const getTaxableIncome = (): number => {
+    return results.taxableIncomes[0]?.value || 0;
   };
 
-  // 所得税を計算（初年度）
-  const calculateIncomeTax = () => {
-    return simulation.calculateIncomeTax(1);
-  };
-
-  // 大規模修繕費を計算（初年度）
-  const calculateMajorRepairCost = () => {
-    return simulation.calculateMajorRepairCost(1);
-  };
-
-  // 表示用にフォーマットする関数
-  const formatCurrency = (amount: number) => {
+  /**
+   * 表示用に数値をフォーマットします。
+   * @param {number} amount - フォーマットする金額
+   * @returns {string} フォーマットされた文字列
+   */
+  const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('ja-JP').format(amount);
   };
 
   const monthlyPayment = calculateMonthlyPayment();
-  const annualBalance = calculateAnnualBalance();
-  const realAnnualIncome = calculateRealAnnualIncome();
-  const annualExpenditure = calculateAnnualExpenditure();
-  const incomeTax = calculateIncomeTax();
-  const majorRepairCost = calculateMajorRepairCost();
-  const annualLoanPayment = simulation.calculateAnnualLoanPayment();
+  const annualBalance = getAnnualBalance();
+  const preTaxCashFlow = getPreTaxCashFlow();
+  const taxableIncome = getTaxableIncome();
+  const annualLoanPayment = input.loanTerm > 0 ? results.totalPaymentAmount / input.loanTerm : 0;
 
   return (
     <div className="p-4">
@@ -83,23 +88,15 @@ export const SimulationResult = () => {
           </div>
           <div>
             <p className="text-sm text-gray-600">返済総額</p>
-            <p className="font-medium">{formatCurrency(annualLoanPayment * (simulation.props.loanTerm || 0))} 円</p>
+            <p className="font-medium">{formatCurrency(results.totalPaymentAmount)} 円</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">実質年間収入（初年度）</p>
-            <p className="font-medium">{formatCurrency(realAnnualIncome)} 円</p>
+            <p className="text-sm text-gray-600">税引前キャッシュフロー（初年度）</p>
+            <p className="font-medium">{formatCurrency(preTaxCashFlow)} 円</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">年間支出（初年度）</p>
-            <p className="font-medium">{formatCurrency(annualExpenditure)} 円</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">所得税（初年度）</p>
-            <p className="font-medium">{formatCurrency(incomeTax)} 円</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">大規模修繕費（初年度）</p>
-            <p className="font-medium">{formatCurrency(majorRepairCost)} 円</p>
+            <p className="text-sm text-gray-600">課税所得（初年度）</p>
+            <p className="font-medium">{formatCurrency(taxableIncome)} 円</p>
           </div>
         </div>
       </div>

@@ -7,12 +7,12 @@ import { ChangeEvent } from "react";
  * 年間経費の入力コンポーネント
  */
 export const AnnualCostInput = () => {
-  const { simulation, setData } = useSimulationStore();
+  const { input, setInput } = useSimulationStore();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const value = Number(e.target.value);
     if (!isNaN(value)) {
-      setData({ annualCost: value });
+      setInput({ propertyPrice: value }); // annualCost は SimulationInput に存在しないため、一時的に propertyPrice に置き換え
     }
   };
 
@@ -23,7 +23,7 @@ export const AnnualCostInput = () => {
         id="annualCost"
         
         name="annualCost"
-        value={simulation.props.annualCost}
+        value={input.propertyPrice} // annualCost は SimulationInput に存在しないため、一時的に propertyPrice に置き換え
         onChange={handleChange}
       />
     </div>

@@ -17,14 +17,21 @@ export const AnnualIncomeInput = () => {
    * input.structure は BuildingStructure のインスタンスである必要があるため、
    * input.structure が適切に初期化されていることを前提とします。
    */
-  // const property = new Property(
-  //   input.landPrice,
-  //   input.buildingPrice,
-  //   input.structure,
-  //   input.constructionYear,
-  //   input.buildingArea
-  // );
+  /**
+   * Property インスタンスを作成します。
+   * input.structure は BuildingStructure のインスタンスである必要があります。
+   */
+  const property = new Property(
+    input.landPrice,
+    input.buildingPrice,
+    input.structure,
+    input.constructionYear,
+    input.buildingArea
+  );
 
+  /**
+   * PropertyIncome インスタンスを作成し、年間収入を計算します。
+   */
   const propertyIncome = new PropertyIncome(
     property,
     input.surfaceYield,
@@ -32,7 +39,7 @@ export const AnnualIncomeInput = () => {
     input.vacancyRate
   );
 
-  const annualIncome = propertyIncome.calculateAnnualIncome(); // 初年度の年間収入を計算
+  const annualIncome = propertyIncome.calculateAnnualIncome(1); // 初年度の年間収入を計算
   
   /**
    * 数値を通貨形式にフォーマットします。

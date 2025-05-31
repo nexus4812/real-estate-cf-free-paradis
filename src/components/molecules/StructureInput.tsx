@@ -1,7 +1,7 @@
 "use client";
 
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { SimulationInput } from "@/store/usePropertyStore";
+import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
 import { BuildingStructure, RC, Steel, Wood } from "@/domain/property/buildingStructure";
 
 /**
@@ -22,9 +22,9 @@ interface StructureInputProps {
  */
 export const StructureInput = ({ register, errors }: StructureInputProps) => {
   const structureOptions = [
-    { value: "RC", label: "RC造" },
-    { value: "Steel", label: "S造" },
-    { value: "Wood", label: "木造" },
+    { value: "RC", label: "RC造", instance: new RC() },
+    { value: "Steel", label: "S造", instance: new Steel() },
+    { value: "Wood", label: "木造", instance: new Wood() },
   ];
 
   return (
@@ -43,6 +43,17 @@ export const StructureInput = ({ register, errors }: StructureInputProps) => {
         id="structure"
         {...register("structure", {
           required: "物件構造は必須です",
+          validate: {
+            isValidStructure: (value) => {
+              // valueがBuildingStructureのインスタンスであることを確認
+              return value instanceof BuildingStructure || "有効な物件構造を選択してください";
+            },
+          },
+          setValueAs: (value) => {
+            // 選択された文字列からBuildingStructureのインスタンスを生成
+            const selectedOption = structureOptions.find(option => option.value === value);
+            return selectedOption ? selectedOption.instance : new RC(); // デフォルト値
+          },
         })}
         className={`input-field py-2 px-3 text-sm ${errors.structure ? "border-red-500" : ""}`}
       >
