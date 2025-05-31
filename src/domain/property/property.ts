@@ -2,6 +2,11 @@
 import { BuildingStructure } from "./buildingStructure";
 
 /**
+ * 固定資産税率
+ */
+const fixedAssetRatio = 0.014;
+
+/**
  * 物件の基本情報を保持し、関連する計算を行うクラス。
  */
 export class Property {
@@ -52,13 +57,39 @@ export class Property {
     this.buildingArea = buildingArea;
   }
 
-  public getPrice(): number{
+  public getPrice(): number {
     return this.landPrice + this.buildingPrice;
   }
 
   /**
+   * 建物の評価割合を取得します
+   * 
+   * @returns {number}
+   */
+  public getBuildingEvaluationRatio(): number {
+    return Number((this.buildingPrice / this.getPrice()).toFixed(0.3))
+  }
+
+  /**
+   * 経過年数から固定資産税を推定します。
+   * 
+   * 固定資産税 = 建物価格 × (残耐用年数 ÷ 耐用年数) × 固定資産税率
+   * 
+   * ※ 実際の課税評価額とは異なるが、建物価格をもとに耐用年数で比例減額した仮の値を使用しています。
+   * ※ 固定資産税は一般的に0円にならないので、残耐用年数は最低でも1年は残して計算を行います
+   * 
+   * @param year 購入からの経過年数
+   * @returns 推定される年間固定資産税額（円）
+   */
+  public estimateFixedAssetTaxForYear(year:number = 0): number {
+    const totalDurableYears = this.buildingStructure.getDepreciationYears();
+    const remainingYears = Math.max(totalDurableYears - this.constructionYear - year, 1);
+    return this.buildingPrice * (remainingYears / totalDurableYears) * fixedAssetRatio;
+  }
+
+  /**
    * 初期費用を推定します。
-   * 一般的に物件価格の7%程度とされます。
+   * 一般的に物件価格の8%程度とされます。
    * @returns {number} 推定初期費用
    */
   public estimateInitialCosts(): number {
