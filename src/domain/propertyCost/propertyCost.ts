@@ -79,7 +79,7 @@ export class PropertyCost {
    */
   public calculateRealAnnualManagementFee(): number {
     // 管理費は家賃の下落と共に下がるとは考え辛い部分も多いので（共用部分など）、一年目の収入を元に固定値とする
-    return Math.round(this.propertyIncome.calculateAnnualIncome(1) * this.managementFeeRatio)
+    return Math.round(this.propertyIncome.calculateAnnualIncome(1) * this.managementFeeRatio);
   }
 
   /**
@@ -87,7 +87,7 @@ export class PropertyCost {
    */
   public calculateRealRepairCost(): number {
     // 修繕費は家賃の下落と共に下がるとは考え辛い部分も多いので、一年目の収入を元に固定値とする
-    return Math.round(this.propertyIncome.calculateAnnualIncome(1) * this.repairCostRatio)
+    return Math.round(this.propertyIncome.calculateAnnualIncome(1) * this.repairCostRatio);
   }
 
   /**
