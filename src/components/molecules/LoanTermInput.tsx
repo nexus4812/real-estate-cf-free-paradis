@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore'; // useSimulationStore をインポート
@@ -36,9 +36,7 @@ export const LoanTermInput = ({ register, errors }: LoanTermInputProps) => {
         })}
         className={`input input-bordered w-full max-w-xs ${errors.loanTerm ? 'input-error' : ''}`}
       />
-      {errors.loanTerm && (
-        <p className="text-error text-xs mt-1">{errors.loanTerm.message}</p>
-      )}
+      {errors.loanTerm && <p className="text-error text-xs mt-1">{errors.loanTerm.message}</p>}
     </div>
   );
 };

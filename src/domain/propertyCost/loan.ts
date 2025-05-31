@@ -16,15 +16,15 @@ function simulateEqualRepayment(
   const monthlyInterestRate = annualInterestRate / 12;
   const totalMonths = loanPeriodYears * 12;
 
-  const monthlyPayment = loanAmount * monthlyInterestRate /
-    (1 - Math.pow(1 + monthlyInterestRate, -totalMonths));
+  const monthlyPayment =
+    (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -totalMonths));
 
   let balance = loanAmount;
 
   return Array.from({ length: totalMonths }, (_, i) => {
     const interest = balance * monthlyInterestRate;
     const principal = monthlyPayment - interest;
-    balance = Math.max(0, balance - principal)
+    balance = Math.max(0, balance - principal);
 
     // 最終月は誤差を調整
     if (i === totalMonths - 1 && Math.abs(balance) < 0.01) {
@@ -36,7 +36,7 @@ function simulateEqualRepayment(
       payment: parseFloat(monthlyPayment.toFixed(0)), // 支払い金額
       principal: parseFloat(principal.toFixed(0)), // 支払い額における元金の金額
       interest: parseFloat(interest.toFixed(0)), // 支払い額における金利の金額
-      balance: parseFloat(balance.toFixed(0)) // 残りのローン残高
+      balance: parseFloat(balance.toFixed(0)), // 残りのローン残高
     };
   });
 }
@@ -62,7 +62,7 @@ export class Loan {
    * 内部的に保持するシュミレーション結果
    * 本来あまりコンストラクタで計算すべきではないが、事前に計算しておかないとgetterにロジックが散らばるのでこうした
    */
-  private readonly simulate: MonthlyRepayment[]; 
+  private readonly simulate: MonthlyRepayment[];
 
   /**
    * @param amount - 借入金額
@@ -70,27 +70,25 @@ export class Loan {
    * @param term - 借入年数
    */
   constructor(amount: number, interestRate: number, term: number) {
-    if (amount <= 0) throw new Error("借入金額は0より大きい値を入力してください。");
-    if (interestRate <= 0) throw new Error("金利は0より大きい値を入力してください。");
-    if (term <= 0) throw new Error("借入年数は0より大きい値を入力してください。");
+    if (amount <= 0) throw new Error('借入金額は0より大きい値を入力してください。');
+    if (interestRate <= 0) throw new Error('金利は0より大きい値を入力してください。');
+    if (term <= 0) throw new Error('借入年数は0より大きい値を入力してください。');
 
     this.amount = amount;
     this.interestRate = interestRate;
     this.term = term;
-    this.simulate = simulateEqualRepayment(this.amount, this.interestRate, this.term)
+    this.simulate = simulateEqualRepayment(this.amount, this.interestRate, this.term);
   }
 
   /**
    * 総額の支払い額を計算します。
-   * @returns {number} 
+   * @returns {number}
    */
-  public calculateTotalPaymentAmount(): number
-  {
+  public calculateTotalPaymentAmount(): number {
     return +this.simulate
-        .map<number>(row => row.payment)
-        .reduce<number>((acc, curr) => acc + curr, 0)
-        .toFixed(0)
-        ;
+      .map<number>((row) => row.payment)
+      .reduce<number>((acc, curr) => acc + curr, 0)
+      .toFixed(0);
   }
 
   /**
@@ -100,14 +98,13 @@ export class Loan {
    */
   public calculatePaymentAmountForYear(year: number): number {
     const startMonth = (year - 1) * 12 + 1;
-    const endMonth = year * 12
+    const endMonth = year * 12;
 
     return +this.simulate
-      .filter(row => startMonth <= row.month && row.month <= endMonth)
-      .map(row => row.payment)
+      .filter((row) => startMonth <= row.month && row.month <= endMonth)
+      .map((row) => row.payment)
       .reduce<number>((acc, curr) => acc + curr, 0)
-      .toFixed(2)
-      ;
+      .toFixed(2);
   }
 
   /**
@@ -117,26 +114,26 @@ export class Loan {
    */
   public calculateInterestPaymentForYear(year: number): number {
     const startMonth = (year - 1) * 12 + 1;
-    const endMonth = year * 12
+    const endMonth = year * 12;
 
     return this.simulate
-      .filter(row => startMonth <= row.month && row.month <= endMonth)
-      .map(row => row.interest)
+      .filter((row) => startMonth <= row.month && row.month <= endMonth)
+      .map((row) => row.interest)
       .reduce<number>((acc, curr) => acc + curr, 0);
   }
 
-   /**
+  /**
    * 指定された年度の年間元金返済額を計算します。
    * @param year - 計算対象の年度（1年目からterm年目まで）
    * @returns {number} その年度の年間元金返済額。借入期間外の場合は0を返します。
    */
   public calculatePrincipalPaymentForYear(year: number): number {
     const startMonth = (year - 1) * 12 + 1;
-    const endMonth = year * 12
+    const endMonth = year * 12;
 
     return this.simulate
-      .filter(row => startMonth <= row.month && row.month <= endMonth)
-      .map(row => row.principal)
+      .filter((row) => startMonth <= row.month && row.month <= endMonth)
+      .map((row) => row.principal)
       .reduce<number>((acc, curr) => acc + curr, 0);
   }
 }

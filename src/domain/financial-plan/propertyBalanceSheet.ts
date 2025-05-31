@@ -1,6 +1,6 @@
-import { Property } from "../property/property";
-import { PropertyIncome } from "../propertyIncome/propertyIncome";
-import { PropertyCost } from "../propertyCost/propertyCost";
+import { Property } from '../property/property';
+import { PropertyIncome } from '../propertyIncome/propertyIncome';
+import { PropertyCost } from '../propertyCost/propertyCost';
 
 /**
  * 物件の年度ごとの収支と利回りを計算するクラス。
@@ -24,11 +24,7 @@ export class PropertyBalanceSheet {
    * @param income - 収入に関する情報
    * @param cost - 支出に関する情報
    */
-  constructor(
-    property: Property,
-    income: PropertyIncome,
-    cost: PropertyCost,
-  ) {
+  constructor(property: Property, income: PropertyIncome, cost: PropertyCost) {
     this.property = property;
     this.income = income;
     this.cost = cost;

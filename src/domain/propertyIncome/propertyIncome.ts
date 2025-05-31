@@ -1,4 +1,4 @@
-import { Property } from "../property/property";
+import { Property } from '../property/property';
 
 /**
  * 物件の年度ごとの収入を計算するクラス。
@@ -12,7 +12,7 @@ export class PropertyIncome {
   /**
    * 表面利回り（物件購入時点の）
    */
-  public readonly surfaceYield: number
+  public readonly surfaceYield: number;
 
   /**
    * 家賃の増減率（年ごと、小数表記 例: 1%増 -> 0.01, 1%減 -> -0.01）。
@@ -33,11 +33,11 @@ export class PropertyIncome {
     property: Property,
     surfaceYield: number,
     rentIncreaseRate: number,
-    vacancyRate: number,
+    vacancyRate: number
   ) {
     this.property = property;
-    if (surfaceYield < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。"); 
-    if (vacancyRate < 0) throw new Error("空室率は0以上の値を入力してください。"); 
+    if (surfaceYield < 0) throw new Error('初期年間家賃収入は0以上の値を入力してください。');
+    if (vacancyRate < 0) throw new Error('空室率は0以上の値を入力してください。');
     this.surfaceYield = surfaceYield;
     this.rentIncreaseRate = rentIncreaseRate;
     this.vacancyRate = vacancyRate;
@@ -45,23 +45,25 @@ export class PropertyIncome {
 
   /**
    * 表面利回りに基づいた最大の賃貸収入を計算します（初年度）
-   * 
-   * @returns 
+   *
+   * @returns
    */
   public calculateInitialAnnualRent(): number {
-    return this.property.getPrice() * this.surfaceYield
+    return this.property.getPrice() * this.surfaceYield;
   }
 
   /**
    * 指定年度の想定家賃収入を計算します。
-   * 
+   *
    * @param year - 計算対象の年度（1年目から）
    * @returns {number} その年度の想定家賃収入
    */
   public calculatePotentialAnnualRent(year: number): number {
     if (year <= 0) return 0;
     // (1 + 増減率) の (経過年数)乗 を初期家賃に乗算 (テストケースの期待値に合わせるため year とする)
-    return Math.round(this.calculateInitialAnnualRent() * Math.pow((1 + this.rentIncreaseRate), year));
+    return Math.round(
+      this.calculateInitialAnnualRent() * Math.pow(1 + this.rentIncreaseRate, year)
+    );
   }
 
   /**

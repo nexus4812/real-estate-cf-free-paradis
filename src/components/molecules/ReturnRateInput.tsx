@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore';
 
 /**
  * @typedef {Object} ReturnRateInputProps
@@ -43,21 +43,23 @@ export const ReturnRateInput = ({ register, errors }: ReturnRateInputProps) => {
         <input
           id="surfaceYield"
           type="number"
-          {...register("surfaceYield", {
-            required: "表面利回りは必須です",
+          {...register('surfaceYield', {
+            required: '表面利回りは必須です',
             min: {
               value: 0,
-              message: "0以上の値を入力してください",
+              message: '0以上の値を入力してください',
             },
             valueAsNumber: true,
           })}
-          className={`input-field py-2 px-3 text-sm ${errors.surfaceYield ? "border-red-500" : ""}`}
+          className={`input-field py-2 px-3 text-sm ${errors.surfaceYield ? 'border-red-500' : ''}`}
           placeholder="表面利回りを入力"
         />
         <span className="input-addon text-xs">%</span>
       </div>
 
-      {errors.surfaceYield && <p className="text-red-500 text-xs mt-1">{errors.surfaceYield.message}</p>}
+      {errors.surfaceYield && (
+        <p className="text-red-500 text-xs mt-1">{errors.surfaceYield.message}</p>
+      )}
     </div>
   );
 };

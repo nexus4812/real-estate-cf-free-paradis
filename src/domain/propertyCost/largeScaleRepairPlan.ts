@@ -18,8 +18,8 @@ export class LargeScaleRepairPlan {
    * @param repairYear - 大規模修繕をする年度
    */
   constructor(repairCost: number, repairYear: number) {
-    if (repairCost < 0) throw new Error("修繕費用は0以上の値を入力してください。");
-    if (repairYear <= 0) throw new Error("修繕年度は1以上の値を入力してください。");
+    if (repairCost < 0) throw new Error('修繕費用は0以上の値を入力してください。');
+    if (repairYear <= 0) throw new Error('修繕年度は1以上の値を入力してください。');
 
     this.repairCost = repairCost;
     this.repairYear = repairYear;

@@ -28,31 +28,31 @@ export abstract class BuildingStructure {
     return Math.max(0, remainingLife);
   }
 
-    /**
-     * 減価償却の対象年数を計算します。
-     * 建物構造の法定耐用年数と経過年数に基づき、
-     * ・法定耐用年数を超えていない場合は「法定耐用年数 - 経過年数」
-     * ・超過している場合は「法定耐用年数 × 20%（ただし最低2年）」
-     * を減価償却年数として返します。
-     *
-     * @param {number} elapsedYear 建築からの経過年数
-     * @returns {number} 減価償却に使う耐用年数
-     */
-    public calculateYearsToDepreciation(elapsedYear: number): number {
-        const lawYears = this.getDepreciationYears(); // 法定耐用年数
-        const remainingYears = Math.floor(lawYears - elapsedYear);
+  /**
+   * 減価償却の対象年数を計算します。
+   * 建物構造の法定耐用年数と経過年数に基づき、
+   * ・法定耐用年数を超えていない場合は「法定耐用年数 - 経過年数」
+   * ・超過している場合は「法定耐用年数 × 20%（ただし最低2年）」
+   * を減価償却年数として返します。
+   *
+   * @param {number} elapsedYear 建築からの経過年数
+   * @returns {number} 減価償却に使う耐用年数
+   */
+  public calculateYearsToDepreciation(elapsedYear: number): number {
+    const lawYears = this.getDepreciationYears(); // 法定耐用年数
+    const remainingYears = Math.floor(lawYears - elapsedYear);
 
-        if (remainingYears > 2) {
-            return remainingYears;
-        }
-
-        if (remainingYears >= 0) {
-            return 2;
-        }
-
-        const simpleYears = Math.floor(lawYears * 0.2);
-        return Math.max(simpleYears, 2); // 最低2年
+    if (remainingYears > 2) {
+      return remainingYears;
     }
+
+    if (remainingYears >= 0) {
+      return 2;
+    }
+
+    const simpleYears = Math.floor(lawYears * 0.2);
+    return Math.max(simpleYears, 2); // 最低2年
+  }
 }
 
 /**
@@ -72,7 +72,7 @@ export class RC extends BuildingStructure {
    * @returns {string} "鉄筋コンクリート造"
    */
   label(): string {
-    return "鉄筋コンクリート造";
+    return '鉄筋コンクリート造';
   }
 }
 
@@ -93,7 +93,7 @@ export class SRC extends BuildingStructure {
    * @returns {string} "鉄骨鉄筋コンクリート造"
    */
   label(): string {
-    return "鉄骨鉄筋コンクリート造";
+    return '鉄骨鉄筋コンクリート造';
   }
 }
 
@@ -102,7 +102,6 @@ export class SRC extends BuildingStructure {
  * 骨格材の厚みによって耐用年数が変わるため、コンストラクタで指定します。
  */
 export class Steel extends BuildingStructure {
-
   /**
    * 鉄骨造の法定耐用年数を取得します。
    * @returns {number} 骨格材の厚みに応じた耐用年数
@@ -116,7 +115,7 @@ export class Steel extends BuildingStructure {
    * @returns {string} "鉄骨造"
    */
   label(): string {
-    return "鉄骨造";
+    return '鉄骨造';
   }
 }
 
@@ -137,13 +136,13 @@ export class Wood extends BuildingStructure {
    * @returns {string} "木造"
    */
   label(): string {
-    return "木造";
+    return '木造';
   }
 }
 
 export const allBuildingStructures: BuildingStructure[] = [
-    new SRC(),
-    new RC(),
-    new Steel(),
-    new Wood(),
-]
+  new SRC(),
+  new RC(),
+  new Steel(),
+  new Wood(),
+];

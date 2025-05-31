@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
@@ -27,17 +27,15 @@ export const LandPriceInput = ({ register, errors }: LandPriceInputProps) => {
       <input
         type="number"
         id="landPrice"
-        {...register("landPrice", {
+        {...register('landPrice', {
           valueAsNumber: true,
-          required: "土地価格は必須です",
-          min: { value: 0, message: "0以上の値を入力してください" },
+          required: '土地価格は必須です',
+          min: { value: 0, message: '0以上の値を入力してください' },
         })}
         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         placeholder="例: 10000000"
       />
-      {errors.landPrice && (
-        <p className="mt-2 text-sm text-red-600">{errors.landPrice.message}</p>
-      )}
+      {errors.landPrice && <p className="mt-2 text-sm text-red-600">{errors.landPrice.message}</p>}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import { SimulationInput } from '@/store/usePropertyStore';

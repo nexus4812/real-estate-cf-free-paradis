@@ -16,23 +16,23 @@ describe('PropertyCost', () => {
     2500000,
     new RC(),
     10,
-    200,
+    200
   );
 
   const propertyIncome = new PropertyIncome(
     property,
     0.035, // 利回り3.5% 家賃下落率1% 空室率10%
     -0.01,
-    0.10
-  )
+    0.1
+  );
 
   const propertyCost = new PropertyCost(
     propertyIncome,
     0.05, // 管理費5%
-    0.02, // 
-    largeScaleRepairPlans, 
+    0.02, //
+    largeScaleRepairPlans,
     loan
-);
+  );
 
   test('固定資産税の計算', () => {
     const tax = propertyCost.calculatePropertyTax(0); // year 0 は property.ts で year 1 として扱われる

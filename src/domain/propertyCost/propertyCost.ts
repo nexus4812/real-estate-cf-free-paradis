@@ -1,8 +1,8 @@
 // src/domain/financial_plan/propertyCost.ts
-import { Property } from "../property/property";
-import { Loan } from "./loan";
-import { LargeScaleRepairPlan } from "./largeScaleRepairPlan";
-import { PropertyIncome } from "../propertyIncome/propertyIncome";
+import { Property } from '../property/property';
+import { Loan } from './loan';
+import { LargeScaleRepairPlan } from './largeScaleRepairPlan';
+import { PropertyIncome } from '../propertyIncome/propertyIncome';
 
 /**
  * 物件の年度ごとの支出を計算するクラス。
@@ -52,12 +52,14 @@ export class PropertyCost {
     managementFeeRatio: number,
     repairCostRatio: number,
     largeScaleRepairPlans: LargeScaleRepairPlan[] = [],
-    loan?: Loan,
+    loan?: Loan
   ) {
-    if (managementFeeRatio < 0 || managementFeeRatio > 1) throw new Error("管理費率は0から1の間の値を入力してください。");
-    if (repairCostRatio < 0 || repairCostRatio > 1) throw new Error("修繕費率は0から1の間の値を入力してください。");
+    if (managementFeeRatio < 0 || managementFeeRatio > 1)
+      throw new Error('管理費率は0から1の間の値を入力してください。');
+    if (repairCostRatio < 0 || repairCostRatio > 1)
+      throw new Error('修繕費率は0から1の間の値を入力してください。');
 
-    this.propertyIncome = propertyIncome
+    this.propertyIncome = propertyIncome;
     this.managementFeeRatio = managementFeeRatio;
     this.repairCostRatio = repairCostRatio;
     this.loan = loan;
@@ -66,7 +68,7 @@ export class PropertyCost {
 
   /**
    * 固定資産税を概算で計算します。
-   * 
+   *
    * @param year - 計算対象の年度
    * @returns {number} 概算の年間固定資産税額
    */
@@ -94,27 +96,24 @@ export class PropertyCost {
    * 対象年度の対規模修繕にかかる費用を取得します
    */
   public getLargeScaleRepairCostForYear(year: number): number {
-    return this.largeScaleRepairPlans
-      .find(plan => plan.repairYear === year)?.repairCost ?? 0
+    return this.largeScaleRepairPlans.find((plan) => plan.repairYear === year)?.repairCost ?? 0;
   }
 
   /**
    * 管理費や修繕費など、年間の運営コストを計算します。
    * ローン返済、大規模修繕費、固定資産税、減価償却費を含みます。
-   * 
+   *
    * @param annualIncome - その年度の年間実質収入（管理費などの計算基準）
    * @param year - 計算対象の年度（1年目から）
    * @returns {number} その年度の総支出額
    */
-  public calculateAnnualCosts(
-    year: number,
-  ): number {
+  public calculateAnnualCosts(year: number): number {
     if (year <= 0) return 0;
 
     const managementFee = this.calculateRealAnnualManagementFee();
     const regularRepairCost = this.calculateRealRepairCost();
     const propertyTax = this.calculatePropertyTax(year);
-    const largeScaleRepairCost = this.getLargeScaleRepairCostForYear(year)
+    const largeScaleRepairCost = this.getLargeScaleRepairCostForYear(year);
 
     let loanPayment = 0;
     if (this.loan) {
@@ -125,18 +124,14 @@ export class PropertyCost {
     // ここでの「支出」には含めないのが一般的。別途税金計算などで考慮する。
 
     const totalCosts =
-      managementFee +
-      regularRepairCost +
-      propertyTax +
-      loanPayment +
-      largeScaleRepairCost;
+      managementFee + regularRepairCost + propertyTax + loanPayment + largeScaleRepairCost;
 
     return Math.round(totalCosts);
   }
 
   /**
    * 対象年度の減価償却費を計算します。
-   * 
+   *
    * @param year - 計算対象の年度（1年目から）
    * @returns {number} その年度の減価償却費
    */

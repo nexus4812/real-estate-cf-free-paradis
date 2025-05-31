@@ -101,7 +101,7 @@ describe('useSimulationStore', () => {
     expect(results.totalPaymentAmount).toBeGreaterThan(0);
 
     // 例: 初年度の年間収支が計算されていることを確認
-    const firstYearBalance = results.annualBalances.find(b => b.year === 1)?.value;
+    const firstYearBalance = results.annualBalances.find((b) => b.year === 1)?.value;
     expect(firstYearBalance).toBeDefined();
     // ここに具体的な期待値を記述することも可能だが、ドメインモデルのテストでカバーされるべき
   });

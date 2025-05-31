@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { useSimulationStore } from '@/store/usePropertyStore';
+import { ChangeEvent } from 'react';
 
 /**
  * 年間経費の入力コンポーネント
@@ -21,7 +21,6 @@ export const AnnualCostInput = () => {
       <label htmlFor="annualCost">年間経費 (万円):</label>
       <input
         id="annualCost"
-        
         name="annualCost"
         value={input.propertyPrice} // annualCost は SimulationInput に存在しないため、一時的に propertyPrice に置き換え
         onChange={handleChange}

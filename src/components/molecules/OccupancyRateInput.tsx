@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import { SimulationInput } from '@/store/usePropertyStore';
@@ -22,13 +22,13 @@ export const OccupancyRateInput = ({ register, errors }: OccupancyRateInputProps
   const options = [
     { value: 0, label: '100%' }, // 空室率0% = 入居率100%
     { value: 0.05, label: '95%' },
-    { value: 0.10, label: '90%' },
+    { value: 0.1, label: '90%' },
     { value: 0.15, label: '85%' },
-    { value: 0.20, label: '80%' },
+    { value: 0.2, label: '80%' },
     { value: 0.25, label: '75%' },
-    { value: 0.30, label: '70%' },
+    { value: 0.3, label: '70%' },
     { value: 0.35, label: '65%' },
-    { value: 0.40, label: '60%' },
+    { value: 0.4, label: '60%' },
   ];
 
   return (

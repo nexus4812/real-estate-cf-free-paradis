@@ -1,6 +1,6 @@
 import { PropertyBalanceSheet } from './propertyBalanceSheet';
 import { Property } from '../property/property';
-import { PropertyIncome } from '../propertyIncome/propertyIncome'; 
+import { PropertyIncome } from '../propertyIncome/propertyIncome';
 import { PropertyCost } from '../propertyCost/propertyCost';
 import { Wood } from '../property/buildingStructure';
 
@@ -18,13 +18,7 @@ describe('PropertyBalanceSheet', () => {
     price = landPrice + buildingPrice;
 
     // Property クラスのインスタンスを作成
-    property = new Property(
-      1000000,
-      2000000,
-      new Wood(),
-      35,
-      160
-    );
+    property = new Property(1000000, 2000000, new Wood(), 35, 160);
 
     // PropertyIncome クラスのインスタンスを作成
     income = new PropertyIncome(property, 0.05, 0.02, 0.1); // 例として引数を指定
@@ -50,7 +44,8 @@ describe('PropertyBalanceSheet', () => {
   });
 
   test('1年目の実質利回りを正しく計算する', () => {
-    const expectedRealYield = (annualBalance / (property.getPrice() + property.estimateInitialCosts()));
+    const expectedRealYield =
+      annualBalance / (property.getPrice() + property.estimateInitialCosts());
     const realYield = balanceSheet.calculateRealYieldForYear(1);
     expect(realYield).toBe(expectedRealYield);
   });
@@ -101,7 +96,8 @@ describe('PropertyBalanceSheet', () => {
   test('2年目の実質利回りを正しく計算する', () => {
     // 2年目の年間収支を計算
     const currentAnnualBalance = balanceSheet.calculateAnnualBalanceForYear(2);
-    const expectedRealYield = (currentAnnualBalance / (property.getPrice() + property.estimateInitialCosts()));
+    const expectedRealYield =
+      currentAnnualBalance / (property.getPrice() + property.estimateInitialCosts());
     const realYield = balanceSheet.calculateRealYieldForYear(2);
     expect(realYield).toBe(expectedRealYield);
   });
