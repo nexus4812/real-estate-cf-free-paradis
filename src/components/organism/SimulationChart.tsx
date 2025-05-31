@@ -20,38 +20,38 @@ import { useSimulationStore } from '@/store/usePropertyStore';
  * シミュレーションのグラフを表示するコンポーネント
  */
 export const SimulationChart = () => {
-  const { simulation } = useSimulationStore();
+  const { input, results } = useSimulationStore();
 
   // シミュレーション期間（年数）
-  const SIMULATION_YEARS = 35;
+  const SIMULATION_YEARS = 35; // この値はどこかで定義されるべきだが、ここでは固定値とする
 
   // 減価償却年数を取得
   const depreciationYears = useMemo(() => {
-    return simulation.props.structure.getDepreciationYears();
-  }, [simulation.props.structure]);
+    return input.structure.getDepreciationYears();
+  }, [input.structure]);
 
   // 減価償却終了年（築年数 + 減価償却年数）
   const depreciationEndYear = useMemo(() => {
-    return Math.min(simulation.props.age + depreciationYears, SIMULATION_YEARS);
-  }, [simulation.props.age, depreciationYears]);
+    return Math.min(input.constructionYear + depreciationYears, SIMULATION_YEARS);
+  }, [input.constructionYear, depreciationYears]);
 
   // グラフデータの生成
   const chartData = useMemo(() => {
+    if (!results.annualBalances) {
+      return [];
+    }
+
     let cumulativeCF = 0;
-    
-    return Array.from({ length: SIMULATION_YEARS }, (_, i) => {
-      const year = i + 1;
-      const annualBalance = simulation.calculateAnnualBalance(year);
-      cumulativeCF += annualBalance;
-      
+    return results.annualBalances.map((dataPoint) => {
+      cumulativeCF += dataPoint.value;
       return {
-        year: `${year}年目`,
-        annualBalance: annualBalance,
+        year: `${dataPoint.year}年目`,
+        annualBalance: dataPoint.value,
         cumulativeCF: cumulativeCF,
-        isDepreciationEnd: year === depreciationEndYear
+        isDepreciationEnd: dataPoint.year === depreciationEndYear
       };
     });
-  }, [simulation, depreciationEndYear]);
+  }, [results.annualBalances, depreciationEndYear]);
 
   // 表示用にフォーマットする関数
   const formatCurrency = (amount: number) => {
