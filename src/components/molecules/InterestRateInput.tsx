@@ -1,45 +1,45 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore'; // useSimulationStore をインポート
 
 /**
- * 金利の入力コンポーネント
+ * @typedef {Object} InterestRateInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const InterestRateInput = () => {
-  const { simulation, setData } = useSimulationStore();
+interface InterestRateInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value);
-    if (!isNaN(value)) {
-      setData({ interestRate: value });
-    }
-  };
+/**
+ * 金利の入力コンポーネントです。
+ * @param {InterestRateInputProps} props - コンポーネントのプロパティ
+ */
+export const InterestRateInput = ({ register, errors }: InterestRateInputProps) => {
+  const { setInput } = useSimulationStore(); // setInput を取得
 
   return (
-    <div className="mb-4">
-      <label
-        htmlFor="interestRate"
-        className="input-label flex items-center"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-        </svg>
-        金利 (%):
+    <div className="form-control w-full max-w-xs">
+      <label htmlFor="interestRate" className="label">
+        <span className="label-text">金利 (%)</span>
       </label>
-      <div className="relative">
-        <input
-          id="interestRate"
-          
-          name="interestRate"
-          value={simulation.props.interestRate}
-          onChange={handleChange}
-          className="input-field"
-          min="0"
-          step="0.01"
-          placeholder="金利を入力"
-        />
-      </div>
+      <input
+        id="interestRate"
+        type="number"
+        step="0.01"
+        {...register('interestRate', {
+          required: '金利は必須です',
+          min: { value: 0, message: '0以上の値を入力してください' },
+          valueAsNumber: true,
+          onChange: (e) => setInput({ interestRate: Number(e.target.value) })
+        })}
+        className={`input input-bordered w-full max-w-xs ${errors.interestRate ? 'input-error' : ''}`}
+      />
+      {errors.interestRate && (
+        <p className="text-error text-xs mt-1">{errors.interestRate.message}</p>
+      )}
     </div>
   );
 };

@@ -1,45 +1,63 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { SimulationInput } from '@/store/usePropertyStore';
 
 /**
- * 家賃増減率の選択コンポーネント
+ * @typedef {Object} RentIncreaseRateInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const RentIncreaseRateInput = () => {
-  const { simulation, setData } = useSimulationStore();
+interface RentIncreaseRateInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    // 文字列から%を除去し、数値に変換
-    const value = parseFloat(e.target.value.replace('%', '')) / 100;
-    setData({ rentIncreaseRate: value });
-  };
+/**
+ * 家賃増減率の入力コンポーネントです。
+ * @param {RentIncreaseRateInputProps} props - コンポーネントのプロパティ
+ */
+export const RentIncreaseRateInput = ({ register, errors }: RentIncreaseRateInputProps) => {
+  const options = [
+    { value: -0.05, label: '-5%' },
+    { value: -0.045, label: '-4.5%' },
+    { value: -0.04, label: '-4%' },
+    { value: -0.035, label: '-3.5%' },
+    { value: -0.03, label: '-3%' },
+    { value: -0.025, label: '-2.5%' },
+    { value: -0.02, label: '-2%' },
+    { value: -0.015, label: '-1.5%' },
+    { value: -0.01, label: '-1%' },
+    { value: -0.005, label: '-0.5%' },
+    { value: 0, label: '0%' },
+    { value: 0.005, label: '0.5%' },
+    { value: 0.01, label: '1%' },
+    { value: 0.015, label: '1.5%' },
+    { value: 0.02, label: '2%' },
+  ];
 
   return (
-    <div>
-      <label htmlFor="rentIncreaseRate">家賃増減率 (%/年):</label>
+    <div className="form-control w-full max-w-xs">
+      <label htmlFor="rentIncreaseRate" className="label">
+        <span className="label-text">家賃増減率 (%/年)</span>
+      </label>
       <select
         id="rentIncreaseRate"
-        name="rentIncreaseRate"
-        value={`${(simulation.props.rentIncreaseRate * 100).toFixed(1)}%`}
-        onChange={handleChange}
+        {...register('rentIncreaseRate', {
+          required: '家賃増減率は必須です',
+          valueAsNumber: true,
+        })}
+        className={`select select-bordered w-full max-w-xs ${errors.rentIncreaseRate ? 'select-error' : ''}`}
       >
-        <option value="-5%">-5%</option>
-        <option value="-4.5%">-4.5%</option>
-        <option value="-4%">-4%</option>
-        <option value="-3.5%">-3.5%</option>
-        <option value="-3%">-3%</option>
-        <option value="-2.5%">-2.5%</option>
-        <option value="-2%">-2%</option>
-        <option value="-1.5%">-1.5%</option>
-        <option value="-1%">-1%</option>
-        <option value="-0.5%">-0.5%</option>
-        <option value="0%">0%</option>
-        <option value="0.5%">0.5%</option>
-        <option value="1%">1%</option>
-        <option value="1.5%">1.5%</option>
-        <option value="2%">2%</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
+      {errors.rentIncreaseRate && (
+        <p className="text-error text-xs mt-1">{errors.rentIncreaseRate.message}</p>
+      )}
     </div>
   );
 };

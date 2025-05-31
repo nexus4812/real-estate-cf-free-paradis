@@ -9,7 +9,8 @@ import { LoanTermInput } from "@/components/molecules/LoanTermInput";
 import { AnnualIncomeInput } from "@/components/molecules/AnnualIncomeInput";
 import { RentIncreaseRateInput } from "@/components/molecules/RentIncreaseRateInput";
 import { OccupancyRateInput } from "@/components/molecules/OccupancyRateInput";
-import { AnnualCostInput } from "@/components/molecules/AnnualCostInput";
+import { ManagementFeeRatioInput } from "@/components/molecules/ManagementFeeRatioInput";
+import { RepairCostRatioInput } from "@/components/molecules/RepairCostRatioInput";
 import { SimulationResult } from "@/components/organism/SimulationResult";
 import { SimulationChart } from "@/components/organism/SimulationChart";
 import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
@@ -93,7 +94,8 @@ const PropertySimulation = () => {
             支出条件
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnnualCostInput register={register} errors={errors} />
+            <ManagementFeeRatioInput register={register} errors={errors} />
+            <RepairCostRatioInput register={register} errors={errors} />
           </div>
         </div>
 

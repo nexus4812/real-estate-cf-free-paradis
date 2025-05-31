@@ -1,45 +1,45 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore'; // useSimulationStore をインポート
 
 /**
- * ローン期間の入力コンポーネント
+ * @typedef {Object} LoanTermInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const LoanTermInput = () => {
-  const { simulation, setData } = useSimulationStore();
+interface LoanTermInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value);
-    if (!isNaN(value)) {
-      setData({ loanTerm: value });
-    }
-  };
+/**
+ * ローン期間の入力コンポーネントです。
+ * @param {LoanTermInputProps} props - コンポーネントのプロパティ
+ */
+export const LoanTermInput = ({ register, errors }: LoanTermInputProps) => {
+  const { setInput } = useSimulationStore(); // setInput を取得
 
   return (
-    <div className="mb-4">
-      <label
-        htmlFor="loanTerm"
-        className="input-label flex items-center"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-        </svg>
-        ローン期間 (年):
+    <div className="form-control w-full max-w-xs">
+      <label htmlFor="loanTerm" className="label">
+        <span className="label-text">ローン期間 (年)</span>
       </label>
-      <div className="relative">
-        <input
-          id="loanTerm"
-          
-          name="loanTerm"
-          value={simulation.props.loanTerm}
-          onChange={handleChange}
-          className="input-field"
-          min="1"
-          max="50"
-          placeholder="ローン期間を入力"
-        />
-      </div>
+      <input
+        id="loanTerm"
+        type="number"
+        {...register('loanTerm', {
+          required: 'ローン期間は必須です',
+          min: { value: 1, message: '1年以上の値を入力してください' },
+          max: { value: 50, message: '50年以下の値を入力してください' },
+          valueAsNumber: true,
+          onChange: (e) => setInput({ loanTerm: Number(e.target.value) })
+        })}
+        className={`input input-bordered w-full max-w-xs ${errors.loanTerm ? 'input-error' : ''}`}
+      />
+      {errors.loanTerm && (
+        <p className="text-error text-xs mt-1">{errors.loanTerm.message}</p>
+      )}
     </div>
   );
 };
