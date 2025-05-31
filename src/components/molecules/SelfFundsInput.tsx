@@ -42,7 +42,6 @@ export const SelfFundsInput = ({ register, errors }: SelfFundsInputProps) => {
             required: "自己資金は必須です",
             min: { value: 0, message: "0以上の値を入力してください" },
             valueAsNumber: true,
-            onChange: (e) => setInput({ selfFunds: Number(e.target.value) })
           })}
           className={`input-field ${errors.selfFunds ? "border-red-500" : ""}`}
           placeholder="自己資金を入力"

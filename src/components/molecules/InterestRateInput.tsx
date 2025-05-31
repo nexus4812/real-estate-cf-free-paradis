@@ -33,7 +33,6 @@ export const InterestRateInput = ({ register, errors }: InterestRateInputProps) 
           required: '金利は必須です',
           min: { value: 0, message: '0以上の値を入力してください' },
           valueAsNumber: true,
-          onChange: (e) => setInput({ interestRate: Number(e.target.value) })
         })}
         className={`input input-bordered w-full max-w-xs ${errors.interestRate ? 'input-error' : ''}`}
       />

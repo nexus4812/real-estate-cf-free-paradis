@@ -37,21 +37,23 @@ export const SimulationChart = () => {
 
   // グラフデータの生成
   const chartData = useMemo(() => {
-    if (!results.annualBalances) {
+    if (!results.annualBalances || !results.grossYields || !results.realYields) {
       return [];
     }
 
     let cumulativeCF = 0;
-    return results.annualBalances.map((dataPoint) => {
+    return results.annualBalances.map((dataPoint, index) => {
       cumulativeCF += dataPoint.value;
       return {
         year: `${dataPoint.year}年目`,
         annualBalance: dataPoint.value,
         cumulativeCF: cumulativeCF,
+        grossYield: results.grossYields[index]?.value,
+        realYield: results.realYields[index]?.value,
         isDepreciationEnd: dataPoint.year === depreciationEndYear
       };
     });
-  }, [results.annualBalances, depreciationEndYear]);
+  }, [results.annualBalances, results.grossYields, results.realYields, depreciationEndYear]);
 
   // 表示用にフォーマットする関数
   const formatCurrency = (amount: number) => {
@@ -64,12 +66,24 @@ export const SimulationChart = () => {
       return (
         <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
           <p className="font-semibold">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <p key={`item-${index}`} style={{ color: entry.color }}>
-              {entry.name === 'annualBalance' ? '年間収支: ' : '累積CF: '}
-              {formatCurrency(entry.value)} 円
-            </p>
-          ))}
+          {payload.map((entry: any, index: number) => {
+            let labelText = '';
+            if (entry.name === 'annualBalance') {
+              labelText = '年間収支: ';
+            } else if (entry.name === 'cumulativeCF') {
+              labelText = '累積CF: ';
+            } else if (entry.name === 'grossYield') {
+              labelText = '表面利回り: ';
+            } else if (entry.name === 'realYield') {
+              labelText = '実質利回り: ';
+            }
+            return (
+              <p key={`item-${index}`} style={{ color: entry.color }}>
+                {labelText}
+                {entry.name === 'grossYield' || entry.name === 'realYield' ? `${(entry.value * 100).toFixed(2)}%` : `${formatCurrency(entry.value)} 円`}
+              </p>
+            );
+          })}
         </div>
       );
     }
@@ -126,6 +140,22 @@ export const SimulationChart = () => {
                 stroke="#82ca9d" 
                 strokeWidth={2}
               />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="grossYield"
+                name="表面利回り"
+                stroke="#ffc658"
+                strokeWidth={2}
+              />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="realYield"
+                name="実質利回り"
+                stroke="#ff7300"
+                strokeWidth={2}
+              />
               {/* 減価償却終了年のリファレンスライン */}
               <ReferenceLine
                 x={`${depreciationEndYear}年目`}
@@ -154,6 +184,12 @@ export const SimulationChart = () => {
           </li>
           <li className="mb-1">
             <span className="font-medium text-green-600">折れ線グラフ（累積CF）</span>：年間収支の累積額を表示
+          </li>
+          <li className="mb-1">
+            <span className="font-medium text-yellow-600">折れ線グラフ（表面利回り）</span>：各年の表面利回りを表示
+          </li>
+          <li className="mb-1">
+            <span className="font-medium text-orange-600">折れ線グラフ（実質利回り）</span>：各年の実質利回りを表示
           </li>
           <li className="mb-1">
             <span className="font-medium text-red-600">赤い点線</span>：減価償却終了年（{depreciationEndYear}年目）

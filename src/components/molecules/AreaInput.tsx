@@ -41,7 +41,6 @@ export const AreaInput = ({ register, errors }: AreaInputProps) => {
             required: "建物面積は必須です",
             min: { value: 0, message: "0以上の値を入力してください" },
             valueAsNumber: true,
-            onChange: (e) => setInput({ buildingArea: Number(e.target.value) })
           })}
           className={`input-field py-2 px-3 text-sm ${errors.buildingArea ? "border-red-500" : ""}`}
           placeholder="建物面積を入力"

@@ -41,7 +41,6 @@ export default function PropertyPriceInput({ register, errors }: PropertyPriceIn
                         required: "物件価格は必須です", 
                         min: { value: 0, message: "0以上の値を入力してください" },
                         valueAsNumber: true,
-                        onChange: (e) => setInput({ propertyPrice: Number(e.target.value) })
                     })}
                     className="input-field py-2 px-3 text-sm"
                     placeholder="物件価格を入力"

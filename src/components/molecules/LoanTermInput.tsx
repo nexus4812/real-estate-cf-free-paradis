@@ -33,7 +33,6 @@ export const LoanTermInput = ({ register, errors }: LoanTermInputProps) => {
           min: { value: 1, message: '1年以上の値を入力してください' },
           max: { value: 50, message: '50年以下の値を入力してください' },
           valueAsNumber: true,
-          onChange: (e) => setInput({ loanTerm: Number(e.target.value) })
         })}
         className={`input input-bordered w-full max-w-xs ${errors.loanTerm ? 'input-error' : ''}`}
       />

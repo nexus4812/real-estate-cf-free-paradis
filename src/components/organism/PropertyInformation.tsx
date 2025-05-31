@@ -5,6 +5,15 @@ import { ReturnRateInput } from "@/components/molecules/ReturnRateInput";
 import { StructureInput } from "@/components/molecules/StructureInput";
 import { AgeInput } from "@/components/molecules/AgeInput";
 import { AreaInput } from "@/components/molecules/AreaInput";
+import { SelfFundsInput } from "@/components/molecules/SelfFundsInput";
+import { InterestRateInput } from "@/components/molecules/InterestRateInput";
+import { LoanTermInput } from "@/components/molecules/LoanTermInput";
+import { OccupancyRateInput } from "@/components/molecules/OccupancyRateInput";
+import { RentIncreaseRateInput } from "@/components/molecules/RentIncreaseRateInput";
+import { ManagementFeeRatioInput } from "@/components/molecules/ManagementFeeRatioInput";
+import { RepairCostRatioInput } from "@/components/molecules/RepairCostRatioInput";
+import { LandPriceInput } from "@/components/molecules/LandPriceInput";
+import { BuildingPriceInput } from "@/components/molecules/BuildingPriceInput";
 
 /**
  * @typedef {Object} PropertyInformationProps
@@ -36,6 +45,15 @@ export const PropertyInformation = ({ register, errors }: PropertyInformationPro
         <StructureInput register={register} errors={errors} />
         <AgeInput register={register} errors={errors} />
         <AreaInput register={register} errors={errors} />
+        <SelfFundsInput register={register} errors={errors} />
+        <InterestRateInput register={register} errors={errors} />
+        <LoanTermInput register={register} errors={errors} />
+        <OccupancyRateInput register={register} errors={errors} />
+        <RentIncreaseRateInput register={register} errors={errors} />
+        <ManagementFeeRatioInput register={register} errors={errors} />
+        <RepairCostRatioInput register={register} errors={errors} />
+        <LandPriceInput register={register} errors={errors} />
+        <BuildingPriceInput register={register} errors={errors} />
       </div>
     </div>
   );

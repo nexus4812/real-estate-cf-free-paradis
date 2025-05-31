@@ -41,7 +41,6 @@ export const AgeInput = ({ register, errors }: AgeInputProps) => {
             required: "築年数は必須です",
             min: { value: 0, message: "0以上の値を入力してください" },
             valueAsNumber: true,
-            onChange: (e) => setInput({ constructionYear: Number(e.target.value) })
           })}
           className={`input-field py-2 px-3 text-sm ${errors.constructionYear ? "border-red-500" : ""}`}
           placeholder="築年数を入力"

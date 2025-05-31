@@ -80,7 +80,7 @@ const PropertySimulation = () => {
             収入条件
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnnualIncomeInput register={register} errors={errors} />
+            <AnnualIncomeInput />
             <RentIncreaseRateInput register={register} errors={errors} />
             <OccupancyRateInput register={register} errors={errors} />
           </div>

@@ -50,7 +50,6 @@ export const ReturnRateInput = ({ register, errors }: ReturnRateInputProps) => {
               message: "0以上の値を入力してください",
             },
             valueAsNumber: true,
-            onChange: (e) => setInput({ surfaceYield: Number(e.target.value) })
           })}
           className={`input-field py-2 px-3 text-sm ${errors.surfaceYield ? "border-red-500" : ""}`}
           placeholder="表面利回りを入力"

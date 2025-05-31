@@ -1,7 +1,7 @@
 "use client";
 
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
+import { SimulationInput } from "@/store/usePropertyStore";
 import { BuildingStructure, RC, Steel, Wood } from "@/domain/property/buildingStructure";
 
 /**
@@ -16,31 +16,11 @@ interface StructureInputProps {
 
 /**
  * 物件構造の選択コンポーネントです。
- * React Hook Form の register と errors を props として受け取り、Zustand ストアと連携します。
+ * React Hook Form の register と errors を props として受け取ります。
  * @param {StructureInputProps} props - コンポーネントのプロパティ
  * @returns {JSX.Element}
  */
 export const StructureInput = ({ register, errors }: StructureInputProps) => {
-  const { setInput } = useSimulationStore();
-
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    let structure: BuildingStructure;
-    switch (e.target.value) {
-      case "RC":
-        structure = new RC();
-        break;
-      case "Steel":
-        structure = new Steel();
-        break;
-      case "Wood":
-        structure = new Wood();
-        break;
-      default:
-        structure = new RC(); // デフォルト値
-    }
-    setInput({ structure });
-  };
-
   const structureOptions = [
     { value: "RC", label: "RC造" },
     { value: "Steel", label: "S造" },
@@ -63,7 +43,6 @@ export const StructureInput = ({ register, errors }: StructureInputProps) => {
         id="structure"
         {...register("structure", {
           required: "物件構造は必須です",
-          onChange: handleChange,
         })}
         className={`input-field py-2 px-3 text-sm ${errors.structure ? "border-red-500" : ""}`}
       >
