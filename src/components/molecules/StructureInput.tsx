@@ -2,7 +2,7 @@
 
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
-import { BuildingStructure, RC, Steel, Wood } from "@/domain/property/buildingStructure";
+import { BuildingStructure, RC, SRC, Steel, Wood } from "@/domain/property/buildingStructure";
 
 /**
  * @typedef {Object} StructureInputProps
@@ -23,6 +23,7 @@ interface StructureInputProps {
 export const StructureInput = ({ register, errors }: StructureInputProps) => {
   const structureOptions = [
     { value: "RC", label: "RC造", instance: new RC() },
+    { value: "SRC", label: "SRC造", instance: new SRC() },
     { value: "Steel", label: "S造", instance: new Steel() },
     { value: "Wood", label: "木造", instance: new Wood() },
   ];

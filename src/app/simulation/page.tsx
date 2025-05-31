@@ -49,9 +49,9 @@ const PropertySimulation = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <PropertyInformation register={register} errors={errors} />
 
-        {/* <div className="result-card mb-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <div className="result-card mb-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <SimulationResult />
-        </div> */}
+        </div>
 
         <div className="chart-card mb-8 animate-fade-in" style={{ animationDelay: '0.45s' }}>
           <SimulationChart />

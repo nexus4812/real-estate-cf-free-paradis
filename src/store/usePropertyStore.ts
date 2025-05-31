@@ -36,7 +36,7 @@ export type SimulationResults = {
     preTaxCashFlows: { year: number; value: number }[]; // 税引前キャッシュフロー
     taxableIncomes: { year: number; value: number }[]; // 課税所得
     totalPaymentAmount: number; // ローン総支払額
-    // その他の計算結果も必要に応じて追加
+    initialAnnualIncome: number; // 初年度年間収入
 };
 
 export type SimulationStore = {
@@ -74,6 +74,7 @@ const initialResults: SimulationResults = {
     preTaxCashFlows: [],
     taxableIncomes: [],
     totalPaymentAmount: 0,
+    initialAnnualIncome: 0,
 };
 
 export const useSimulationStore = create<SimulationStore>((set, get) => ({
@@ -97,84 +98,96 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
         })),
 
     runSimulation: () => {
-        const input = get().input;
+        try {
+            const input = get().input;
 
-        // 1. Property インスタンスの作成
-        const property = new Property(
-            input.landPrice,
-            input.buildingPrice,
-            input.structure,
-            input.constructionYear,
-            input.buildingArea
-        );
+            // 1. Property インスタンスの作成
+            const property = new Property(
+                input.landPrice,
+                input.buildingPrice,
+                input.structure,
+                input.constructionYear,
+                input.buildingArea
+            );
 
-        // 2. PropertyIncome インスタンスの作成
-        const propertyIncome = new PropertyIncome(
-            property,
-            input.surfaceYield,
-            input.rentIncreaseRate,
-            input.vacancyRate
-        );
+            // 2. PropertyIncome インスタンスの作成
+            const propertyIncome = new PropertyIncome(
+                property,
+                input.surfaceYield,
+                input.rentIncreaseRate,
+                input.vacancyRate
+            );
 
-        // 3. Loan インスタンスの作成 (自己資金が物件価格未満の場合のみ)
-        let loan: Loan | undefined;
-        const loanAmount = input.propertyPrice - input.selfFunds;
-        if (loanAmount > 0 && input.loanTerm > 0 && input.interestRate > 0) {
-            loan = new Loan(loanAmount, input.interestRate, input.loanTerm);
+            // 初年度年間収入を計算
+            const initialAnnualIncome = propertyIncome.calculateAnnualIncome(1);
+
+            // 3. Loan インスタンスの作成 (自己資金が物件価格未満の場合のみ)
+            let loan: Loan | undefined;
+            const loanAmount = input.propertyPrice - input.selfFunds;
+            if (loanAmount > 0 && input.loanTerm > 0 && input.interestRate > 0) {
+                loan = new Loan(loanAmount, input.interestRate, input.loanTerm);
+            }
+
+            // 4. LargeScaleRepairPlan インスタンスの配列作成
+            const largeScaleRepairPlans = input.largeScaleRepairPlans.map(
+                (plan) => new LargeScaleRepairPlan(plan.repairYear, plan.repairCost)
+            );
+
+            // 5. PropertyCost インスタンスの作成
+            const propertyCost = new PropertyCost(
+                propertyIncome,
+                input.managementFeeRatio,
+                input.repairCostRatio,
+                largeScaleRepairPlans,
+                loan
+            );
+
+            // 6. PropertyBalanceSheet インスタンスの作成
+            const balanceSheet = new PropertyBalanceSheet(
+                property,
+                propertyIncome,
+                propertyCost
+            );
+
+            // 7. シミュレーション期間の定義 (例: 35年間、またはローン期間の最大値)
+            const simulationYears = Math.max(input.loanTerm, 35); // 最低35年、またはローン期間
+
+            const annualBalances: { year: number; value: number }[] = [];
+            const grossYields: { year: number; value: number }[] = [];
+            const realYields: { year: number; value: number }[] = [];
+            const preTaxCashFlows: { year: number; value: number }[] = [];
+            const taxableIncomes: { year: number; value: number }[] = [];
+
+
+            for (let year = 1; year <= simulationYears; year++) {
+                annualBalances.push({ year, value: balanceSheet.calculateAnnualBalanceForYear(year) });
+                grossYields.push({ year, value: balanceSheet.calculateGrossYieldForYear(year) });
+                realYields.push({ year, value: balanceSheet.calculateRealYieldForYear(year) });
+                preTaxCashFlows.push({ year, value: balanceSheet.calculatePreTaxCashFlowForYear(year) });
+                taxableIncomes.push({ year, value: balanceSheet.calculateTaxableIncomeForYear(year) });
+            }
+
+            // 8. 計算結果をストアに保存
+            set((state) => ({
+                results: {
+                    ...state.results,
+                    annualBalances,
+                    grossYields,
+                    realYields,
+                    preTaxCashFlows,
+                    taxableIncomes,
+                    totalPaymentAmount: loan ? loan.calculateTotalPaymentAmount() : 0,
+                    initialAnnualIncome: initialAnnualIncome, // 初年度年間収入を追加
+                },
+            }));
+
+            console.log("Simulation completed.");
+        } catch (error) {
+            console.error("Simulation failed:", error);
+            set((state) => ({
+                results: initialResults, // 結果を初期状態に戻す
+            }));
         }
-
-        // 4. LargeScaleRepairPlan インスタンスの配列作成
-        const largeScaleRepairPlans = input.largeScaleRepairPlans.map(
-            (plan) => new LargeScaleRepairPlan(plan.repairYear, plan.repairCost)
-        );
-
-        // 5. PropertyCost インスタンスの作成
-        const propertyCost = new PropertyCost(
-            propertyIncome,
-            input.managementFeeRatio,
-            input.repairCostRatio,
-            largeScaleRepairPlans,
-            loan
-        );
-
-        // 6. PropertyBalanceSheet インスタンスの作成
-        const balanceSheet = new PropertyBalanceSheet(
-            property,
-            propertyIncome,
-            propertyCost
-        );
-
-        // 7. シミュレーション期間の定義 (例: 35年間、またはローン期間の最大値)
-        const simulationYears = Math.max(input.loanTerm, 35); // 最低35年、またはローン期間
-
-        const annualBalances: { year: number; value: number }[] = [];
-        const grossYields: { year: number; value: number }[] = [];
-        const realYields: { year: number; value: number }[] = [];
-        const preTaxCashFlows: { year: number; value: number }[] = [];
-        const taxableIncomes: { year: number; value: number }[] = [];
-
-        for (let year = 1; year <= simulationYears; year++) {
-            annualBalances.push({ year, value: balanceSheet.calculateAnnualBalanceForYear(year) });
-            grossYields.push({ year, value: balanceSheet.calculateGrossYieldForYear(year) });
-            realYields.push({ year, value: balanceSheet.calculateRealYieldForYear(year) });
-            preTaxCashFlows.push({ year, value: balanceSheet.calculatePreTaxCashFlowForYear(year) });
-            taxableIncomes.push({ year, value: balanceSheet.calculateTaxableIncomeForYear(year) });
-        }
-
-        // 8. 計算結果をストアに保存
-        set((state) => ({
-            results: {
-                ...state.results,
-                annualBalances,
-                grossYields,
-                realYields,
-                preTaxCashFlows,
-                taxableIncomes,
-                totalPaymentAmount: loan ? loan.calculateTotalPaymentAmount() : 0,
-            },
-        }));
-
-        console.log("Simulation completed.");
     },
 
     reset: () => ({

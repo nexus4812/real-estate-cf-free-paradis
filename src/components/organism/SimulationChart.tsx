@@ -22,9 +22,6 @@ import { useSimulationStore } from '@/store/usePropertyStore';
 export const SimulationChart = () => {
   const { input, results } = useSimulationStore();
 
-  // シミュレーション期間（年数）
-  const SIMULATION_YEARS = 35; // この値はどこかで定義されるべきだが、ここでは固定値とする
-
   // 減価償却年数を取得
   const depreciationYears = useMemo(() => {
     return input.structure.getDepreciationYears();
@@ -32,8 +29,10 @@ export const SimulationChart = () => {
 
   // 減価償却終了年（築年数 + 減価償却年数）
   const depreciationEndYear = useMemo(() => {
-    return Math.min(input.constructionYear + depreciationYears, SIMULATION_YEARS);
-  }, [input.constructionYear, depreciationYears]);
+    // シミュレーション期間はresults.annualBalancesの長さから取得
+    const actualSimulationYears = results.annualBalances.length > 0 ? results.annualBalances.length : 35; // データがない場合はデフォルト値
+    return Math.min(input.constructionYear + depreciationYears, actualSimulationYears);
+  }, [input.constructionYear, depreciationYears, results.annualBalances.length]);
 
   // グラフデータの生成
   const chartData = useMemo(() => {
@@ -118,10 +117,11 @@ export const SimulationChart = () => {
                 orientation="left"
                 tickFormatter={(value) => `${value / 10000}万`}
               />
-              <YAxis 
-                yAxisId="right"
+              <YAxis
+                yAxisId="yield" // 新しい利回り用Y軸
                 orientation="right"
-                tickFormatter={(value) => `${value / 10000}万`}
+                tickFormatter={(value) => `${(value * 100).toFixed(1)}%`} // %表示
+                domain={[0, 'auto']} // 0%から自動調整
               />
               <Tooltip content={<CustomTooltip />} />
               <Legend />
@@ -133,7 +133,7 @@ export const SimulationChart = () => {
                 barSize={20}
               />
               <Line 
-                yAxisId="right"
+                yAxisId="left" // 累積CFも左Y軸に移動
                 type="monotone" 
                 dataKey="cumulativeCF" 
                 name="累積CF" 
@@ -141,7 +141,7 @@ export const SimulationChart = () => {
                 strokeWidth={2}
               />
               <Line
-                yAxisId="right"
+                yAxisId="yield" // 利回り用Y軸を使用
                 type="monotone"
                 dataKey="grossYield"
                 name="表面利回り"
@@ -149,7 +149,7 @@ export const SimulationChart = () => {
                 strokeWidth={2}
               />
               <Line
-                yAxisId="right"
+                yAxisId="yield" // 利回り用Y軸を使用
                 type="monotone"
                 dataKey="realYield"
                 name="実質利回り"

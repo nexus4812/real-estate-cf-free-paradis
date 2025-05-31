@@ -1,45 +1,13 @@
 "use client";
 
 import { useSimulationStore } from "@/store/usePropertyStore";
-import { PropertyIncome } from "@/domain/propertyIncome/propertyIncome";
-import { Property } from "../../domain/property/property";
-
 
 /**
  * 年間収入の表示コンポーネントです。
- * 物件価格と表面利回りから自動計算された初年度年間収入を表示します。
+ * ストアから取得した初年度年間収入を表示します。
  */
 export const AnnualIncomeInput = () => {
-  const { input } = useSimulationStore();
-  
-  /**
-   * Property と PropertyIncome インスタンスを作成し、年間収入を計算します。
-   * input.structure は BuildingStructure のインスタンスである必要があるため、
-   * input.structure が適切に初期化されていることを前提とします。
-   */
-  /**
-   * Property インスタンスを作成します。
-   * input.structure は BuildingStructure のインスタンスである必要があります。
-   */
-  const property = new Property(
-    input.landPrice,
-    input.buildingPrice,
-    input.structure,
-    input.constructionYear,
-    input.buildingArea
-  );
-
-  /**
-   * PropertyIncome インスタンスを作成し、年間収入を計算します。
-   */
-  const propertyIncome = new PropertyIncome(
-    property,
-    input.surfaceYield,
-    input.rentIncreaseRate,
-    input.vacancyRate
-  );
-
-  const annualIncome = propertyIncome.calculateAnnualIncome(1); // 初年度の年間収入を計算
+  const { results } = useSimulationStore();
   
   /**
    * 数値を通貨形式にフォーマットします。
@@ -49,6 +17,8 @@ export const AnnualIncomeInput = () => {
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('ja-JP').format(amount);
   };
+
+  const annualIncome = results.initialAnnualIncome;
 
   return (
     <div>
