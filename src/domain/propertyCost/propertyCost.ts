@@ -2,19 +2,16 @@
 import { Property } from "../property/property";
 import { Loan } from "./loan";
 import { LargeScaleRepairPlan } from "./largeScaleRepairPlan";
+import { PropertyIncome } from "../propertyIncome/propertyIncome";
 
 /**
  * 物件の年度ごとの支出を計算するクラス。
  */
 export class PropertyCost {
   /**
-   * 物件価格
+   * 物件から発生する収益
    */
-  public readonly propertyPrice: number;
-  /**
-   * 物件から発生する実質的な年収（管理費などの計算用）
-   */
-  public readonly annualIncome: number;
+  public readonly propertyIncome: PropertyIncome;
   /**
    * 管理費率（収入に対する割合、小数表記 例: 5% -> 0.05）。
    */
@@ -44,27 +41,23 @@ export class PropertyCost {
   private readonly propertyTaxRate: number = 0.017; // 1.4% + 0.3%
 
   /**
-   * @param propertyPrice - 物件価格
-   * @param annualIncome - 実質年収（管理費などの計算用）
+   * @param propertyIncome - 実質年収（管理費などの計算用）
    * @param managementFeeRatio - 管理費率
    * @param repairCostRatio - 修繕費率
    * @param largeScaleRepairPlans - 大規模修繕計画のリスト
    * @param loan - 融資情報 (任意)
    */
   constructor(
-    propertyPrice: number,
-    annualIncome: number,
+    propertyIncome: PropertyIncome,
     managementFeeRatio: number,
     repairCostRatio: number,
     largeScaleRepairPlans: LargeScaleRepairPlan[] = [],
     loan?: Loan,
   ) {
-    if (propertyPrice < 1) throw new Error("物件価格は1以上の数字を入力してください");
     if (managementFeeRatio < 0 || managementFeeRatio > 1) throw new Error("管理費率は0から1の間の値を入力してください。");
     if (repairCostRatio < 0 || repairCostRatio > 1) throw new Error("修繕費率は0から1の間の値を入力してください。");
 
-    this.propertyPrice = propertyPrice
-    this.annualIncome = annualIncome
+    this.propertyIncome = propertyIncome
     this.managementFeeRatio = managementFeeRatio;
     this.repairCostRatio = repairCostRatio;
     this.loan = loan;
@@ -73,30 +66,28 @@ export class PropertyCost {
 
   /**
    * 固定資産税を概算で計算します。
-   * 実際の評価額や軽減措置は複雑なため、ここでは簡略化した計算を行います。
-   * @param year - 計算対象の年度（現在は未使用だが、将来的な経年減価補正などを考慮）
+   * 
+   * @param year - 計算対象の年度
    * @returns {number} 概算の年間固定資産税額
    */
   public calculatePropertyTax(year: number): number {
-    // 土地と建物の評価額を分けて計算することもできるが、ここでは物件価格全体に対する割合で簡略化
-    const assessmentValue = this.propertyPrice * this.propertyAssessmentRatio;
-    // TODO: 経年減価補正を考慮する場合は、yearに応じて建物の評価額を減額する
-    // TODO: 新築住宅の軽減措置、小規模住宅用地の特例なども考慮できるとより正確
-    return Math.round(assessmentValue * this.propertyTaxRate); // 1.7%を適用
+    return this.propertyIncome.property.estimateFixedAssetTaxForYear(year);
   }
 
   /**
    * 年間の管理費を計算します
    */
   public calculateRealAnnualManagementFee(): number {
-    return Math.round(this.annualIncome * this.managementFeeRatio)
+    // 管理費は家賃の下落と共に下がるとは考え辛い部分も多いので（共用部分など）、一年目の収入を元に固定値とする
+    return Math.round(this.propertyIncome.calculateAnnualIncome(1) * this.managementFeeRatio)
   }
 
   /**
    * 年間の修繕費を計算します
    */
   public calculateRealRepairCost(): number {
-    return Math.round(this.annualIncome * this.repairCostRatio)
+    // 修繕費は家賃の下落と共に下がるとは考え辛い部分も多いので、一年目の収入を元に固定値とする
+    return Math.round(this.propertyIncome.calculateAnnualIncome(1) * this.repairCostRatio)
   }
 
   /**

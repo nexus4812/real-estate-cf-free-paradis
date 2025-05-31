@@ -84,7 +84,7 @@ export class Property {
   public estimateFixedAssetTaxForYear(year:number = 0): number {
     const totalDurableYears = this.buildingStructure.getDepreciationYears();
     const remainingYears = Math.max(totalDurableYears - this.constructionYear - year, 1);
-    return this.buildingPrice * (remainingYears / totalDurableYears) * fixedAssetRatio;
+    return Number((this.buildingPrice * (remainingYears / totalDurableYears) * fixedAssetRatio).toFixed(2));
   }
 
   /**

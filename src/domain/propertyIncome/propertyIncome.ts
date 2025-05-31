@@ -37,6 +37,7 @@ export class PropertyIncome {
   ) {
     this.property = property;
     if (surfaceYield < 0) throw new Error("初期年間家賃収入は0以上の値を入力してください。"); 
+    if (vacancyRate < 0) throw new Error("空室率は0以上の値を入力してください。"); 
     this.surfaceYield = surfaceYield;
     this.rentIncreaseRate = rentIncreaseRate;
     this.vacancyRate = vacancyRate;

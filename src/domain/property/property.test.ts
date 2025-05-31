@@ -26,23 +26,23 @@ describe('Property', () => {
     const property = new Property(5000000, 10000000, new Wood(), 5, 100);
     const result = property.estimateFixedAssetTaxForYear(0);
 
-    const expected = 10000000 * ((22 - 5) / 22) * 0.014;
-    expect(result).toBeCloseTo(expected, 2);
+    const expected = Number((10000000 * ((22 - 5) / 22) * 0.014).toFixed(2));
+    expect(result).toBe(expected);
   });
 
   test('残耐用年数が1年以下になった場合でも、最低1年分の課税が行われる', () => {
     const property = new Property(5000000, 10000000, new Wood(), 21, 100);
     const result = property.estimateFixedAssetTaxForYear(5); // 築年数21 + 経過年数5 = 26年経過 → 超過
 
-    const expected = 10000000 * (1 / 22) * 0.014;
-    expect(result).toBeCloseTo(expected, 2);
+    const expected = Number((10000000 * (1 / 22) * 0.014).toFixed(2));
+    expect(result).toBe(expected);
   });
 
   test('経過年数がデフォルト（0年）のときでも計算できる', () => {
     const property = new Property(2000000, 8000000, new Wood(), 3, 80);
     const result = property.estimateFixedAssetTaxForYear();
 
-    const expected = 8000000 * ((22 - 3) / 22) * 0.014;
-    expect(result).toBeCloseTo(expected, 2);
+    const expected = Number((8000000 * ((22 - 3) / 22) * 0.014).toFixed(2));
+    expect(result).toBe(expected);
   });
 });
