@@ -102,25 +102,29 @@ export class PropertyBalanceSheet {
    */
   public calculateTaxableIncomeForYear(year: number): number {
     if (year <= 0) return 0;
-    const annualIncome = this.income.calculateAnnualIncome(year);
 
-    // 運営費（ローン金利は含むが、元金返済は含まない）
-    const managementFee = annualIncome * this.cost.managementFeeRatio;
-    const regularRepairCost = annualIncome * this.cost.repairCostRatio;
+    const annualRealIncome = this.income.calculateAnnualIncome(year);
+
+    // 税法上の経費を計算
+    const managementFee = this.cost.calculateRealAnnualManagementFee();
+    const regularRepairCost = this.cost.calculateRealRepairCost();
     const propertyTax = this.cost.calculatePropertyTax(year);
+    const largeScaleRepairCost = this.cost.getLargeScaleRepairCostForYear(year);
+    const depreciation = this.cost.calculateDepreciationForYear(year);
+
     let loanInterestPayment = 0;
     if (this.cost.loan) {
-        loanInterestPayment = this.cost.loan.calculateInterestPaymentForYear(year);
+      loanInterestPayment = this.cost.loan.calculateInterestPaymentForYear(year);
     }
-    let largeScaleRepairCostForYear = 0;
-    this.cost.largeScaleRepairPlans.forEach(plan => {
-      if (plan.repairYear === year) {
-        largeScaleRepairCostForYear += plan.repairCost;
-      }
-    });
 
-    const operatingExpensesForTax = managementFee + regularRepairCost + propertyTax + loanInterestPayment + largeScaleRepairCostForYear;
+    const totalTaxDeductibleExpenses =
+      managementFee +
+      regularRepairCost +
+      propertyTax +
+      largeScaleRepairCost +
+      loanInterestPayment +
+      depreciation;
 
-    return annualIncome - operatingExpensesForTax;
+    return Math.round(annualRealIncome - totalTaxDeductibleExpenses);
   }
 }

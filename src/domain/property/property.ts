@@ -105,4 +105,27 @@ export class Property {
   public calculateYearsToDepreciation(): number {
     return this.buildingStructure.calculateYearsToDepreciation(this.constructionYear)
   }
+
+  /**
+   * 指定された年度の減価償却費を計算します（定額法）。
+   * 
+   * @param year - 購入からの経過年数 (1年目から)
+   * @returns {number} その年度の減価償却費。償却期間外の場合は0。
+   */
+  public calculateDepreciationForYear(year: number): number {
+    if (year <= 0) {
+      return 0;
+    }
+    const yearsToDepreciate = this.calculateYearsToDepreciation();
+    // 経過年数が償却年数を超えていたら減価償却は終了
+    if (year > yearsToDepreciate) {
+      return 0;
+    }
+    // 建物価格を残存耐用年数で割る (定額法)
+    // 残存耐用年数が0以下になることは通常ないが、念のためチェック
+    if (yearsToDepreciate <= 0) {
+        return 0;
+    }
+    return Math.round(this.buildingPrice / yearsToDepreciate);
+  }
 }

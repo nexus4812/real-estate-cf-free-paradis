@@ -133,4 +133,15 @@ export class PropertyCost {
 
     return Math.round(totalCosts);
   }
+
+  /**
+   * 対象年度の減価償却費を計算します。
+   * 
+   * @param year - 計算対象の年度（1年目から）
+   * @returns {number} その年度の減価償却費
+   */
+  public calculateDepreciationForYear(year: number): number {
+    if (year <= 0) return 0;
+    return this.propertyIncome.property.calculateDepreciationForYear(year);
+  }
 }
