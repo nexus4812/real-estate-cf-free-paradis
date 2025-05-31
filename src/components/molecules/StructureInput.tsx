@@ -1,20 +1,51 @@
 "use client";
 
-import { Structure } from "@/domain/values/property/Structure";
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
+import { BuildingStructure, RC, Steel, Wood } from "@/domain/property/buildingStructure";
 
 /**
- * 物件構造の選択コンポーネント
+ * @typedef {Object} StructureInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const StructureInput = () => {
-  const { simulation, update } = useSimulationStore();
+interface StructureInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    update((data) => {
-      data.props.structure = Structure.create(e.target.value)
-    })
+/**
+ * 物件構造の選択コンポーネントです。
+ * React Hook Form の register と errors を props として受け取り、Zustand ストアと連携します。
+ * @param {StructureInputProps} props - コンポーネントのプロパティ
+ * @returns {JSX.Element}
+ */
+export const StructureInput = ({ register, errors }: StructureInputProps) => {
+  const { setInput } = useSimulationStore();
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    let structure: BuildingStructure;
+    switch (e.target.value) {
+      case "RC":
+        structure = new RC();
+        break;
+      case "Steel":
+        structure = new Steel();
+        break;
+      case "Wood":
+        structure = new Wood();
+        break;
+      default:
+        structure = new RC(); // デフォルト値
+    }
+    setInput({ structure });
   };
+
+  const structureOptions = [
+    { value: "RC", label: "RC造" },
+    { value: "Steel", label: "S造" },
+    { value: "Wood", label: "木造" },
+  ];
 
   return (
     <div className="mb-2">
@@ -30,13 +61,19 @@ export const StructureInput = () => {
       </label>
       <select
         id="structure"
-        name="structure"
-        value={simulation.props.structure.type ?? ""}
-        onChange={handleChange}
-        className="input-field py-2 px-3 text-sm"
+        {...register("structure", {
+          required: "物件構造は必須です",
+          onChange: handleChange,
+        })}
+        className={`input-field py-2 px-3 text-sm ${errors.structure ? "border-red-500" : ""}`}
       >
-        {Structure.all().map(item => (<option key={item.value} value={item.value}>{item.getReadableName()}</option>))}
+        {structureOptions.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
+      {errors.structure && <p className="text-red-500 text-xs mt-1">{errors.structure.message}</p>}
     </div>
   );
 };

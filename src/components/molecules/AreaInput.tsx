@@ -1,25 +1,31 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
 
 /**
- * 建物面積の入力コンポーネント
+ * @typedef {Object} AreaInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const AreaInput = () => {
-  const { simulation, setData } = useSimulationStore();
+interface AreaInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value);
-    if (!isNaN(value)) {
-      setData({ area: value });
-    }
-  };
+/**
+ * 建物面積の入力コンポーネントです。
+ * React Hook Form の register と errors を props として受け取り、Zustand ストアと連携します。
+ * @param {AreaInputProps} props - コンポーネントのプロパティ
+ * @returns {JSX.Element}
+ */
+export const AreaInput = ({ register, errors }: AreaInputProps) => {
+  const { setInput } = useSimulationStore();
 
   return (
     <div className="mb-2">
       <label
-        htmlFor="area"
+        htmlFor="buildingArea"
         className="input-label flex items-center text-xs mb-1"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -29,15 +35,19 @@ export const AreaInput = () => {
       </label>
       <div className="relative">
         <input
-          id="area"
-          name="area"
-          value={simulation.props.area}
-          onChange={handleChange}
-          className="input-field py-2 px-3 text-sm"
-          min="0"
+          id="buildingArea"
+          type="number"
+          {...register("buildingArea", {
+            required: "建物面積は必須です",
+            min: { value: 0, message: "0以上の値を入力してください" },
+            valueAsNumber: true,
+            onChange: (e) => setInput({ buildingArea: Number(e.target.value) })
+          })}
+          className={`input-field py-2 px-3 text-sm ${errors.buildingArea ? "border-red-500" : ""}`}
           placeholder="建物面積を入力"
         />
       </div>
+      {errors.buildingArea && <p className="text-red-500 text-xs mt-1">{errors.buildingArea.message}</p>}
     </div>
   );
 };

@@ -1,21 +1,25 @@
 'use client';
 
-import { useSimulationStore } from '@/store/usePropertyStore';
-import { ChangeEvent } from 'react';
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore';
 
 /**
- * 物件価格
- * @constructor
+ * @typedef {Object} PropertyPriceInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export default function PropertyPriceInput() {
-    const { simulation, setData } = useSimulationStore();
+interface PropertyPriceInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        const value = Number(e.target.value);
-        if (!isNaN(value)) {
-            setData({ propertyPrice: value * 10000});
-        }
-    };
+/**
+ * 物件価格入力コンポーネント
+ * @param {PropertyPriceInputProps} props - プロパティ
+ * @returns {JSX.Element}
+ */
+export default function PropertyPriceInput({ register, errors }: PropertyPriceInputProps) {
+    const { setInput } = useSimulationStore();
 
     return (
         <div className="mb-2">
@@ -32,14 +36,19 @@ export default function PropertyPriceInput() {
             <div className="input-group">
                 <input
                     id="propertyPrice"
-                    value={simulation.props.propertyPrice / 10000}
-                    onChange={handleChange}
+                    type="number"
+                    {...register("propertyPrice", { 
+                        required: "物件価格は必須です", 
+                        min: { value: 0, message: "0以上の値を入力してください" },
+                        valueAsNumber: true,
+                        onChange: (e) => setInput({ propertyPrice: Number(e.target.value) })
+                    })}
                     className="input-field py-2 px-3 text-sm"
                     placeholder="物件価格を入力"
-                    min="0"
                 />
-                <span className="input-addon text-xs">万円</span>
+                <span className="input-addon text-xs">円</span>
             </div>
+            {errors.propertyPrice && <p className="text-red-500 text-xs mt-1">{errors.propertyPrice.message}</p>}
         </div>
     );
 }

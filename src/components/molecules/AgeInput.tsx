@@ -1,25 +1,31 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
 
 /**
- * 築年数の入力コンポーネント
+ * @typedef {Object} AgeInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const AgeInput = () => {
-  const { simulation, setData } = useSimulationStore();
+interface AgeInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value);
-    if (!isNaN(value)) {
-      setData({ age: value });
-    }
-  };
+/**
+ * 築年数の入力コンポーネントです。
+ * React Hook Form の register と errors を props として受け取り、Zustand ストアと連携します。
+ * @param {AgeInputProps} props - コンポーネントのプロパティ
+ * @returns {JSX.Element}
+ */
+export const AgeInput = ({ register, errors }: AgeInputProps) => {
+  const { setInput } = useSimulationStore();
 
   return (
     <div className="mb-2">
       <label
-        htmlFor="age"
+        htmlFor="constructionYear"
         className="input-label flex items-center text-xs mb-1"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -29,15 +35,19 @@ export const AgeInput = () => {
       </label>
       <div className="relative">
         <input
-          id="age"
-          name="age"
-          value={simulation.props.age}
-          onChange={handleChange}
-          className="input-field py-2 px-3 text-sm"
-          min="0"
+          id="constructionYear"
+          type="number"
+          {...register("constructionYear", {
+            required: "築年数は必須です",
+            min: { value: 0, message: "0以上の値を入力してください" },
+            valueAsNumber: true,
+            onChange: (e) => setInput({ constructionYear: Number(e.target.value) })
+          })}
+          className={`input-field py-2 px-3 text-sm ${errors.constructionYear ? "border-red-500" : ""}`}
           placeholder="築年数を入力"
         />
       </div>
+      {errors.constructionYear && <p className="text-red-500 text-xs mt-1">{errors.constructionYear.message}</p>}
     </div>
   );
 };

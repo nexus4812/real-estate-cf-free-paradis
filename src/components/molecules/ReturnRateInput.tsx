@@ -1,28 +1,29 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { useForm, Controller } from "react-hook-form";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
 
-type FormValues = {
-  returnRate: number;
-};
+/**
+ * @typedef {Object} ReturnRateInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
+ */
+interface ReturnRateInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-export const ReturnRateInput = () => {
-  const { simulation, setData } = useSimulationStore();
-
-  const {
-    control,
-    formState: { errors },
-  } = useForm<FormValues>({
-    mode: "onChange",
-    defaultValues: {
-      returnRate: simulation.props.returnRate,
-    },
-  });
+/**
+ * 表面利回り入力コンポーネント
+ * @param {ReturnRateInputProps} props - プロパティ
+ * @returns {JSX.Element}
+ */
+export const ReturnRateInput = ({ register, errors }: ReturnRateInputProps) => {
+  const { setInput } = useSimulationStore();
 
   return (
     <div className="mb-2">
-      <label htmlFor="returnRate" className="input-label flex items-center text-xs mb-1">
+      <label htmlFor="surfaceYield" className="input-label flex items-center text-xs mb-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-3 w-3 mr-1 text-blue-500"
@@ -39,45 +40,25 @@ export const ReturnRateInput = () => {
       </label>
 
       <div className="input-group">
-        <Controller
-          name="returnRate"
-          control={control}
-          rules={{
+        <input
+          id="surfaceYield"
+          type="number"
+          {...register("surfaceYield", {
             required: "表面利回りは必須です",
             min: {
               value: 0,
-              message: "表面利回りは0%以上で入力してください",
+              message: "0以上の値を入力してください",
             },
-            max: {
-              value: 100,
-              message: "表面利回りは100%以下で入力してください",
-            },
-            validate: {
-              isNumber: value =>
-                !isNaN(Number(value)) || "0%から300%までの数字を入力してください",
-            },
-          }}
-          render={({ field }) => (
-            <input
-              {...field}
-              className={`input-field py-2 px-3 text-sm ${errors.returnRate ? "border-red-500" : ""}`}
-              placeholder="表面利回りを入力"
-              onChange={(e) => {
-                field.onChange(e.target.value);
-                const value = Number(e.target.value);
-                if (!isNaN(value)) {
-                  setData({ returnRate: value });
-                }
-              }}
-            />
-          )}
+            valueAsNumber: true,
+            onChange: (e) => setInput({ surfaceYield: Number(e.target.value) })
+          })}
+          className={`input-field py-2 px-3 text-sm ${errors.surfaceYield ? "border-red-500" : ""}`}
+          placeholder="表面利回りを入力"
         />
         <span className="input-addon text-xs">%</span>
       </div>
 
-      <p className="text-xs mt-0.5 min-h-[1.25rem] text-red-500">
-        {errors.returnRate?.message ?? "\u00A0" /* &nbsp;で領域を確保し、エラー時におけるズレを軽減する */}
-      </p>
+      {errors.surfaceYield && <p className="text-red-500 text-xs mt-1">{errors.surfaceYield.message}</p>}
     </div>
   );
 };

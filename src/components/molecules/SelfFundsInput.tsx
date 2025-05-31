@@ -1,20 +1,26 @@
 "use client";
 
-import { useSimulationStore } from "@/store/usePropertyStore";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { useSimulationStore, SimulationInput } from "@/store/usePropertyStore";
 
 /**
- * 自己資金の入力コンポーネント
+ * @typedef {Object} SelfFundsInputProps
+ * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
+ * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
  */
-export const SelfFundsInput = () => {
-  const { simulation, setData } = useSimulationStore();
+interface SelfFundsInputProps {
+  register: UseFormRegister<SimulationInput>;
+  errors: FieldErrors<SimulationInput>;
+}
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const value = Number(e.target.value);
-    if (!isNaN(value)) {
-      setData({ selfFunds: value });
-    }
-  };
+/**
+ * 自己資金の入力コンポーネントです。
+ * React Hook Form の register と errors を props として受け取り、Zustand ストアと連携します。
+ * @param {SelfFundsInputProps} props - コンポーネントのプロパティ
+ * @returns {JSX.Element}
+ */
+export const SelfFundsInput = ({ register, errors }: SelfFundsInputProps) => {
+  const { setInput } = useSimulationStore();
 
   return (
     <div className="mb-4">
@@ -31,16 +37,19 @@ export const SelfFundsInput = () => {
       <div className="input-group">
         <input
           id="selfFunds"
-          
-          name="selfFunds"
-          value={simulation.props.selfFunds}
-          onChange={handleChange}
-          className="input-field"
-          min="0"
+          type="number"
+          {...register("selfFunds", {
+            required: "自己資金は必須です",
+            min: { value: 0, message: "0以上の値を入力してください" },
+            valueAsNumber: true,
+            onChange: (e) => setInput({ selfFunds: Number(e.target.value) })
+          })}
+          className={`input-field ${errors.selfFunds ? "border-red-500" : ""}`}
           placeholder="自己資金を入力"
         />
         <span className="input-addon">万円</span>
       </div>
+      {errors.selfFunds && <p className="text-red-500 text-xs mt-1">{errors.selfFunds.message}</p>}
     </div>
   );
 };
