@@ -9,6 +9,7 @@ export type MetricCardProps = {
   unit: string;
   change?: number; // 変化率 (例: 0.05 for +5%)
   trend?: 'up' | 'down' | 'neutral'; // 傾向 (up, down, neutral)
+  loading?: boolean; // ローディング状態
 };
 
 /**
@@ -23,7 +24,17 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   unit,
   change,
   trend,
+  loading = false,
 }) => {
+  if (loading) {
+    return (
+      <Card className="metric-card animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+        <div className="h-8 bg-gray-300 rounded w-1/2"></div>
+      </Card>
+    );
+  }
+
   const displayValue = value.toLocaleString();
   const displayChange = change !== undefined ? `${(change * 100).toFixed(1)}%` : '';
 

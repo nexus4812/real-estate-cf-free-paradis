@@ -5,7 +5,7 @@ export const Default: Story<BuildingAreaInputProps> = (args) => (
   <BuildingAreaInput {...args} />
 );
 Default.args = {
-  value: 100.0,
+  value: 100,
   onChange: (value) => console.log('建物面積変更:', value),
 };
 

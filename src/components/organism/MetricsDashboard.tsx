@@ -1,16 +1,16 @@
 import React from 'react';
-import { Card } from '@/components/atoms/Card';
 import { MetricCard, MetricCardProps } from '@/components/molecules/MetricCard';
 import { LoadingSpinner } from '@/components/molecules/LoadingSpinner';
+import { Card } from '@/components/atoms/Card';
 
 export type MetricsDashboardProps = {
-  metrics: Omit<MetricCardProps, 'trend'>[]; // trendは内部で計算するため除外
+  metrics: MetricCardProps[]; // MetricCardPropsの配列を受け取る
   loading?: boolean;
 };
 
 /**
  * 指標ダッシュボードコンポーネント
- * 複数のMetricCardを配置し、グリッド表示する
+ * 複数のMetricCardを配置し、主要なシミュレーション指標を表示します。
  * @param props - MetricsDashboardProps
  * @returns JSX.Element
  */
@@ -19,26 +19,22 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
   loading = false,
 }) => {
   if (loading) {
-    return (
-      <Card padding="md" shadow="sm" border>
-        <LoadingSpinner message="指標を読み込み中..." />
-      </Card>
-    );
+    return <LoadingSpinner message="指標を読み込み中..." />;
   }
 
   if (!metrics || metrics.length === 0) {
     return (
-      <Card padding="md" shadow="sm" border>
-        <div className="flex items-center justify-center h-full min-h-[100px]">
-          <p className="text-gray-500">表示する指標がありません。</p>
-        </div>
+      <Card>
+        <p className="text-center text-gray-600">
+          表示する指標がありません。
+        </p>
       </Card>
     );
   }
 
   return (
-    <Card padding="md" shadow="sm" border>
-      <h3 className="section-title mb-4">主要指標</h3>
+    <Card>
+      <h3 className="section-title">主要指標</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {metrics.map((metric, index) => (
           <MetricCard
@@ -47,16 +43,7 @@ export const MetricsDashboard: React.FC<MetricsDashboardProps> = ({
             value={metric.value}
             unit={metric.unit}
             change={metric.change}
-            // changeの値に基づいてtrendを決定
-            trend={
-              metric.change !== undefined
-                ? metric.change > 0
-                  ? 'up'
-                  : metric.change < 0
-                  ? 'down'
-                  : 'neutral'
-                : 'neutral'
-            }
+            trend={metric.trend}
           />
         ))}
       </div>

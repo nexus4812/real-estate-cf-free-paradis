@@ -36,15 +36,7 @@ describe('useSimulationStore', () => {
       buildingPrice: 0,
     });
 
-    expect(results).toEqual({
-      annualBalances: [],
-      grossYields: [],
-      realYields: [],
-      preTaxCashFlows: [],
-      taxableIncomes: [],
-      totalPaymentAmount: 0,
-      initialAnnualIncome: 0, // 追加
-    });
+    expect(results).toBeNull();
   });
 
   it('setInput アクションで入力データが正しく更新されること', () => {
@@ -96,19 +88,62 @@ describe('useSimulationStore', () => {
       runSimulation();
     });
 
-    const { results } = useSimulationStore.getState();
+    const { results, loading, error } = useSimulationStore.getState();
 
-    // 計算結果が空でないことを確認 (具体的な値はドメインモデルの計算結果に依存するため、ここでは存在チェックのみ)
-    expect(results.annualBalances.length).toBeGreaterThan(0);
-    expect(results.grossYields.length).toBeGreaterThan(0);
-    expect(results.realYields.length).toBeGreaterThan(0);
-    expect(results.preTaxCashFlows.length).toBeGreaterThan(0);
-    expect(results.taxableIncomes.length).toBeGreaterThan(0);
-    expect(results.totalPaymentAmount).toBeGreaterThan(0);
+    expect(loading).toBe(false);
+    expect(error).toBeNull();
+    expect(results).not.toBeNull(); // resultsがnullでないことを確認
 
-    // 例: 初年度の年間収支が計算されていることを確認
-    const firstYearBalance = results.annualBalances.find((b) => b.year === 1)?.value;
-    expect(firstYearBalance).toBeDefined();
-    // ここに具体的な期待値を記述することも可能だが、ドメインモデルのテストでカバーされるべき
+    if (results) {
+      // 計算結果が空でないことを確認 (具体的な値はドメインモデルの計算結果に依存するため、ここでは存在チェックのみ)
+      expect(results.annualBalances.length).toBeGreaterThan(0);
+      expect(results.grossYields.length).toBeGreaterThan(0);
+      expect(results.realYields.length).toBeGreaterThan(0);
+      expect(results.preTaxCashFlows.length).toBeGreaterThan(0);
+      expect(results.taxableIncomes.length).toBeGreaterThan(0);
+      expect(results.totalPaymentAmount).toBeGreaterThan(0);
+      expect(results.finalAssetValue).toBeDefined();
+      expect(results.metrics).toBeDefined();
+
+      // 例: 初年度の年間収支が計算されていることを確認
+      const firstYearBalance = results.annualBalances.find((b) => b.year === 1)?.value;
+      expect(firstYearBalance).toBeDefined();
+      // ここに具体的な期待値を記述することも可能だが、ドメインモデルのテストでカバーされるべき
+    }
+  });
+
+  it('runSimulation がエラーを処理すること', () => {
+    const { setInput, runSimulation } = useSimulationStore.getState();
+
+    // エラーを発生させるための無効な入力データを設定
+    const invalidInputData: SimulationInput = {
+      propertyPrice: 0, // エラーを発生させる値
+      surfaceYield: 0,
+      structure: 'Invalid', // エラーを発生させる値
+      constructionYear: 0,
+      buildingArea: 0,
+      selfFunds: 0,
+      interestRate: 0,
+      loanTerm: 0,
+      vacancyRate: 0,
+      rentIncreaseRate: 0,
+      managementFeeRatio: 0,
+      repairCostRatio: 0,
+      largeScaleRepairPlans: [],
+      landPrice: 0,
+      buildingPrice: 0,
+    };
+
+    act(() => {
+      setInput(invalidInputData);
+      runSimulation();
+    });
+
+    const { results, loading, error } = useSimulationStore.getState();
+
+    expect(loading).toBe(false);
+    expect(results).toBeNull();
+    expect(error).not.toBeNull();
+    expect(error).toContain('Unknown building structure'); // エラーメッセージの一部を検証
   });
 });

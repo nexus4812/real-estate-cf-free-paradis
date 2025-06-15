@@ -1,55 +1,48 @@
 import type { Story } from '@ladle/react';
 import { YieldChart, YieldChartProps } from '@/components/organism/YieldChart';
-import { ChartData, ChartDataPoint } from '@/components/organism/CashFlowChart'; // CashFlowChartから型をインポート
-
-const generateMockYieldData = (startValue: number, color: string, title: string, unit: string): ChartData => {
-  const dataPoints: ChartDataPoint[] = Array.from({ length: 35 }, (_, i) => ({
-    year: i + 1,
-    value: startValue - i * 0.05,
-    label: `${i + 1}年目`,
-  }));
-  return {
-    data: dataPoints,
-    title: title,
-    unit: unit,
-    color: color,
-  };
-};
+import { ChartData } from '@/types/chart';
 
 const mockYieldData: ChartData[] = [
-  generateMockYieldData(5.0, '#2563eb', '表面利回り', '%'),
-  generateMockYieldData(4.0, '#ef4444', '実質利回り', '%'),
+  {
+    data: Array.from({ length: 30 }, (_, i) => ({ year: i + 1, value: 5.0 - i * 0.05 })),
+    title: '表面利回り',
+    unit: '%',
+    color: '#2563eb',
+  },
+  {
+    data: Array.from({ length: 30 }, (_, i) => ({ year: i + 1, value: 4.0 - i * 0.04 })),
+    title: '実質利回り',
+    unit: '%',
+    color: '#ef4444',
+  },
 ];
 
 export const Default: Story<YieldChartProps> = (args) => (
-  <div className="max-w-4xl mx-auto p-4">
+  <div className="w-full max-w-4xl mx-auto p-4">
     <YieldChart {...args} />
   </div>
 );
 Default.args = {
   data: mockYieldData,
   loading: false,
-  height: 400,
 };
 
 export const Loading: Story<YieldChartProps> = (args) => (
-  <div className="max-w-4xl mx-auto p-4">
+  <div className="w-full max-w-4xl mx-auto p-4">
     <YieldChart {...args} />
   </div>
 );
 Loading.args = {
   data: [],
   loading: true,
-  height: 400,
 };
 
-export const NoData: Story<YieldChartProps> = (args) => (
-  <div className="max-w-4xl mx-auto p-4">
+export const EmptyData: Story<YieldChartProps> = (args) => (
+  <div className="w-full max-w-4xl mx-auto p-4">
     <YieldChart {...args} />
   </div>
 );
-NoData.args = {
+EmptyData.args = {
   data: [],
   loading: false,
-  height: 400,
 };

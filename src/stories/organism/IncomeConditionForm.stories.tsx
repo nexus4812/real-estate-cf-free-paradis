@@ -1,33 +1,50 @@
 import type { Story } from '@ladle/react';
 import { IncomeConditionForm, IncomeConditionFormProps } from '@/components/organism/IncomeConditionForm';
-import { FieldErrors } from 'react-hook-form';
-import { SimulationInput } from '@/domain/simulation/simulationService';
+import { useState } from 'react';
 
-export const Default: Story<IncomeConditionFormProps> = (args) => (
-  <div className="max-w-2xl mx-auto p-4">
-    <IncomeConditionForm {...args} />
-  </div>
-);
-Default.args = {
-  vacancyRate: 5.0,
-  rentIncreaseRate: 1.0,
-  onVacancyRateChange: (value) => console.log('空室率変更:', value),
-  onRentIncreaseRateChange: (value) => console.log('家賃上昇率変更:', value),
-  errors: {},
+export const Default: Story<IncomeConditionFormProps> = () => {
+  const [state, setState] = useState({
+    vacancyRate: 10,
+    rentIncreaseRate: 1,
+  });
+
+  const handleChange = (field: string, value: any) => {
+    setState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <IncomeConditionForm
+      vacancyRate={state.vacancyRate}
+      rentIncreaseRate={state.rentIncreaseRate}
+      onVacancyRateChange={(value) => handleChange('vacancyRate', value)}
+      onRentIncreaseRateChange={(value) => handleChange('rentIncreaseRate', value)}
+      errors={{}}
+    />
+  );
 };
 
-export const WithErrors: Story<IncomeConditionFormProps> = (args) => (
-  <div className="max-w-2xl mx-auto p-4">
-    <IncomeConditionForm {...args} />
-  </div>
-);
-WithErrors.args = {
-  vacancyRate: 0,
-  rentIncreaseRate: 0,
-  onVacancyRateChange: (value) => console.log('空室率変更:', value),
-  onRentIncreaseRateChange: (value) => console.log('家賃上昇率変更:', value),
-  errors: {
+export const WithErrors: Story<IncomeConditionFormProps> = () => {
+  const [state, setState] = useState({
+    vacancyRate: 0,
+    rentIncreaseRate: 0,
+  });
+
+  const handleChange = (field: string, value: any) => {
+    setState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const errors = {
     vacancyRate: '空室率は必須です',
     rentIncreaseRate: '家賃上昇率は必須です',
-  },
+  };
+
+  return (
+    <IncomeConditionForm
+      vacancyRate={state.vacancyRate}
+      rentIncreaseRate={state.rentIncreaseRate}
+      onVacancyRateChange={(value) => handleChange('vacancyRate', value)}
+      onRentIncreaseRateChange={(value) => handleChange('rentIncreaseRate', value)}
+      errors={errors}
+    />
+  );
 };

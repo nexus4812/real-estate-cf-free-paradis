@@ -123,4 +123,31 @@ export class PropertyBalanceSheet {
 
     return Math.round(annualRealIncome - totalTaxDeductibleExpenses);
   }
+
+  /**
+   * 指定されたシミュレーション期間後の最終資産価値を計算します。
+   * 最終資産価値 = (土地価格 + (建物価格 - 減価償却累計額)) - ローン残債
+   * @param simulationYears - シミュレーション期間（年）
+   * @returns {number} 最終資産価値
+   */
+  public calculateFinalAssetValue(simulationYears: number): number {
+    // 減価償却累計額の計算
+    let totalDepreciation = 0;
+    for (let year = 1; year <= simulationYears; year++) {
+      totalDepreciation += this.property.calculateDepreciationForYear(year);
+    }
+
+    // 建物残存価値
+    const remainingBuildingValue = Math.max(0, this.property.buildingPrice - totalDepreciation);
+
+    // 物件の最終価値
+    const finalPropertyValue = this.property.landPrice + remainingBuildingValue;
+
+    // ローン残債
+    const remainingLoanBalance = this.cost.loan
+      ? this.cost.loan.calculateRemainingBalanceForYear(simulationYears)
+      : 0;
+
+    return finalPropertyValue - remainingLoanBalance;
+  }
 }

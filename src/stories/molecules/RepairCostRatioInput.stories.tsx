@@ -5,7 +5,7 @@ export const Default: Story<RepairCostRatioInputProps> = (args) => (
   <RepairCostRatioInput {...args} />
 );
 Default.args = {
-  value: 1.0,
+  value: 1,
   onChange: (value) => console.log('修繕費率変更:', value),
 };
 
@@ -14,6 +14,6 @@ export const WithError: Story<RepairCostRatioInputProps> = (args) => (
 );
 WithError.args = {
   value: 0,
-  onChange: (value) => console.log('修繕費率変更:', value),
+  onChange: (value) => console.log('修繕費率は必須です', value),
   error: '修繕費率は必須です',
 };

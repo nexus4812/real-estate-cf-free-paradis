@@ -9,8 +9,9 @@ import {
 
 export type SimulationStore = {
   input: SimulationInput;
-  results: SimulationResults;
-  errorMessage: string | null;
+  results: SimulationResults | null; // resultsをnull許容にする
+  loading: boolean; // loading状態を追加
+  error: string | null; // errorMessageをerrorにリネーム
   setInput: (data: Partial<SimulationInput>) => void;
   setResults: (data: Partial<SimulationResults>) => void;
   runSimulation: () => void;
@@ -43,12 +44,25 @@ const initialResults: SimulationResults = {
   taxableIncomes: [],
   totalPaymentAmount: 0,
   initialAnnualIncome: 0,
+  finalAssetValue: 0,
+  metrics: {
+    initialInvestment: 0,
+    totalIncome: 0,
+    totalExpense: 0,
+    netProfit: 0,
+    cashFlow: 0,
+    yield: 0,
+    roi: 0,
+    irr: 0,
+    npv: 0,
+  },
 };
 
 export const useSimulationStore = create<SimulationStore>((set, get) => ({
   input: initialInput,
-  results: initialResults,
-  errorMessage: null,
+  results: null, // 初期値をnullにする
+  loading: false, // 初期値をfalseにする
+  error: null,
 
   setInput: (newData) =>
     set((state) => ({
@@ -60,34 +74,33 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
 
   setResults: (newResults) =>
     set((state) => ({
-      results: {
-        ...state.results,
-        ...newResults,
-      },
+      results: state.results ? { ...state.results, ...newResults } : (newResults as SimulationResults),
     })),
 
   runSimulation: () => {
+    set({ loading: true, error: null }); // シミュレーション開始時にloadingをtrue、errorをnullに設定
     try {
       const input = get().input;
       const simulationResults = runSimulationService(input);
 
-      set((state) => ({
-        results: {
-          ...state.results,
-          ...simulationResults,
-        },
-        errorMessage: null,
-      }));
+      set({
+        results: simulationResults,
+        loading: false,
+        error: null,
+      });
     } catch (error) {
-      set((state) => ({
-        results: initialResults,
-        errorMessage: error instanceof Error ? error.message : null,
-      }));
+      set({
+        results: null, // エラー時はresultsをnullにする
+        loading: false,
+        error: error instanceof Error ? error.message : '不明なエラーが発生しました。',
+      });
     }
   },
 
   reset: () => ({
     input: initialInput,
-    results: initialResults,
+    results: null, // reset時もresultsをnullにする
+    loading: false,
+    error: null,
   }),
 }));

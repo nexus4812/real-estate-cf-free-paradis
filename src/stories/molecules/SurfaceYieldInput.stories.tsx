@@ -5,7 +5,7 @@ export const Default: Story<SurfaceYieldInputProps> = (args) => (
   <SurfaceYieldInput {...args} />
 );
 Default.args = {
-  value: 5.0,
+  value: 5,
   onChange: (value) => console.log('表面利回り変更:', value),
 };
 

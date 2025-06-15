@@ -5,7 +5,7 @@ export const Default: Story<ManagementFeeRatioInputProps> = (args) => (
   <ManagementFeeRatioInput {...args} />
 );
 Default.args = {
-  value: 5.0,
+  value: 5,
   onChange: (value) => console.log('管理費率変更:', value),
 };
 
@@ -14,6 +14,6 @@ export const WithError: Story<ManagementFeeRatioInputProps> = (args) => (
 );
 WithError.args = {
   value: 0,
-  onChange: (value) => console.log('管理費率変更:', value),
+  onChange: (value) => console.log('管理費率は必須です', value),
   error: '管理費率は必須です',
 };

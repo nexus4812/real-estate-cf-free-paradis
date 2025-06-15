@@ -136,4 +136,15 @@ export class Loan {
       .map((row) => row.principal)
       .reduce<number>((acc, curr) => acc + curr, 0);
   }
+
+  /**
+   * 指定された年度末のローン残債を計算します。
+   * @param year - 計算対象の年度（1年目からterm年目まで）
+   * @returns {number} その年度末のローン残債。借入期間外の場合は0を返します。
+   */
+  public calculateRemainingBalanceForYear(year: number): number {
+    const endMonth = year * 12;
+    const lastMonthData = this.simulate.findLast((row) => row.month <= endMonth);
+    return lastMonthData ? lastMonthData.balance : 0;
+  }
 }

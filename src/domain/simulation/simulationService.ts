@@ -34,6 +34,7 @@ export type SimulationResults = {
   taxableIncomes: { year: number; value: number }[]; // 課税所得
   totalPaymentAmount: number; // ローン総支払額
   initialAnnualIncome: number; // 初年度年間収入
+  finalAssetValue: number; // 最終資産価値
   metrics: {
     initialInvestment: number;
     totalIncome: number;
@@ -153,6 +154,8 @@ export function runSimulationService(input: SimulationInput): SimulationResults 
     ? balanceSheet.cost.loan.calculateTotalPaymentAmount()
     : 0;
 
+  const finalAssetValue = balanceSheet.calculateFinalAssetValue(simulationYears);
+
   return {
     annualBalances,
     grossYields,
@@ -161,5 +164,17 @@ export function runSimulationService(input: SimulationInput): SimulationResults 
     taxableIncomes,
     totalPaymentAmount,
     initialAnnualIncome,
+    finalAssetValue,
+    metrics: { // 仮の値を設定。後で正確な計算ロジックを実装する
+      initialInvestment: 0,
+      totalIncome: 0,
+      totalExpense: 0,
+      netProfit: 0,
+      cashFlow: 0,
+      yield: 0,
+      roi: 0,
+      irr: 0,
+      npv: 0,
+    },
   };
 }

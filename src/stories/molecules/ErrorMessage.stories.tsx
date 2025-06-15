@@ -2,24 +2,31 @@ import type { Story } from '@ladle/react';
 import { ErrorMessage, ErrorMessageProps } from '@/components/molecules/ErrorMessage';
 
 export const Default: Story<ErrorMessageProps> = (args) => (
-  <ErrorMessage {...args} />
+  <div className="w-96">
+    <ErrorMessage {...args} />
+  </div>
 );
 Default.args = {
-  message: 'エラーが発生しました。入力内容を確認してください。',
+  message: '入力内容に誤りがあります。',
+  type: 'error',
 };
 
-export const WarningType: Story<ErrorMessageProps> = (args) => (
-  <ErrorMessage {...args} />
+export const Warning: Story<ErrorMessageProps> = (args) => (
+  <div className="w-96">
+    <ErrorMessage {...args} />
+  </div>
 );
-WarningType.args = {
-  message: '警告: 一部のデータが不足しています。',
+Warning.args = {
+  message: '一部の項目が未入力です。',
   type: 'warning',
 };
 
-export const InfoType: Story<ErrorMessageProps> = (args) => (
-  <ErrorMessage {...args} />
+export const Info: Story<ErrorMessageProps> = (args) => (
+  <div className="w-96">
+    <ErrorMessage {...args} />
+  </div>
 );
-InfoType.args = {
-  message: '情報: シミュレーションが完了しました。',
+Info.args = {
+  message: 'シミュレーションが完了しました。',
   type: 'info',
 };

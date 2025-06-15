@@ -10,17 +10,17 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Card } from '@/components/atoms/Card';
-import { LoadingSpinner } from '@/components/molecules/LoadingSpinner';
-import { ChartData } from './CashFlowChart'; // CashFlowChartで定義したChartData型を再利用
+import { ChartData } from '@/types/chart'; // ChartDataをインポート
 
 export type YieldChartProps = {
-  data: ChartData[]; // 表面利回りと実質利回りの2つのデータセットを想定
+  data: ChartData[]; // ChartData[]型
   loading?: boolean;
   height?: number;
 };
 
 /**
  * 利回りグラフコンポーネント
+ * 表面利回り、実質利回りの推移を表示します。
  * @param props - YieldChartProps
  * @returns JSX.Element
  */
@@ -31,53 +31,43 @@ export const YieldChart: React.FC<YieldChartProps> = ({
 }) => {
   if (loading) {
     return (
-      <Card padding="md" shadow="sm" border>
-        <LoadingSpinner message="グラフデータを読み込み中..." />
-      </Card>
-    );
-  }
-
-  // dataが空の場合の表示
-  if (!data || data.length === 0 || data.every(d => d.data.length === 0)) {
-    return (
-      <Card padding="md" shadow="sm" border>
-        <div className="flex items-center justify-center h-full min-h-[200px]">
-          <p className="text-gray-500">表示するデータがありません。</p>
+      <Card>
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded mb-4"></div>
+          <div className={`h-${height} bg-gray-200 rounded`}></div>
         </div>
       </Card>
     );
   }
 
   return (
-    <Card padding="md" shadow="sm" border>
+    <Card>
       <h3 className="section-title">利回り推移</h3>
       <ResponsiveContainer width="100%" height={height}>
-        <LineChart>
+        <LineChart data={data[0]?.data || []}> {/* 最初のChartDataオブジェクトのdataプロパティを使用 */}
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="year"
             label={{ value: '年', position: 'insideBottom', offset: -5 }}
-            allowDuplicatedCategory={false} // 重複カテゴリを許可しない
           />
           <YAxis
             label={{ value: '利回り（%）', angle: -90, position: 'insideLeft' }}
-            tickFormatter={(value) => `${value.toLocaleString()}%`}
+            tickFormatter={(value) => `${value.toFixed(1)}%`}
           />
           <Tooltip
-            formatter={(value: number, name: string, props: any) => [`${value.toLocaleString()}%`, name]}
+            formatter={(value: number, name: string) => [`${value.toFixed(2)}%`, name]}
             labelFormatter={(label) => `${label}年目`}
           />
           <Legend />
-          {data.map((s, index) => (
+          {data.map((chartItem, index) => (
             <Line
-              key={s.title}
+              key={index}
               type="monotone"
               dataKey="value"
-              data={s.data}
-              name={s.title}
-              stroke={s.color}
+              name={chartItem.title}
+              stroke={chartItem.color}
               strokeWidth={2}
-              dot={{ fill: s.color, strokeWidth: 2, r: 4 }}
+              dot={{ fill: chartItem.color, strokeWidth: 2, r: 4 }}
               activeDot={{ r: 6 }}
             />
           ))}

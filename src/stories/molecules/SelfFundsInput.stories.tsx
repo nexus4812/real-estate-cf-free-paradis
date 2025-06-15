@@ -5,7 +5,7 @@ export const Default: Story<SelfFundsInputProps> = (args) => (
   <SelfFundsInput {...args} />
 );
 Default.args = {
-  value: 10000000, // 1000万円
+  value: 1000,
   onChange: (value) => console.log('自己資金変更:', value),
 };
 

@@ -1,20 +1,20 @@
 import React from 'react';
-import { Card } from '@/components/atoms/Card';
-import { MetricCard } from '@/components/molecules/MetricCard';
+import { MetricCard, MetricCardProps } from '@/components/molecules/MetricCard';
 import { ResultSummary } from '@/components/molecules/ResultSummary';
 import { ErrorMessage } from '@/components/molecules/ErrorMessage';
 import { LoadingSpinner } from '@/components/molecules/LoadingSpinner';
-import { SimulationResult } from '@/domain/simulation/simulationService'; // 仮の型定義
+import { SimulationResults } from '@/domain/simulation/simulationService';
+import { Card } from '@/components/atoms/Card';
 
 export type SimulationResultPanelProps = {
-  results: SimulationResult | null;
+  results: SimulationResults | null;
   loading: boolean;
   error: string | null;
 };
 
 /**
  * シミュレーション結果表示パネルコンポーネント
- * シミュレーション結果のサマリーと詳細指標を表示します。
+ * サマリーと詳細指標を表示します。
  * @param props - SimulationResultPanelProps
  * @returns JSX.Element
  */
@@ -24,52 +24,128 @@ export const SimulationResultPanel: React.FC<SimulationResultPanelProps> = ({
   error,
 }) => {
   if (loading) {
-    return (
-      <Card>
-        <LoadingSpinner message="シミュレーション結果を計算中..." />
-      </Card>
-    );
+    return <LoadingSpinner message="シミュレーション結果を計算中..." />;
   }
 
   if (error) {
-    return (
-      <Card>
-        <ErrorMessage message={error} type="error" />
-      </Card>
-    );
+    return <ErrorMessage message={error} />;
   }
 
   if (!results) {
     return (
       <Card>
-        <ErrorMessage message="シミュレーションを実行してください。" type="info" />
+        <p className="text-center text-gray-600">
+          シミュレーションを実行すると、ここに結果が表示されます。
+        </p>
       </Card>
     );
   }
 
-  // 仮のメトリックデータ。実際のresultsから計算する
-  const metrics = [
-    { title: '年間家賃収入', value: results.annualIncome[0].value / 10000, unit: '万円', change: 0.02, trend: 'up' as const },
-    { title: '年間支出', value: results.annualCost[0].value / 10000, unit: '万円', change: -0.01, trend: 'down' as const },
-    { title: '年間キャッシュフロー', value: results.annualCashFlow[0].value / 10000, unit: '万円', change: 0.03, trend: 'up' as const },
-    { title: '表面利回り', value: results.surfaceYield * 100, unit: '%', change: 0, trend: 'neutral' as const },
-  ];
+  const {
+    totalPaymentAmount,
+    initialAnnualIncome,
+    metrics,
+  } = results;
+
+  // MetricCardProps に変換するヘルパー関数
+  const formatMetricsForDisplay = (
+    metricsData: SimulationResults['metrics']
+  ): MetricCardProps[] => {
+    const formattedMetrics: MetricCardProps[] = [];
+
+    // 各メトリックをMetricCardProps形式に変換
+    formattedMetrics.push({
+      title: '初期投資額',
+      value: metricsData.initialInvestment,
+      unit: '万円',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: '総収入',
+      value: metricsData.totalIncome,
+      unit: '万円',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: '総費用',
+      value: metricsData.totalExpense,
+      unit: '万円',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: '純利益',
+      value: metricsData.netProfit,
+      unit: '万円',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: 'キャッシュフロー',
+      value: metricsData.cashFlow,
+      unit: '万円',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: '利回り',
+      value: metricsData.yield,
+      unit: '%',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: 'ROI',
+      value: metricsData.roi,
+      unit: '%',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: 'IRR',
+      value: metricsData.irr,
+      unit: '%',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+    formattedMetrics.push({
+      title: 'NPV',
+      value: metricsData.npv,
+      unit: '万円',
+      change: 0, // 仮の値
+      trend: 'neutral', // 仮の値
+    });
+
+    return formattedMetrics;
+  };
+
+  const displayedMetrics = formatMetricsForDisplay(metrics);
 
   return (
     <Card>
-      <h3 className="section-title">シミュレーション結果</h3>
+      <h2 className="section-title">シミュレーション結果</h2>
+
       <ResultSummary
-        totalPayment={results.totalPayment / 10000}
-        initialIncome={results.annualIncome[0].value / 10000}
-        cashFlow={results.annualCashFlow[0].value / 10000}
-        yield={results.surfaceYield * 100}
+        totalPayment={totalPaymentAmount}
+        initialIncome={initialAnnualIncome}
+        cashFlow={metrics.cashFlow}
+        yield={metrics.yield}
       />
 
       <div className="mt-8">
-        <h4 className="text-lg font-semibold text-gray-700 mb-4">主要指標</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {metrics.map((metric, index) => (
-            <MetricCard key={index} {...metric} />
+        <h3 className="section-title">詳細指標</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayedMetrics.map((metric, index) => (
+            <MetricCard
+              key={index}
+              title={metric.title}
+              value={metric.value}
+              unit={metric.unit}
+              change={metric.change}
+              trend={metric.trend}
+            />
           ))}
         </div>
       </div>

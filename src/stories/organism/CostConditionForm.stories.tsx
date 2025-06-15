@@ -1,33 +1,50 @@
 import type { Story } from '@ladle/react';
 import { CostConditionForm, CostConditionFormProps } from '@/components/organism/CostConditionForm';
-import { FieldErrors } from 'react-hook-form';
-import { SimulationInput } from '@/domain/simulation/simulationService';
+import { useState } from 'react';
 
-export const Default: Story<CostConditionFormProps> = (args) => (
-  <div className="max-w-2xl mx-auto p-4">
-    <CostConditionForm {...args} />
-  </div>
-);
-Default.args = {
-  managementFeeRatio: 5.0,
-  repairCostRatio: 1.0,
-  onManagementFeeRatioChange: (value) => console.log('管理費率変更:', value),
-  onRepairCostRatioChange: (value) => console.log('修繕費率変更:', value),
-  errors: {},
+export const Default: Story<CostConditionFormProps> = () => {
+  const [state, setState] = useState({
+    managementFeeRatio: 5,
+    repairCostRatio: 1,
+  });
+
+  const handleChange = (field: string, value: any) => {
+    setState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  return (
+    <CostConditionForm
+      managementFeeRatio={state.managementFeeRatio}
+      repairCostRatio={state.repairCostRatio}
+      onManagementFeeRatioChange={(value) => handleChange('managementFeeRatio', value)}
+      onRepairCostRatioChange={(value) => handleChange('repairCostRatio', value)}
+      errors={{}}
+    />
+  );
 };
 
-export const WithErrors: Story<CostConditionFormProps> = (args) => (
-  <div className="max-w-2xl mx-auto p-4">
-    <CostConditionForm {...args} />
-  </div>
-);
-WithErrors.args = {
-  managementFeeRatio: 0,
-  repairCostRatio: 0,
-  onManagementFeeRatioChange: (value) => console.log('管理費率変更:', value),
-  onRepairCostRatioChange: (value) => console.log('修繕費率変更:', value),
-  errors: {
+export const WithErrors: Story<CostConditionFormProps> = () => {
+  const [state, setState] = useState({
+    managementFeeRatio: 0,
+    repairCostRatio: 0,
+  });
+
+  const handleChange = (field: string, value: any) => {
+    setState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const errors = {
     managementFeeRatio: '管理費率は必須です',
     repairCostRatio: '修繕費率は必須です',
-  },
+  };
+
+  return (
+    <CostConditionForm
+      managementFeeRatio={state.managementFeeRatio}
+      repairCostRatio={state.repairCostRatio}
+      onManagementFeeRatioChange={(value) => handleChange('managementFeeRatio', value)}
+      onRepairCostRatioChange={(value) => handleChange('repairCostRatio', value)}
+      errors={errors}
+    />
+  );
 };

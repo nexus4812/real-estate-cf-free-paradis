@@ -7,7 +7,7 @@ export const Default: Story<MetricCardProps> = (args) => (
   </div>
 );
 Default.args = {
-  title: '初年度キャッシュフロー',
+  title: '年間キャッシュフロー',
   value: 120,
   unit: '万円',
   change: 10,
@@ -20,8 +20,8 @@ export const NegativeChange: Story<MetricCardProps> = (args) => (
   </div>
 );
 NegativeChange.args = {
-  title: '年間支出',
-  value: 50,
+  title: '年間キャッシュフロー',
+  value: -50,
   unit: '万円',
   change: -5,
   trend: 'down',
@@ -33,19 +33,19 @@ export const NoChange: Story<MetricCardProps> = (args) => (
   </div>
 );
 NoChange.args = {
-  title: '表面利回り',
-  value: 5.5,
-  unit: '%',
+  title: '年間キャッシュフロー',
+  value: 0,
+  unit: '万円',
   change: 0,
   trend: 'neutral',
 };
 
-export const LoadingState: Story<MetricCardProps> = (args) => (
+export const Loading: Story<MetricCardProps> = (args) => (
   <div className="w-64">
     <MetricCard {...args} />
   </div>
 );
-LoadingState.args = {
-  title: '計算中',
+Loading.args = {
+  title: '年間キャッシュフロー',
   loading: true,
 };

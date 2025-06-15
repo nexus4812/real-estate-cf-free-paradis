@@ -4,6 +4,7 @@ import { SurfaceYieldInput } from '@/components/molecules/SurfaceYieldInput';
 import { StructureSelect } from '@/components/molecules/StructureSelect';
 import { ConstructionYearInput } from '@/components/molecules/ConstructionYearInput';
 import { BuildingAreaInput } from '@/components/molecules/BuildingAreaInput';
+import { allBuildingStructures } from '@/domain/property/buildingStructure';
 import { Card } from '@/components/atoms/Card'; // Cardコンポーネントをインポート
 
 export type PropertyInformationFormProps = {
@@ -56,6 +57,7 @@ export const PropertyInformationForm: React.FC<PropertyInformationFormProps> = (
           value={structure}
           onChange={onStructureChange}
           error={errors.structure}
+          options={allBuildingStructures.map(s => ({ value: s.label(), label: s.label() }))}
         />
         <ConstructionYearInput
           value={constructionYear}

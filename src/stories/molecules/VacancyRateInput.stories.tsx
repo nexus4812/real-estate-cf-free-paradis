@@ -5,7 +5,7 @@ export const Default: Story<VacancyRateInputProps> = (args) => (
   <VacancyRateInput {...args} />
 );
 Default.args = {
-  value: 10.0,
+  value: 10,
   onChange: (value) => console.log('空室率変更:', value),
 };
 
@@ -14,6 +14,6 @@ export const WithError: Story<VacancyRateInputProps> = (args) => (
 );
 WithError.args = {
   value: 0,
-  onChange: (value) => console.log('空室率変更:', value),
+  onChange: (value) => console.log('空室率は必須です', value),
   error: '空室率は必須です',
 };

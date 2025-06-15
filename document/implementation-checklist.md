@@ -244,28 +244,28 @@
 
 ### 3.2 Result系Organism
 
-- [ ] **O2-1: SimulationResultPanel コンポーネント**
+- [x] **O2-1: SimulationResultPanel コンポーネント**
 
   - ファイル: `src/components/organism/SimulationResultPanel.tsx`
   - 機能: シミュレーション結果表示パネル（サマリー + 詳細指標）
   - Props: `results`, `loading`, `error`
   - 依存: M2-1, M2-2, M2-3, M2-4
 
-- [ ] **O2-2: CashFlowChart コンポーネント**
+- [x] **O2-2: CashFlowChart コンポーネント**
 
   - ファイル: `src/components/organism/CashFlowChart.tsx`
   - 機能: キャッシュフローグラフ（Recharts使用）
   - Props: `data`, `loading`
   - 依存: A2-4 (Card), Recharts
 
-- [ ] **O2-3: YieldChart コンポーネント**
+- [x] **O2-3: YieldChart コンポーネント**
 
   - ファイル: `src/components/organism/YieldChart.tsx`
   - 機能: 利回りグラフ（表面利回り、実質利回り）
   - Props: `data`, `loading`
   - 依存: A2-4 (Card), Recharts
 
-- [ ] **O2-4: MetricsDashboard コンポーネント**
+- [x] **O2-4: MetricsDashboard コンポーネント**
   - ファイル: `src/components/organism/MetricsDashboard.tsx`
   - 機能: 指標ダッシュボード（複数のMetricCardを配置）
   - Props: `metrics`, `loading`
@@ -277,14 +277,14 @@
 
 ### 4.1 Form Container
 
-- [ ] **C1-1: SimulationFormContainer コンポーネント**
+- [x] **C1-1: SimulationFormContainer コンポーネント**
 
   - ファイル: `src/container/SimulationFormContainer.tsx`
   - 機能: フォーム状態管理（React Hook Form + Zustand連携）
   - 責務: フォーム状態、バリデーション、送信処理
   - 依存: useSimulationStore, React Hook Form
 
-- [ ] **C1-2: ValidationContainer コンポーネント**
+- [x] **C1-2: ValidationContainer コンポーネント**
   - ファイル: `src/container/ValidationContainer.tsx`
   - 機能: バリデーション処理（入力値検証、エラー表示）
   - 責務: 入力値検証、エラーメッセージ生成
@@ -293,14 +293,14 @@
 
 ### 4.2 Result Container
 
-- [ ] **C2-1: SimulationResultContainer コンポーネント**
+- [x] **C2-1: SimulationResultContainer コンポーネント**
 
   - ファイル: `src/container/SimulationResultContainer.tsx`
   - 機能: 結果表示制御（計算実行、結果取得、エラーハンドリング）
   - 責務: シミュレーション実行、結果データ管理
   - 依存: useSimulationStore
 
-- [ ] **C2-2: ChartDataContainer コンポーネント**
+- [x] **C2-2: ChartDataContainer コンポーネント**
   - ファイル: `src/container/ChartDataContainer.tsx`
   - 機能: グラフデータ準備（Recharts用データ変換）
   - 責務: グラフ用データ変換、フォーマット
@@ -313,14 +313,14 @@
 
 ### 5.1 Pages
 
-- [ ] **P1-1: app/simulation/page.tsx 修正**
+- [x] **P1-1: app/simulation/page.tsx 修正**
 
   - ファイル: `src/app/simulation/page.tsx`
   - 機能: シミュレーションページ（Container注入、レイアウト）
   - 作業: 既存コードをContainer/Organism構造に修正
   - 依存: C1-1, C2-1, O1-1, O1-2, O1-3, O1-4, O2-1, O2-2, O2-3
 
-- [ ] **P1-2: app/page.tsx 修正**
+- [x] **P1-2: app/page.tsx 修正**
   - ファイル: `src/app/page.tsx`
   - 機能: トップページ（シミュレーションページへのナビゲーション）
   - 作業: 既存コードを整理、ナビゲーション追加
@@ -339,14 +339,14 @@
 
 ### 6.2 Molecule Stories
 
-- [ ] **S2-1: Molecule ストーリー作成**
+- [x] **S2-1: Molecule ストーリー作成**
   - ファイル: `src/stories/molecules/` 配下に各Moleculeのストーリー
   - 対象: 全Form系Molecule、全Display系Molecule
   - 内容: 正常状態、エラー状態、無効状態のストーリー
 
 ### 6.3 Organism Stories
 
-- [ ] **S3-1: Organism ストーリー作成**
+- [x] **S3-1: Organism ストーリー作成**
   - ファイル: `src/stories/organisms/` 配下に各Organismのストーリー
   - 対象: 全Form系Organism、全Result系Organism
   - 内容: 様々なデータパターンのストーリー
@@ -362,7 +362,7 @@
   - ファイル: `src/components/atoms/__tests__/` 配下
   - 内容: スナップショットテスト、Props渡しテスト
 
-- [ ] **T1-2: Molecule テスト**
+- [x] **T1-2: Molecule テスト**
 
   - ファイル: `src/components/molecules/__tests__/` 配下
   - 内容: ユーザーインタラクションテスト、バリデーションテスト

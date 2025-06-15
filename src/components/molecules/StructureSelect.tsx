@@ -7,6 +7,7 @@ export type StructureSelectProps = {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  options: { value: string; label: string }[];
 };
 
 /**
