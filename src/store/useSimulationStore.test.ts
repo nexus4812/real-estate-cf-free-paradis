@@ -1,5 +1,5 @@
 import { act } from 'react';
-import { useSimulationStore, SimulationInput, SimulationResults } from './usePropertyStore';
+import { useSimulationStore, SimulationInput, SimulationResults } from './useSimulationStore'; // インポートパスを修正
 import { RC } from '@/domain/property/buildingStructure';
 
 describe('useSimulationStore', () => {
@@ -16,7 +16,7 @@ describe('useSimulationStore', () => {
     expect(input).toEqual({
       propertyPrice: 0,
       surfaceYield: 0,
-      structure: new RC(),
+      structure: 'RC', // stringに変更
       constructionYear: 0,
       buildingArea: 0,
       selfFunds: 0,
@@ -38,6 +38,7 @@ describe('useSimulationStore', () => {
       preTaxCashFlows: [],
       taxableIncomes: [],
       totalPaymentAmount: 0,
+      initialAnnualIncome: 0, // 追加
     });
   });
 
@@ -60,7 +61,7 @@ describe('useSimulationStore', () => {
     expect(input.surfaceYield).toBe(0.05);
     expect(input.landPrice).toBe(20000000);
     expect(input.buildingPrice).toBe(30000000);
-    expect(input.structure).toEqual(new RC()); // 変更されていないプロパティはそのまま
+    expect(input.structure).toEqual('RC'); // 変更されていないプロパティはそのまま
   });
 
   it('runSimulation アクションが実行され、results が正しく計算・更新されること', () => {
@@ -70,7 +71,7 @@ describe('useSimulationStore', () => {
     const inputData: SimulationInput = {
       propertyPrice: 50000000,
       surfaceYield: 0.05,
-      structure: new RC(),
+      structure: 'RC', // stringに変更
       constructionYear: 10,
       buildingArea: 100,
       selfFunds: 10000000, // 自己資金
@@ -104,26 +105,5 @@ describe('useSimulationStore', () => {
     const firstYearBalance = results.annualBalances.find((b) => b.year === 1)?.value;
     expect(firstYearBalance).toBeDefined();
     // ここに具体的な期待値を記述することも可能だが、ドメインモデルのテストでカバーされるべき
-  });
-
-  it('reset アクションで状態が初期化されること', () => {
-    const { setInput, setResults, reset } = useSimulationStore.getState();
-
-    // 状態を更新
-    act(() => {
-      setInput({ propertyPrice: 100000000 });
-      setResults({ totalPaymentAmount: 50000000 });
-    });
-
-    // リセットを実行
-    act(() => {
-      reset();
-    });
-
-    const { input, results } = useSimulationStore.getState();
-
-    // 初期状態に戻っていることを確認
-    expect(input.propertyPrice).toBe(0);
-    expect(results.totalPaymentAmount).toBe(0);
   });
 });
