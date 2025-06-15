@@ -74,13 +74,10 @@ export const useSimulationStore = create<SimulationStore>((set, get) => ({
         },
         errorMessage: null,
       }));
-
-      console.log('Simulation completed.');
     } catch (error) {
-      console.error('Simulation failed:', error);
       set((state) => ({
         results: initialResults,
-        errorMessage: error instanceof Error ? error.message : '不明なエラーが発生しました。',
+        errorMessage: error instanceof Error ? error.message : null,
       }));
     }
   },

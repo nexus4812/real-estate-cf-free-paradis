@@ -1,5 +1,6 @@
 import { act } from 'react';
-import { useSimulationStore, SimulationInput, SimulationResults } from './useSimulationStore'; // インポートパスを修正
+import { useSimulationStore } from './useSimulationStore';
+import { SimulationInput, SimulationResults, runSimulationService } from '@/domain/simulation/simulationService';
 import { RC } from '@/domain/property/buildingStructure';
 
 describe('useSimulationStore', () => {
