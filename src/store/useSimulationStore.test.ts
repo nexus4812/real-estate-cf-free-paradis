@@ -1,6 +1,10 @@
 import { act } from 'react';
 import { useSimulationStore } from './useSimulationStore';
-import { SimulationInput, SimulationResults, runSimulationService } from '@/domain/simulation/simulationService';
+import {
+  SimulationInput,
+  SimulationResults,
+  runSimulationService,
+} from '@/domain/simulation/simulationService';
 import { RC } from '@/domain/property/buildingStructure';
 
 describe('useSimulationStore', () => {

@@ -1,7 +1,11 @@
 'use client';
 
 import { create } from 'zustand';
-import { SimulationInput, SimulationResults, runSimulationService } from '@/domain/simulation/simulationService';
+import {
+  SimulationInput,
+  SimulationResults,
+  runSimulationService,
+} from '@/domain/simulation/simulationService';
 
 export type SimulationStore = {
   input: SimulationInput;
