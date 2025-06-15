@@ -1,42 +1,49 @@
 import React from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { SimulationInput } from '@/store/useSimulationStore';
+import { NumberInput } from '@/components/atoms/NumberInput';
+import { Label } from '@/components/atoms/Label';
+
+export type RepairCostRatioInputProps = {
+  value: number;
+  onChange: (value: number) => void;
+  error?: string;
+};
 
 /**
- * @typedef {Object} RepairCostRatioInputProps
- * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
- * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
+ * 修繕費率入力コンポーネント
+ * @param props - RepairCostRatioInputProps
+ * @returns JSX.Element
  */
-interface RepairCostRatioInputProps {
-  register: UseFormRegister<SimulationInput>;
-  errors: FieldErrors<SimulationInput>;
-}
+export const RepairCostRatioInput: React.FC<RepairCostRatioInputProps> = ({
+  value,
+  onChange,
+  error,
+}) => {
+  const handleChange = (inputValue: number | string) => {
+    if (typeof inputValue === 'number') {
+      onChange(inputValue);
+    } else if (inputValue === '') {
+      onChange(0);
+    }
+  };
 
-/**
- * 修繕費率の入力コンポーネントです。
- * @param {RepairCostRatioInputProps} props - コンポーネントのプロパティ
- */
-export const RepairCostRatioInput = ({ register, errors }: RepairCostRatioInputProps) => {
   return (
-    <div className="form-control w-full max-w-xs">
-      <label htmlFor="repairCostRatio" className="label">
-        <span className="label-text">修繕費率 (%)</span>
-      </label>
-      <input
-        id="repairCostRatio"
-        type="number"
-        step="0.01"
-        {...register('repairCostRatio', {
-          required: '修繕費率は必須です',
-          min: { value: 0, message: '0以上の値を入力してください' },
-          max: { value: 100, message: '100以下の値を入力してください' },
-          valueAsNumber: true,
-        })}
-        className={`input input-bordered w-full max-w-xs ${errors.repairCostRatio ? 'input-error' : ''}`}
+    <div className="space-y-2">
+      <Label htmlFor="repairCostRatio" required>
+        修繕費率
+      </Label>
+      <NumberInput
+        value={value}
+        onChange={handleChange}
+        placeholder="例: 1.0"
+        error={error}
+        min={0}
+        max={100}
+        step={0.1}
+        unit="%"
       />
-      {errors.repairCostRatio && (
-        <p className="text-error text-xs mt-1">{errors.repairCostRatio.message}</p>
-      )}
+      <p className="text-sm text-gray-600">
+        年間の修繕費を家賃収入に対する割合で入力してください
+      </p>
     </div>
   );
 };

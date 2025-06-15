@@ -1,42 +1,49 @@
 import React from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { SimulationInput } from '@/store/useSimulationStore';
+import { NumberInput } from '@/components/atoms/NumberInput';
+import { Label } from '@/components/atoms/Label';
+
+export type ManagementFeeRatioInputProps = {
+  value: number;
+  onChange: (value: number) => void;
+  error?: string;
+};
 
 /**
- * @typedef {Object} ManagementFeeRatioInputProps
- * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
- * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
+ * 管理費率入力コンポーネント
+ * @param props - ManagementFeeRatioInputProps
+ * @returns JSX.Element
  */
-interface ManagementFeeRatioInputProps {
-  register: UseFormRegister<SimulationInput>;
-  errors: FieldErrors<SimulationInput>;
-}
+export const ManagementFeeRatioInput: React.FC<ManagementFeeRatioInputProps> = ({
+  value,
+  onChange,
+  error,
+}) => {
+  const handleChange = (inputValue: number | string) => {
+    if (typeof inputValue === 'number') {
+      onChange(inputValue);
+    } else if (inputValue === '') {
+      onChange(0);
+    }
+  };
 
-/**
- * 管理費率の入力コンポーネントです。
- * @param {ManagementFeeRatioInputProps} props - コンポーネントのプロパティ
- */
-export const ManagementFeeRatioInput = ({ register, errors }: ManagementFeeRatioInputProps) => {
   return (
-    <div className="form-control w-full max-w-xs">
-      <label htmlFor="managementFeeRatio" className="label">
-        <span className="label-text">管理費率 (%)</span>
-      </label>
-      <input
-        id="managementFeeRatio"
-        type="number"
-        step="0.01"
-        {...register('managementFeeRatio', {
-          required: '管理費率は必須です',
-          min: { value: 0, message: '0以上の値を入力してください' },
-          max: { value: 100, message: '100以下の値を入力してください' },
-          valueAsNumber: true,
-        })}
-        className={`input input-bordered w-full max-w-xs ${errors.managementFeeRatio ? 'input-error' : ''}`}
+    <div className="space-y-2">
+      <Label htmlFor="managementFeeRatio" required>
+        管理費率
+      </Label>
+      <NumberInput
+        value={value}
+        onChange={handleChange}
+        placeholder="例: 5.0"
+        error={error}
+        min={0}
+        max={100}
+        step={0.1}
+        unit="%"
       />
-      {errors.managementFeeRatio && (
-        <p className="text-error text-xs mt-1">{errors.managementFeeRatio.message}</p>
-      )}
+      <p className="text-sm text-gray-600">
+        年間の管理費を家賃収入に対する割合で入力してください
+      </p>
     </div>
   );
 };

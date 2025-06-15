@@ -34,6 +34,17 @@ export type SimulationResults = {
   taxableIncomes: { year: number; value: number }[]; // 課税所得
   totalPaymentAmount: number; // ローン総支払額
   initialAnnualIncome: number; // 初年度年間収入
+  metrics: {
+    initialInvestment: number;
+    totalIncome: number;
+    totalExpense: number;
+    netProfit: number;
+    cashFlow: number;
+    yield: number;
+    roi: number;
+    irr: number;
+    npv: number;
+  };
 };
 
 /**

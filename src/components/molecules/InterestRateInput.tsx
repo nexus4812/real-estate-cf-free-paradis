@@ -1,44 +1,49 @@
-'use client';
+import React from 'react';
+import { NumberInput } from '@/components/atoms/NumberInput';
+import { Label } from '@/components/atoms/Label';
 
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { useSimulationStore, SimulationInput } from '@/store/useSimulationStore'; // useSimulationStore をインポート
-
-/**
- * @typedef {Object} InterestRateInputProps
- * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
- * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
- */
-interface InterestRateInputProps {
-  register: UseFormRegister<SimulationInput>;
-  errors: FieldErrors<SimulationInput>;
-}
+export type InterestRateInputProps = {
+  value: number;
+  onChange: (value: number) => void;
+  error?: string | undefined;
+};
 
 /**
- * 金利の入力コンポーネントです。
- * @param {InterestRateInputProps} props - コンポーネントのプロパティ
+ * 金利入力コンポーネント
+ * @param props - InterestRateInputProps
+ * @returns JSX.Element
  */
-export const InterestRateInput = ({ register, errors }: InterestRateInputProps) => {
-  const { setInput } = useSimulationStore(); // setInput を取得
+export const InterestRateInput: React.FC<InterestRateInputProps> = ({
+  value,
+  onChange,
+  error,
+}) => {
+  const handleChange = (inputValue: number | string) => {
+    if (typeof inputValue === 'number') {
+      onChange(inputValue);
+    } else if (inputValue === '') {
+      onChange(0);
+    }
+  };
 
   return (
-    <div className="form-control w-full max-w-xs">
-      <label htmlFor="interestRate" className="label">
-        <span className="label-text">金利 (%)</span>
-      </label>
-      <input
-        id="interestRate"
-        type="number"
-        step="0.01"
-        {...register('interestRate', {
-          required: '金利は必須です',
-          min: { value: 0, message: '0以上の値を入力してください' },
-          valueAsNumber: true,
-        })}
-        className={`input input-bordered w-full max-w-xs ${errors.interestRate ? 'input-error' : ''}`}
+    <div className="space-y-2">
+      <Label htmlFor="interestRate" required>
+        金利
+      </Label>
+      <NumberInput
+        value={value}
+        onChange={handleChange}
+        placeholder="例: 1.5"
+        error={error}
+        min={0}
+        max={100}
+        step={0.01}
+        unit="%"
       />
-      {errors.interestRate && (
-        <p className="text-error text-xs mt-1">{errors.interestRate.message}</p>
-      )}
+      <p className="text-sm text-gray-600">
+        借入金利を年率で入力してください（例: 1.5%）
+      </p>
     </div>
   );
 };

@@ -1,42 +1,49 @@
-'use client';
+import React from 'react';
+import { NumberInput } from '@/components/atoms/NumberInput';
+import { Label } from '@/components/atoms/Label';
 
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { useSimulationStore, SimulationInput } from '@/store/useSimulationStore'; // useSimulationStore をインポート
-
-/**
- * @typedef {Object} LoanTermInputProps
- * @property {UseFormRegister<SimulationInput>} register - React Hook Form の register 関数
- * @property {FieldErrors<SimulationInput>} errors - React Hook Form の errors オブジェクト
- */
-interface LoanTermInputProps {
-  register: UseFormRegister<SimulationInput>;
-  errors: FieldErrors<SimulationInput>;
-}
+export type LoanTermInputProps = {
+  value: number;
+  onChange: (value: number) => void;
+  error?: string;
+};
 
 /**
- * ローン期間の入力コンポーネントです。
- * @param {LoanTermInputProps} props - コンポーネントのプロパティ
+ * 借入期間入力コンポーネント
+ * @param props - LoanTermInputProps
+ * @returns JSX.Element
  */
-export const LoanTermInput = ({ register, errors }: LoanTermInputProps) => {
-  const { setInput } = useSimulationStore(); // setInput を取得
+export const LoanTermInput: React.FC<LoanTermInputProps> = ({
+  value,
+  onChange,
+  error,
+}) => {
+  const handleChange = (inputValue: number | string) => {
+    if (typeof inputValue === 'number') {
+      onChange(inputValue);
+    } else if (inputValue === '') {
+      onChange(0);
+    }
+  };
 
   return (
-    <div className="form-control w-full max-w-xs">
-      <label htmlFor="loanTerm" className="label">
-        <span className="label-text">ローン期間 (年)</span>
-      </label>
-      <input
-        id="loanTerm"
-        type="number"
-        {...register('loanTerm', {
-          required: 'ローン期間は必須です',
-          min: { value: 1, message: '1年以上の値を入力してください' },
-          max: { value: 50, message: '50年以下の値を入力してください' },
-          valueAsNumber: true,
-        })}
-        className={`input input-bordered w-full max-w-xs ${errors.loanTerm ? 'input-error' : ''}`}
+    <div className="space-y-2">
+      <Label htmlFor="loanTerm" required>
+        借入期間
+      </Label>
+      <NumberInput
+        value={value}
+        onChange={handleChange}
+        placeholder="例: 30"
+        error={error}
+        min={1}
+        max={50}
+        step={1}
+        unit="年"
       />
-      {errors.loanTerm && <p className="text-error text-xs mt-1">{errors.loanTerm.message}</p>}
+      <p className="text-sm text-gray-600">
+        借入期間を年単位で入力してください
+      </p>
     </div>
   );
 };
