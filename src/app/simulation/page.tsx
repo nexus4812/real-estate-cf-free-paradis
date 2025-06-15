@@ -13,7 +13,7 @@ import { ManagementFeeRatioInput } from '@/components/molecules/ManagementFeeRat
 import { RepairCostRatioInput } from '@/components/molecules/RepairCostRatioInput';
 import { SimulationResult } from '@/components/organism/SimulationResult';
 import { SimulationChart } from '@/components/organism/SimulationChart';
-import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore';
+import { useSimulationStore, SimulationInput } from '@/store/useSimulationStore';
 
 /**
  * 不動産投資シミュレーションのメインページコンポーネントです。

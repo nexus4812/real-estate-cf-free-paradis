@@ -1,6 +1,6 @@
 'use client';
 
-import { useSimulationStore } from '@/store/usePropertyStore';
+import { useSimulationStore } from '@/store/useSimulationStore';
 import { ChangeEvent } from 'react';
 
 /**

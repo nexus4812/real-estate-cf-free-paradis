@@ -1,7 +1,7 @@
 'use client';
 
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore'; // useSimulationStore をインポート
+import { useSimulationStore, SimulationInput } from '@/store/useSimulationStore'; // useSimulationStore をインポート
 
 /**
  * @typedef {Object} LoanTermInputProps

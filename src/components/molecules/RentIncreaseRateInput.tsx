@@ -1,7 +1,7 @@
 'use client';
 
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { SimulationInput } from '@/store/usePropertyStore';
+import { SimulationInput } from '@/store/useSimulationStore';
 
 /**
  * @typedef {Object} RentIncreaseRateInputProps

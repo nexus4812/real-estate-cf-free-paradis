@@ -1,6 +1,6 @@
 import { PropertyInformation } from '@/components/organism/PropertyInformation';
 import { useForm } from 'react-hook-form';
-import { SimulationInput } from '@/store/usePropertyStore';
+import { SimulationInput } from '@/store/useSimulationStore';
 
 export const 物件情報 = () => {
   const {

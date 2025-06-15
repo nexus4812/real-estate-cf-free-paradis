@@ -14,7 +14,7 @@ import {
   Line,
   ComposedChart,
 } from 'recharts';
-import { useSimulationStore } from '@/store/usePropertyStore';
+import { useSimulationStore } from '@/store/useSimulationStore';
 
 /**
  * シミュレーションのグラフを表示するコンポーネント

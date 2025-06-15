@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler, UseFormRegister, FieldErrors } from 'react-hook-form';
-import { SimulationInput, useSimulationStore } from '@/store/usePropertyStore';
+import { SimulationInput, useSimulationStore } from '@/store/useSimulationStore';
 import PropertyPriceInput from '@/components/molecules/PropertyPriceInput';
 import { ReturnRateInput } from '@/components/molecules/ReturnRateInput';
 import { StructureInput } from '@/components/molecules/StructureInput';

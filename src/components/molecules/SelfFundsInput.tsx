@@ -1,7 +1,7 @@
 'use client';
 
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { useSimulationStore, SimulationInput } from '@/store/usePropertyStore';
+import { useSimulationStore, SimulationInput } from '@/store/useSimulationStore';
 
 /**
  * @typedef {Object} SelfFundsInputProps
