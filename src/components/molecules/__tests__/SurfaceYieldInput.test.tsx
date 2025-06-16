@@ -10,7 +10,7 @@ describe('SurfaceYieldInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<SurfaceYieldInput value={5.0} onChange={handleChange} />);
     const input = screen.getByLabelText('表面利回り');
     fireEvent.change(input, { target: { value: '6.5' } });
@@ -24,7 +24,7 @@ describe('SurfaceYieldInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<SurfaceYieldInput value={5.0} onChange={handleChange} />);
     const input = screen.getByLabelText('表面利回り');
     fireEvent.change(input, { target: { value: '' } });

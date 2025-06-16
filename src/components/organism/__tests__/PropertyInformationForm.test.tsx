@@ -8,11 +8,11 @@ describe('PropertyInformationForm', () => {
     structure: '鉄筋コンクリート造',
     constructionYear: 2000,
     buildingArea: 100,
-    onPropertyPriceChange: jest.fn(),
-    onSurfaceYieldChange: jest.fn(),
-    onStructureChange: jest.fn(),
-    onConstructionYearChange: jest.fn(),
-    onBuildingAreaChange: jest.fn(),
+    onPropertyPriceChange: vi.fn(),
+    onSurfaceYieldChange: vi.fn(),
+    onStructureChange: vi.fn(),
+    onConstructionYearChange: vi.fn(),
+    onBuildingAreaChange: vi.fn(),
     errors: {},
   };
 

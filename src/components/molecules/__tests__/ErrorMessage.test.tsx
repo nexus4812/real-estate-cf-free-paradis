@@ -3,8 +3,8 @@ import { ErrorMessage } from '../ErrorMessage';
 import { Icon } from '@/components/atoms/Icon'; // Iconコンポーネントをインポート
 
 // Iconコンポーネントをモック
-jest.mock('@/components/atoms/Icon', () => ({
-  Icon: jest.fn(({ name, size, color }) => (
+vi.mock('@/components/atoms/Icon', () => ({
+  Icon: vi.fn(({ name, size, color }) => (
     <span data-testid="mock-icon" data-name={name} data-size={size} data-color={color}>
       {name}
     </span>
@@ -13,7 +13,7 @@ jest.mock('@/components/atoms/Icon', () => ({
 
 describe('ErrorMessage', () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('正常にレンダリングされ、メッセージが表示される', () => {

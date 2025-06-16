@@ -9,7 +9,7 @@ describe('PropertyPriceInput', () => {
   });
 
   it('入力値が変更されたときにonChangeが正しく呼び出されること', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<PropertyPriceInput value={0} onChange={handleChange} />);
     const input = screen.getByLabelText('物件価格');
 

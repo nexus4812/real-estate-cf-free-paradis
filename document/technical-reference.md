@@ -678,7 +678,7 @@ describe('Button', () => {
   });
 
   it('クリックイベントが発火する', () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(<Button onClick={handleClick}>クリック</Button>);
 
     fireEvent.click(screen.getByRole('button'));
@@ -701,14 +701,14 @@ import { SimulationFormContainer } from '../SimulationFormContainer';
 import { useSimulationStore } from '@/store/useSimulationStore';
 
 // Zustand store をモック
-jest.mock('@/store/useSimulationStore');
+vi.mock('@/store/useSimulationStore');
 
 describe('SimulationFormContainer', () => {
-  const mockSetInput = jest.fn();
-  const mockRunSimulation = jest.fn();
+  const mockSetInput = vi.fn();
+  const mockRunSimulation = vi.fn();
 
   beforeEach(() => {
-    (useSimulationStore as jest.Mock).mockReturnValue({
+    (useSimulationStore as vi.mock).mockReturnValue({
       input: {
         propertyPrice: 30000000,
         surfaceYield: 5,

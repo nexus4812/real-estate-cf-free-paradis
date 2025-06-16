@@ -5,8 +5,8 @@ import { InterestRateInput } from '@/components/molecules/InterestRateInput';
 import { LoanTermInput } from '@/components/molecules/LoanTermInput';
 
 // Moleculeコンポーネントをモック
-jest.mock('@/components/molecules/SelfFundsInput', () => ({
-  SelfFundsInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/SelfFundsInput', () => ({
+  SelfFundsInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="selfFunds">自己資金</label>
       <input id="selfFunds" data-testid="selfFunds-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -15,8 +15,8 @@ jest.mock('@/components/molecules/SelfFundsInput', () => ({
   )),
 }));
 
-jest.mock('@/components/molecules/InterestRateInput', () => ({
-  InterestRateInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/InterestRateInput', () => ({
+  InterestRateInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="interestRate">金利</label>
       <input id="interestRate" data-testid="interestRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -25,8 +25,8 @@ jest.mock('@/components/molecules/InterestRateInput', () => ({
   )),
 }));
 
-jest.mock('@/components/molecules/LoanTermInput', () => ({
-  LoanTermInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/LoanTermInput', () => ({
+  LoanTermInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="loanTerm">借入期間</label>
       <input id="loanTerm" data-testid="loanTerm-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -40,14 +40,14 @@ describe('LoanConditionForm', () => {
     selfFunds: 5000000,
     interestRate: 1.5,
     loanTerm: 30,
-    onSelfFundsChange: jest.fn(),
-    onInterestRateChange: jest.fn(),
-    onLoanTermChange: jest.fn(),
+    onSelfFundsChange: vi.fn(),
+    onInterestRateChange: vi.fn(),
+    onLoanTermChange: vi.fn(),
     errors: {},
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('正常にレンダリングされる', () => {

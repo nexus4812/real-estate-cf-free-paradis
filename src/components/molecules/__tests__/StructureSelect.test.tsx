@@ -3,7 +3,7 @@ import { StructureSelect } from '../StructureSelect';
 import { allBuildingStructures } from '@/domain/property/buildingStructure';
 
 // allBuildingStructures をモック
-jest.mock('@/domain/property/buildingStructure', () => ({
+vi.mock('@/domain/property/buildingStructure', () => ({
   allBuildingStructures: [
     { label: () => 'RC' },
     { label: () => 'SRC' },
@@ -21,7 +21,7 @@ describe('StructureSelect', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     const options = allBuildingStructures.map((s) => ({ value: s.label(), label: s.label() }));
     render(<StructureSelect value="RC" onChange={handleChange} options={options} />);
     const select = screen.getByLabelText('建物構造');

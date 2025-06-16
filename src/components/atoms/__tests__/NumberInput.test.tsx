@@ -9,7 +9,7 @@ describe('NumberInput', () => {
   });
 
   it('値が変更されたときにonChangeが呼ばれる', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<NumberInput value={0} onChange={handleChange} />);
     const input = screen.getByRole('spinbutton');
     fireEvent.change(input, { target: { value: '456' } });
@@ -18,7 +18,7 @@ describe('NumberInput', () => {
   });
 
   it('無効な入力値の場合、onChangeに0が渡される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<NumberInput value={0} onChange={handleChange} />);
     const input = screen.getByRole('spinbutton');
     // input要素のvalueを明示的に設定することで、テストの安定性を向上
@@ -55,7 +55,7 @@ describe('NumberInput', () => {
   });
 
   it('無効な入力値の場合、onChangeに0が渡される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<NumberInput value={0} onChange={handleChange} />);
     const input = screen.getByRole('spinbutton');
     fireEvent.change(input, { target: { value: 'abc' } });

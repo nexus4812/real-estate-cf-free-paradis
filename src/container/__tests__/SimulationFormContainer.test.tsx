@@ -4,24 +4,24 @@ import { useSimulationStore } from '@/store/useSimulationStore';
 import { useForm } from 'react-hook-form';
 
 // useSimulationStoreのモック
-jest.mock('@/store/useSimulationStore', () => ({
-  useSimulationStore: jest.fn(),
+vi.mock('@/store/useSimulationStore', () => ({
+  useSimulationStore: vi.fn(),
 }));
 // useFormのモック
-jest.mock('react-hook-form');
+vi.mock('react-hook-form');
 
 describe('SimulationFormContainer', () => {
-  let mockSetInput: jest.Mock;
-  let mockRunSimulation: jest.Mock;
-  let mockUseForm: jest.MockedFunction<typeof useForm>;
+  let mockSetInput: vi.mock;
+  let mockRunSimulation: vi.mock;
+  let mockUseForm: vi.mockedFunction<typeof useForm>;
 
   beforeEach(() => {
-    mockSetInput = jest.fn();
-    mockRunSimulation = jest.fn();
-    mockUseForm = useForm as jest.MockedFunction<typeof useForm>;
+    mockSetInput = vi.fn();
+    mockRunSimulation = vi.fn();
+    mockUseForm = useForm as vi.mockedFunction<typeof useForm>;
 
     // useSimulationStoreのモック実装
-    (useSimulationStore as jest.Mock).mockImplementation(() => ({
+    (useSimulationStore as vi.mock).mockImplementation(() => ({
       input: {
         propertyPrice: 0,
         surfaceYield: 0,
@@ -44,15 +44,15 @@ describe('SimulationFormContainer', () => {
       error: null,
       setInput: mockSetInput,
       runSimulation: mockRunSimulation,
-      reset: jest.fn(),
+      reset: vi.fn(),
     }));
 
     // useFormのモック実装
     mockUseForm.mockReturnValue({
-      register: jest.fn(),
-      handleSubmit: jest.fn((fn) => fn),
+      register: vi.fn(),
+      handleSubmit: vi.fn((fn) => fn),
       formState: { errors: {} },
-      watch: jest.fn(() => ({
+      watch: vi.fn(() => ({
         propertyPrice: 0,
         surfaceYield: 0,
         structure: 'RC',
@@ -69,12 +69,12 @@ describe('SimulationFormContainer', () => {
         landPrice: 0,
         buildingPrice: 0,
       })),
-      setValue: jest.fn(),
+      setValue: vi.fn(),
     } as any);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('フォーム送信時にシミュレーションが実行される', async () => {
@@ -93,10 +93,10 @@ describe('SimulationFormContainer', () => {
 
     // useFormのwatchモックを更新
     mockUseForm.mockReturnValue({
-      register: jest.fn(),
-      handleSubmit: jest.fn((fn) => fn),
+      register: vi.fn(),
+      handleSubmit: vi.fn((fn) => fn),
       formState: { errors: {} },
-      watch: jest.fn(() => ({
+      watch: vi.fn(() => ({
         propertyPrice: 50000000,
         surfaceYield: 0,
         structure: 'RC',
@@ -113,7 +113,7 @@ describe('SimulationFormContainer', () => {
         landPrice: 0,
         buildingPrice: 0,
       })),
-      setValue: jest.fn(),
+      setValue: vi.fn(),
     } as any);
 
     const { rerender } = render(<SimulationFormContainer />);

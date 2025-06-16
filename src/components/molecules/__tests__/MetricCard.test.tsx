@@ -3,8 +3,8 @@ import { MetricCard } from '../MetricCard';
 import { Icon } from '@/components/atoms/Icon'; // Iconコンポーネントをインポート
 
 // Iconコンポーネントをモック
-jest.mock('@/components/atoms/Icon', () => ({
-  Icon: jest.fn(({ name, size, color }) => (
+vi.mock('@/components/atoms/Icon', () => ({
+  Icon: vi.fn(({ name, size, color }) => (
     <span data-testid="mock-icon" data-name={name} data-size={size} data-color={color}>
       {name}
     </span>
@@ -13,7 +13,7 @@ jest.mock('@/components/atoms/Icon', () => ({
 
 describe('MetricCard', () => {
   afterEach(() => {
-    jest.clearAllMocks(); // 各テスト後にモックの呼び出し履歴をクリア
+    vi.clearAllMocks(); // 各テスト後にモックの呼び出し履歴をクリア
   });
 
   it('正常にレンダリングされ、タイトル、値、単位が表示される', () => {

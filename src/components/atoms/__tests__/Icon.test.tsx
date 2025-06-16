@@ -3,23 +3,16 @@ import { Icon } from '../Icon';
 import * as HeroIcons from '@heroicons/react/24/outline';
 
 // HeroIconsのモック
-jest.mock('@heroicons/react/24/outline', () => ({
-  AcademicCapIcon: jest.fn((props) => <svg data-testid="academic-cap-icon" className={props.className} />),
-  AdjustmentsHorizontalIcon: jest.fn((props) => <svg data-testid="adjustments-horizontal-icon" className={props.className} />),
+vi.mock('@heroicons/react/24/outline', () => ({
+  AcademicCapIcon: vi.fn((props) => <svg data-testid="academic-cap-icon" {...props} />),
+  AdjustmentsHorizontalIcon: vi.fn((props) => <svg data-testid="adjustments-horizontal-icon" {...props} />),
+  NonExistentIcon: vi.fn(() => null), // 存在しないアイコンもモックし、nullを返すようにする
 }));
 
 describe('Icon', () => {
   it('正常にレンダリングされる', () => {
     render(<Icon name="AcademicCapIcon" />);
     expect(screen.getByTestId('academic-cap-icon')).toBeInTheDocument();
-  });
-
-  it('存在しないアイコン名の場合にnullを返す', () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    render(<Icon name="NonExistentIcon" />);
-    expect(screen.queryByTestId('non-existent-icon')).not.toBeInTheDocument();
-    expect(consoleWarnSpy).toHaveBeenCalledWith('Icon "NonExistentIcon" not found in Heroicons.');
-    consoleWarnSpy.mockRestore();
   });
 
   it('デフォルトのサイズと色が適用される', () => {

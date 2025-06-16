@@ -19,7 +19,7 @@ describe('SelectInput', () => {
   });
 
   it('値が変更されたときにonChangeが呼ばれる', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<SelectInput value="option1" onChange={handleChange} options={options} />);
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: 'option2' } });

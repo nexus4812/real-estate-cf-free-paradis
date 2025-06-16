@@ -4,8 +4,8 @@ import { ManagementFeeRatioInput } from '@/components/molecules/ManagementFeeRat
 import { RepairCostRatioInput } from '@/components/molecules/RepairCostRatioInput';
 
 // Moleculeコンポーネントをモック
-jest.mock('@/components/molecules/ManagementFeeRatioInput', () => ({
-  ManagementFeeRatioInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/ManagementFeeRatioInput', () => ({
+  ManagementFeeRatioInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="managementFeeRatio">管理費率</label>
       <input id="managementFeeRatio" data-testid="managementFeeRatio-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -14,8 +14,8 @@ jest.mock('@/components/molecules/ManagementFeeRatioInput', () => ({
   )),
 }));
 
-jest.mock('@/components/molecules/RepairCostRatioInput', () => ({
-  RepairCostRatioInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/RepairCostRatioInput', () => ({
+  RepairCostRatioInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="repairCostRatio">修繕費率</label>
       <input id="repairCostRatio" data-testid="repairCostRatio-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -28,13 +28,13 @@ describe('CostConditionForm', () => {
   const defaultProps = {
     managementFeeRatio: 5.0,
     repairCostRatio: 1.0,
-    onManagementFeeRatioChange: jest.fn(),
-    onRepairCostRatioChange: jest.fn(),
+    onManagementFeeRatioChange: vi.fn(),
+    onRepairCostRatioChange: vi.fn(),
     errors: {},
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('正常にレンダリングされる', () => {

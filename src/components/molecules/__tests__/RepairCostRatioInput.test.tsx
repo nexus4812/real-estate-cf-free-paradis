@@ -10,7 +10,7 @@ describe('RepairCostRatioInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<RepairCostRatioInput value={1.0} onChange={handleChange} />);
     const input = screen.getByLabelText('修繕費率');
     fireEvent.change(input, { target: { value: '0.8' } });
@@ -24,7 +24,7 @@ describe('RepairCostRatioInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<RepairCostRatioInput value={1.0} onChange={handleChange} />);
     const input = screen.getByLabelText('修繕費率');
     fireEvent.change(input, { target: { value: '' } });

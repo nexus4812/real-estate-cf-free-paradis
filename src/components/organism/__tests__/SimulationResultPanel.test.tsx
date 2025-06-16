@@ -7,28 +7,28 @@ import { MetricCard } from '@/components/molecules/MetricCard';
 import { Card } from '@/components/atoms/Card';
 
 // Moleculeコンポーネントをモック
-jest.mock('@/components/molecules/LoadingSpinner', () => ({
-  LoadingSpinner: jest.fn(({ message }) => <div data-testid="loading-spinner">{message}</div>),
+vi.mock('@/components/molecules/LoadingSpinner', () => ({
+  LoadingSpinner: vi.fn(({ message }) => <div data-testid="loading-spinner">{message}</div>),
 }));
-jest.mock('@/components/molecules/ErrorMessage', () => ({
-  ErrorMessage: jest.fn(({ message }) => <div data-testid="error-message">{message}</div>),
+vi.mock('@/components/molecules/ErrorMessage', () => ({
+  ErrorMessage: vi.fn(({ message }) => <div data-testid="error-message">{message}</div>),
 }));
-jest.mock('@/components/molecules/ResultSummary', () => ({
-  ResultSummary: jest.fn(({ totalPayment, initialIncome, cashFlow, yield: yieldValue }) => (
+vi.mock('@/components/molecules/ResultSummary', () => ({
+  ResultSummary: vi.fn(({ totalPayment, initialIncome, cashFlow, yield: yieldValue }) => (
     <div data-testid="result-summary">
       Summary: {totalPayment}, {initialIncome}, {cashFlow}, {yieldValue}
     </div>
   )),
 }));
-jest.mock('@/components/molecules/MetricCard', () => ({
-  MetricCard: jest.fn(({ title, value, unit }) => (
+vi.mock('@/components/molecules/MetricCard', () => ({
+  MetricCard: vi.fn(({ title, value, unit }) => (
     <div data-testid="metric-card">
       {title}: {value} {unit}
     </div>
   )),
 }));
-jest.mock('@/components/atoms/Card', () => ({
-  Card: jest.fn(({ children }) => <div data-testid="card">{children}</div>),
+vi.mock('@/components/atoms/Card', () => ({
+  Card: vi.fn(({ children }) => <div data-testid="card">{children}</div>),
 }));
 
 describe('SimulationResultPanel', () => {
@@ -55,7 +55,7 @@ describe('SimulationResultPanel', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('loadingがtrueの場合、LoadingSpinnerが表示される', () => {

@@ -10,7 +10,7 @@ describe('InterestRateInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<InterestRateInput value={1.5} onChange={handleChange} />);
     const input = screen.getByLabelText('金利');
     fireEvent.change(input, { target: { value: '2.0' } });
@@ -24,7 +24,7 @@ describe('InterestRateInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<InterestRateInput value={1.5} onChange={handleChange} />);
     const input = screen.getByLabelText('金利');
     fireEvent.change(input, { target: { value: '' } });

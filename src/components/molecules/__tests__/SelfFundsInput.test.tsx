@@ -10,7 +10,7 @@ describe('SelfFundsInput', () => {
   });
 
   it('onChangeイベントが正しく発火し、万円から円に変換される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<SelfFundsInput value={5000000} onChange={handleChange} />);
     const input = screen.getByLabelText('自己資金');
     fireEvent.change(input, { target: { value: '600' } });
@@ -24,7 +24,7 @@ describe('SelfFundsInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<SelfFundsInput value={5000000} onChange={handleChange} />);
     const input = screen.getByLabelText('自己資金');
     fireEvent.change(input, { target: { value: '' } });

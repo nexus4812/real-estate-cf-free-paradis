@@ -8,7 +8,7 @@ describe('Button', () => {
   });
 
   it('クリックイベントが発火する', () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(<Button onClick={handleClick}>クリック</Button>);
 
     fireEvent.click(screen.getByRole('button'));

@@ -12,7 +12,7 @@ describe('ConstructionYearInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<ConstructionYearInput value={2020} onChange={handleChange} />);
     const input = screen.getByLabelText('築年');
     fireEvent.change(input, { target: { value: '2021' } });
@@ -26,7 +26,7 @@ describe('ConstructionYearInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<ConstructionYearInput value={2020} onChange={handleChange} />);
     const input = screen.getByLabelText('築年');
     fireEvent.change(input, { target: { value: '' } });

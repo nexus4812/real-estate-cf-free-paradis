@@ -10,7 +10,7 @@ describe('VacancyRateInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<VacancyRateInput value={5.0} onChange={handleChange} />);
     const input = screen.getByLabelText('空室率');
     fireEvent.change(input, { target: { value: '6.5' } });
@@ -24,7 +24,7 @@ describe('VacancyRateInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<VacancyRateInput value={5.0} onChange={handleChange} />);
     const input = screen.getByLabelText('空室率');
     fireEvent.change(input, { target: { value: '' } });

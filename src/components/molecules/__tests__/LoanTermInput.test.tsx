@@ -10,7 +10,7 @@ describe('LoanTermInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<LoanTermInput value={30} onChange={handleChange} />);
     const input = screen.getByLabelText('借入期間');
     fireEvent.change(input, { target: { value: '35' } });
@@ -24,7 +24,7 @@ describe('LoanTermInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<LoanTermInput value={30} onChange={handleChange} />);
     const input = screen.getByLabelText('借入期間');
     fireEvent.change(input, { target: { value: '' } });

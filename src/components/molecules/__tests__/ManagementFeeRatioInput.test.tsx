@@ -10,7 +10,7 @@ describe('ManagementFeeRatioInput', () => {
   });
 
   it('onChangeイベントが正しく発火する', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<ManagementFeeRatioInput value={5.0} onChange={handleChange} />);
     const input = screen.getByLabelText('管理費率');
     fireEvent.change(input, { target: { value: '6.5' } });
@@ -24,7 +24,7 @@ describe('ManagementFeeRatioInput', () => {
   });
 
   it('valueが空文字列の場合、onChangeが0で呼び出される', () => {
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
     render(<ManagementFeeRatioInput value={5.0} onChange={handleChange} />);
     const input = screen.getByLabelText('管理費率');
     fireEvent.change(input, { target: { value: '' } });

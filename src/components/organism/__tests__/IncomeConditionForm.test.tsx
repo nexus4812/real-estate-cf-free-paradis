@@ -4,8 +4,8 @@ import { VacancyRateInput } from '@/components/molecules/VacancyRateInput';
 import { RentIncreaseRateInput } from '@/components/molecules/RentIncreaseRateInput';
 
 // Moleculeコンポーネントをモック
-jest.mock('@/components/molecules/VacancyRateInput', () => ({
-  VacancyRateInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/VacancyRateInput', () => ({
+  VacancyRateInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="vacancyRate">空室率</label>
       <input id="vacancyRate" data-testid="vacancyRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -14,8 +14,8 @@ jest.mock('@/components/molecules/VacancyRateInput', () => ({
   )),
 }));
 
-jest.mock('@/components/molecules/RentIncreaseRateInput', () => ({
-  RentIncreaseRateInput: jest.fn(({ value, onChange, error }) => (
+vi.mock('@/components/molecules/RentIncreaseRateInput', () => ({
+  RentIncreaseRateInput: vi.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="rentIncreaseRate">家賃上昇率</label>
       <input id="rentIncreaseRate" data-testid="rentIncreaseRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
@@ -28,13 +28,13 @@ describe('IncomeConditionForm', () => {
   const defaultProps = {
     vacancyRate: 5.0,
     rentIncreaseRate: 1.0,
-    onVacancyRateChange: jest.fn(),
-    onRentIncreaseRateChange: jest.fn(),
+    onVacancyRateChange: vi.fn(),
+    onRentIncreaseRateChange: vi.fn(),
     errors: {},
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('正常にレンダリングされる', () => {
