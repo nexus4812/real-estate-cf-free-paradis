@@ -9,7 +9,7 @@ jest.mock('@/components/molecules/SelfFundsInput', () => ({
   SelfFundsInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="selfFunds">自己資金</label>
-      <input data-testid="selfFunds-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="selfFunds" data-testid="selfFunds-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="selfFunds-error">{error}</span>}
     </div>
   )),
@@ -19,7 +19,7 @@ jest.mock('@/components/molecules/InterestRateInput', () => ({
   InterestRateInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="interestRate">金利</label>
-      <input data-testid="interestRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="interestRate" data-testid="interestRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="interestRate-error">{error}</span>}
     </div>
   )),
@@ -29,7 +29,7 @@ jest.mock('@/components/molecules/LoanTermInput', () => ({
   LoanTermInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="loanTerm">借入期間</label>
-      <input data-testid="loanTerm-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="loanTerm" data-testid="loanTerm-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="loanTerm-error">{error}</span>}
     </div>
   )),

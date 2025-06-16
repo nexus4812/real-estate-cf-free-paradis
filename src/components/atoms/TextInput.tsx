@@ -1,6 +1,7 @@
 import React from 'react';
 
 export type TextInputProps = {
+  id?: string; // idを追加
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -15,6 +16,7 @@ export type TextInputProps = {
  * @returns JSX.Element
  */
 export const TextInput: React.FC<TextInputProps> = ({
+  id, // idを追加
   value,
   onChange,
   placeholder,
@@ -29,6 +31,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   return (
     <div className="relative">
       <input
+        id={id} // idをinput要素に渡す
         type={type}
         value={value}
         onChange={handleChange}

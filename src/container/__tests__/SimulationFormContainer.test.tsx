@@ -4,7 +4,9 @@ import { useSimulationStore } from '@/store/useSimulationStore';
 import { useForm } from 'react-hook-form';
 
 // useSimulationStoreのモック
-jest.mock('@/store/useSimulationStore');
+jest.mock('@/store/useSimulationStore', () => ({
+  useSimulationStore: jest.fn(),
+}));
 // useFormのモック
 jest.mock('react-hook-form');
 
@@ -19,7 +21,7 @@ describe('SimulationFormContainer', () => {
     mockUseForm = useForm as jest.MockedFunction<typeof useForm>;
 
     // useSimulationStoreのモック実装
-    (useSimulationStore as jest.Mock).mockReturnValue({
+    (useSimulationStore as jest.Mock).mockImplementation(() => ({
       input: {
         propertyPrice: 0,
         surfaceYield: 0,
@@ -43,7 +45,7 @@ describe('SimulationFormContainer', () => {
       setInput: mockSetInput,
       runSimulation: mockRunSimulation,
       reset: jest.fn(),
-    });
+    }));
 
     // useFormのモック実装
     mockUseForm.mockReturnValue({
@@ -87,9 +89,7 @@ describe('SimulationFormContainer', () => {
   });
 
   it('入力値が変更されたときにsetInputが呼び出されること', async () => {
-    // useSimulationStoreのsetInputモックを取得
-    // useSimulationStoreがモックされているため、mock.results[0].valueで取得
-    const { setInput } = (useSimulationStore as jest.Mock).mock.results[0].value;
+    // useSimulationStoreのsetInputモックはbeforeEachで定義済み
 
     // useFormのwatchモックを更新
     mockUseForm.mockReturnValue({
@@ -121,7 +121,7 @@ describe('SimulationFormContainer', () => {
     rerender(<SimulationFormContainer />); // コンポーネントを再レンダリングしてuseEffectをトリガー
 
     await waitFor(() => {
-      expect(setInput).toHaveBeenCalledWith(
+      expect(mockSetInput).toHaveBeenCalledWith(
         expect.objectContaining({ propertyPrice: 50000000 })
       );
     });

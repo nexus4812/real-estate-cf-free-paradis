@@ -8,7 +8,7 @@ jest.mock('@/components/molecules/VacancyRateInput', () => ({
   VacancyRateInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="vacancyRate">空室率</label>
-      <input data-testid="vacancyRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="vacancyRate" data-testid="vacancyRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="vacancyRate-error">{error}</span>}
     </div>
   )),
@@ -18,7 +18,7 @@ jest.mock('@/components/molecules/RentIncreaseRateInput', () => ({
   RentIncreaseRateInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="rentIncreaseRate">家賃上昇率</label>
-      <input data-testid="rentIncreaseRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="rentIncreaseRate" data-testid="rentIncreaseRate-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="rentIncreaseRate-error">{error}</span>}
     </div>
   )),

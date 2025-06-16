@@ -1,6 +1,7 @@
 import React from 'react';
 
 export type NumberInputProps = {
+  id?: string; // idを追加
   value: number | string; // stringも許容
   onChange: (value: number | string) => void; // stringも許容
   placeholder?: string;
@@ -18,6 +19,7 @@ export type NumberInputProps = {
  * @returns JSX.Element
  */
 export const NumberInput: React.FC<NumberInputProps> = ({
+  id, // idを追加
   value,
   onChange,
   placeholder,
@@ -41,6 +43,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
   return (
     <div className="relative">
       <input
+        id={id} // idをinput要素に渡す
         type="number"
         value={value} // valueを直接使用
         onChange={handleChange}

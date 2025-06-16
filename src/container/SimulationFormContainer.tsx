@@ -41,7 +41,7 @@ export const SimulationFormContainer: React.FC<SimulationFormContainerProps> = (
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" role="form">
       <PropertyInformationForm
         propertyPrice={input.propertyPrice}
         surfaceYield={input.surfaceYield}

@@ -32,6 +32,7 @@ export const VacancyRateInput: React.FC<VacancyRateInputProps> = ({
         空室率
       </Label>
       <NumberInput
+        id="vacancyRate" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 5.0"

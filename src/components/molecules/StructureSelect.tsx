@@ -36,9 +36,8 @@ export const StructureSelect: React.FC<StructureSelectProps> = ({
         onChange={onChange}
         options={options}
         placeholder="選択してください"
-        error={error}
-      />
-      {error && <p className="error-text">{error}</p>}
+      error={error}
+    />
     </div>
   );
 };

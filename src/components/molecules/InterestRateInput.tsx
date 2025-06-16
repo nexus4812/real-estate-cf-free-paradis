@@ -32,6 +32,7 @@ export const InterestRateInput: React.FC<InterestRateInputProps> = ({
         金利
       </Label>
       <NumberInput
+        id="interestRate" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 1.5"

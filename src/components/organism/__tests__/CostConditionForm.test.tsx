@@ -8,7 +8,7 @@ jest.mock('@/components/molecules/ManagementFeeRatioInput', () => ({
   ManagementFeeRatioInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="managementFeeRatio">管理費率</label>
-      <input data-testid="managementFeeRatio-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="managementFeeRatio" data-testid="managementFeeRatio-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="managementFeeRatio-error">{error}</span>}
     </div>
   )),
@@ -18,7 +18,7 @@ jest.mock('@/components/molecules/RepairCostRatioInput', () => ({
   RepairCostRatioInput: jest.fn(({ value, onChange, error }) => (
     <div>
       <label htmlFor="repairCostRatio">修繕費率</label>
-      <input data-testid="repairCostRatio-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+      <input id="repairCostRatio" data-testid="repairCostRatio-input" value={value} onChange={(e) => onChange(Number(e.target.value))} />
       {error && <span data-testid="repairCostRatio-error">{error}</span>}
     </div>
   )),

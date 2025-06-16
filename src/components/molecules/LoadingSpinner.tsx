@@ -25,11 +25,12 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     sm: 'sm',
     md: 'base',
     lg: 'lg',
-  };
+  } as const; // as const を追加
 
   return (
     <div className="flex flex-col items-center justify-center space-y-2">
       <div
+        role="status" // roleを追加
         className={`
           animate-spin rounded-full border-t-blue-500 border-solid
           ${spinnerSizeClass}

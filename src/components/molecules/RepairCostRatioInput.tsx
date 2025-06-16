@@ -32,6 +32,7 @@ export const RepairCostRatioInput: React.FC<RepairCostRatioInputProps> = ({
         修繕費率
       </Label>
       <NumberInput
+        id="repairCostRatio" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 1.0"

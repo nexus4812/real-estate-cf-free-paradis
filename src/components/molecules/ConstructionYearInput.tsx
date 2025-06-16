@@ -36,6 +36,7 @@ export const ConstructionYearInput: React.FC<ConstructionYearInputProps> = ({
         築年
       </Label>
       <NumberInput
+        id="constructionYear" // idを追加
         value={value}
         onChange={handleChange}
         placeholder={`例: ${currentYear - 10}`}

@@ -49,7 +49,7 @@ describe('MetricCard', () => {
 
   it('loadingがtrueの場合、ローディング状態が表示される', () => {
     render(<MetricCard title="総資産" value={0} unit="円" loading={true} />);
-    expect(screen.getByRole('article')).toHaveClass('animate-pulse'); // Cardコンポーネントがarticleロールを持つと仮定
+    expect(screen.getByTestId('card')).toHaveClass('animate-pulse');
     expect(screen.queryByText('総資産')).not.toBeInTheDocument();
     expect(screen.queryByText('円')).not.toBeInTheDocument();
   });

@@ -35,6 +35,7 @@ export const SelfFundsInput: React.FC<SelfFundsInputProps> = ({
         自己資金
       </Label>
       <NumberInput
+        id="selfFunds" // idを追加
         value={displayValue}
         onChange={handleChange}
         placeholder="例: 500"

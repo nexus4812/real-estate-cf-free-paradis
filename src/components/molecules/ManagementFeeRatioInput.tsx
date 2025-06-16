@@ -32,6 +32,7 @@ export const ManagementFeeRatioInput: React.FC<ManagementFeeRatioInputProps> = (
         管理費率
       </Label>
       <NumberInput
+        id="managementFeeRatio" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 5.0"

@@ -36,6 +36,7 @@ export const PropertyPriceInput: React.FC<PropertyPriceInputProps> = ({
         物件価格
       </Label>
       <NumberInput
+        id="propertyPrice" // idを追加
         value={displayValue}
         onChange={handleChange}
         placeholder="例: 3000"

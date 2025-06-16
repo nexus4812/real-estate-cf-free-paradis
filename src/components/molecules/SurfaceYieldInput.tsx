@@ -32,6 +32,7 @@ export const SurfaceYieldInput: React.FC<SurfaceYieldInputProps> = ({
         表面利回り
       </Label>
       <NumberInput
+        id="surfaceYield" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 5.0"

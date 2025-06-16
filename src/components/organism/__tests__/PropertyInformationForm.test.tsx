@@ -5,7 +5,7 @@ describe('PropertyInformationForm', () => {
   const defaultProps = {
     propertyPrice: 30000000,
     surfaceYield: 5,
-    structure: 'RC',
+    structure: '鉄筋コンクリート造',
     constructionYear: 2000,
     buildingArea: 100,
     onPropertyPriceChange: jest.fn(),
@@ -22,7 +22,7 @@ describe('PropertyInformationForm', () => {
     expect(screen.getByLabelText('物件価格')).toBeInTheDocument();
     expect(screen.getByLabelText('表面利回り')).toBeInTheDocument();
     expect(screen.getByLabelText('建物構造')).toBeInTheDocument();
-    expect(screen.getByLabelText('築年数')).toBeInTheDocument();
+    expect(screen.getByLabelText('築年')).toBeInTheDocument(); // 築年数から築年に変更
     expect(screen.getByLabelText('建物面積')).toBeInTheDocument();
   });
 
@@ -31,8 +31,8 @@ describe('PropertyInformationForm', () => {
 
     expect(screen.getByLabelText('物件価格')).toHaveValue(3000); // 万円
     expect(screen.getByLabelText('表面利回り')).toHaveValue(5);
-    expect(screen.getByLabelText('建物構造')).toHaveValue('RC');
-    expect(screen.getByLabelText('築年数')).toHaveValue(2000);
+    expect(screen.getByLabelText('建物構造')).toHaveValue('鉄筋コンクリート造');
+    expect(screen.getByLabelText('築年')).toHaveValue(2000); // 築年数から築年に変更
     expect(screen.getByLabelText('建物面積')).toHaveValue(100);
   });
 
@@ -48,10 +48,10 @@ describe('PropertyInformationForm', () => {
     expect(defaultProps.onSurfaceYieldChange).toHaveBeenCalledWith(6);
 
     const structureSelect = screen.getByLabelText('建物構造');
-    fireEvent.change(structureSelect, { target: { value: 'Steel' } });
-    expect(defaultProps.onStructureChange).toHaveBeenCalledWith('Steel');
+    fireEvent.change(structureSelect, { target: { value: '鉄骨造' } }); // Steelから鉄骨造に変更
+    expect(defaultProps.onStructureChange).toHaveBeenCalledWith('鉄骨造'); // Steelから鉄骨造に変更
 
-    const constructionYearInput = screen.getByLabelText('築年数');
+    const constructionYearInput = screen.getByLabelText('築年'); // 築年数から築年に変更
     fireEvent.change(constructionYearInput, { target: { value: '2010' } });
     expect(defaultProps.onConstructionYearChange).toHaveBeenCalledWith(2010);
 

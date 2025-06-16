@@ -37,7 +37,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   }[type];
 
   return (
-    <div className={`flex items-center p-3 rounded-md ${textColor} bg-${type}-50`}>
+    <div role="alert" className={`flex items-center p-3 rounded-md ${textColor} bg-${type}-50`}>
       {iconName && <Icon name={iconName as any} size="md" color={iconColor as any} className="mr-2" />}
       <Text size="sm" className="font-medium">
         {message}

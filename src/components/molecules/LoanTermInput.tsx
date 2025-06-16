@@ -32,6 +32,7 @@ export const LoanTermInput: React.FC<LoanTermInputProps> = ({
         借入期間
       </Label>
       <NumberInput
+        id="loanTerm" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 30"

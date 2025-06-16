@@ -32,6 +32,7 @@ export const RentIncreaseRateInput: React.FC<RentIncreaseRateInputProps> = ({
         家賃上昇率
       </Label>
       <NumberInput
+        id="rentIncreaseRate" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 1.0"

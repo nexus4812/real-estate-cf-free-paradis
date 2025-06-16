@@ -32,6 +32,7 @@ export const BuildingAreaInput: React.FC<BuildingAreaInputProps> = ({
         建物面積
       </Label>
       <NumberInput
+        id="buildingArea" // idを追加
         value={value}
         onChange={handleChange}
         placeholder="例: 100"
