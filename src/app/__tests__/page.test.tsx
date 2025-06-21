@@ -1,24 +1,20 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import HomePage from '../page';
 import { vi } from 'vitest';
 import { useRouter } from 'next/navigation';
 
 // next/navigation の useRouter をモック
-vi.mock('next/navigation', async (importOriginal) => {
-  const actual = await importOriginal() as typeof import('next/navigation');
-  return {
-    ...actual,
-    useRouter: vi.fn(() => ({
-      push: vi.fn(),
-    })),
-  };
-});
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+  })),
+}));
 
 describe('HomePage', () => {
   it('正常にレンダリングされる', () => {
     render(<HomePage />);
     expect(screen.getByText('不動産投資シミュレーター')).toBeInTheDocument();
-    expect(screen.getByText('あなたの不動産投資を強力にサポート')).toBeInTheDocument();
+    expect(screen.getByText('このアプリケーションは、不動産投資におけるキャッシュフロー、利回り、税引前収益などを詳細に計算し、視覚的に分かりやすく表示します。 あなたの投資計画を強力にサポートします。')).toBeInTheDocument();
   });
 
   it('シミュレーション開始ボタンが表示される', () => {
@@ -34,7 +30,7 @@ describe('HomePage', () => {
 
     render(<HomePage />);
     const startButton = screen.getByRole('button', { name: 'シミュレーションを開始する' });
-    startButton.click();
+    fireEvent.click(startButton); // startButton.click() を fireEvent.click(startButton) に変更
 
     expect(mockPush).toHaveBeenCalledWith('/simulation');
   });

@@ -4,10 +4,8 @@ import { useSimulationStore } from '@/store/useSimulationStore';
 import { vi } from 'vitest';
 
 // Zustand store をモック
-vi.mock('@/store/useSimulationStore', async (importOriginal) => {
-  const actual = await importOriginal();
+vi.mock('@/store/useSimulationStore', () => {
   return {
-    ...actual,
     useSimulationStore: vi.fn(),
   };
 });
@@ -46,11 +44,6 @@ describe('SimulationResultContainer', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
-    (useSimulationStore as vi.Mock).mockReturnValue({
-      results: null,
-      loading: false,
-      error: null,
-    });
   });
 
   it('ローディング状態のときにローディングスピナーが表示される', () => {
@@ -61,6 +54,7 @@ describe('SimulationResultContainer', () => {
     });
     render(<SimulationResultContainer />);
     expect(screen.getByText('シミュレーション結果を計算中...')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument(); // LoadingSpinnerのrole="status"を期待
   });
 
   it('エラー状態のときにエラーメッセージが表示される', () => {
@@ -75,7 +69,11 @@ describe('SimulationResultContainer', () => {
 
   it('結果があるときに各Organismコンポーネントがレンダリングされる', async () => {
     (useSimulationStore as vi.Mock).mockReturnValue({
-      results: mockSimulationResults,
+      results: {
+        ...mockSimulationResults,
+        annualCashFlow: [{ year: 1, value: 100 }], // モックデータを追加
+        annualBalances: [{ year: 1, value: 100 }], // モックデータを追加
+      },
       loading: false,
       error: null,
     });
@@ -90,6 +88,11 @@ describe('SimulationResultContainer', () => {
   });
 
   it('結果がない場合は何も表示されない', () => {
+    (useSimulationStore as vi.Mock).mockReturnValue({ // resultsがnullの場合を明示的にモック
+      results: null,
+      loading: false,
+      error: null,
+    });
     render(<SimulationResultContainer />);
     expect(screen.queryByText('Mock SimulationResultPanel')).not.toBeInTheDocument();
     expect(screen.queryByText('Mock CashFlowChart')).not.toBeInTheDocument();
@@ -98,4 +101,3 @@ describe('SimulationResultContainer', () => {
     expect(screen.queryByText('シミュレーション結果を計算中...')).not.toBeInTheDocument();
     expect(screen.queryByText('シミュレーション中にエラーが発生しました。')).not.toBeInTheDocument();
   });
-});

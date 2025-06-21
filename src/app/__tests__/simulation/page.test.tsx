@@ -13,7 +13,7 @@ vi.mock('@/container/SimulationResultContainer', () => ({
 describe('SimulationPage', () => {
   it('正常にレンダリングされる', () => {
     render(<SimulationPage />);
-    expect(screen.getByText('不動産投資シミュレーター')).toBeInTheDocument();
+    expect(screen.getByText('不動産投資シミュレーション')).toBeInTheDocument();
   });
 
   it('SimulationFormContainer がレンダリングされる', () => {

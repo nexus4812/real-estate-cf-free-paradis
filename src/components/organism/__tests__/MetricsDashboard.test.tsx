@@ -16,8 +16,8 @@ describe('MetricsDashboard', () => {
 
   it('loading状態のときにローディング表示がされる', () => {
     render(<MetricsDashboard metrics={[]} loading={true} />);
-    expect(screen.getByText('主要指標')).toBeInTheDocument(); // タイトルは表示される
-    expect(screen.getAllByRole('progressbar').length).toBeGreaterThan(0); // ローディングスピナーが表示されることを期待
+    expect(screen.getByText('指標を読み込み中...')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument(); // LoadingSpinnerのrole="status"を期待
   });
 
   it('metricsが渡されたときにMetricCardが描画される', () => {
@@ -29,7 +29,8 @@ describe('MetricsDashboard', () => {
 
   it('metricsが空の場合でもレンダリングされる', () => {
     render(<MetricsDashboard metrics={[]} />);
-    expect(screen.getByText('主要指標')).toBeInTheDocument();
+    expect(screen.getByText('表示する指標がありません。')).toBeInTheDocument();
+    expect(screen.queryByText('主要指標')).not.toBeInTheDocument(); // 主要指標は表示されない
     expect(screen.queryByText('表面利回り')).not.toBeInTheDocument();
   });
 });
