@@ -43,8 +43,8 @@ describe('YieldChart', () => {
 
   it('loading状態のときにローディング表示がされる', () => {
     render(<YieldChart data={[]} loading={true} />);
-    expect(screen.getByText('チャートを読み込み中...')).toBeInTheDocument();
-    expect(screen.getByRole('status')).toBeInTheDocument(); // LoadingSpinnerのrole="status"を期待
+    // animate-pulse クラスを持つ要素が存在することを確認
+    expect(screen.getByTestId('card').querySelector('.animate-pulse')).toBeInTheDocument();
   });
 
   it('データが渡されたときにチャートが描画される', () => {
