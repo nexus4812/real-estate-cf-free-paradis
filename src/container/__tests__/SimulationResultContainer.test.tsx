@@ -28,15 +28,21 @@ describe('SimulationResultContainer', () => {
   const mockSimulationResults = {
     annualCashFlow: [],
     annualBalances: [],
+    grossYields: [], // 追加
+    realYields: [], // 追加
+    preTaxCashFlows: [], // 追加
+    taxableIncomes: [], // 追加
+    totalPaymentAmount: 0, // 追加
+    initialAnnualIncome: 0, // 追加
+    finalAssetValue: 0, // 追加
     metrics: {
-      totalInvestment: 1000,
-      initialCashFlow: 10,
-      surfaceYield: 5,
-      netOperatingIncome: 50,
-      cashOnCashReturn: 10,
-      debtServiceCoverageRatio: 1.2,
-      loanBalance: 900,
-      cumulativeCashFlow: 100,
+      initialInvestment: 1000,
+      totalIncome: 100,
+      totalExpense: 50,
+      netProfit: 50,
+      cashFlow: 50,
+      yield: 5,
+      roi: 10,
       irr: 0.1,
       npv: 200,
     },
@@ -71,8 +77,15 @@ describe('SimulationResultContainer', () => {
     (useSimulationStore as vi.Mock).mockReturnValue({
       results: {
         ...mockSimulationResults,
-        annualCashFlow: [{ year: 1, value: 100 }], // モックデータを追加
-        annualBalances: [{ year: 1, value: 100 }], // モックデータを追加
+        annualCashFlow: [{ year: 1, value: 100 }],
+        annualBalances: [{ year: 1, value: 100 }],
+        grossYields: [{ year: 1, value: 5.0 }], // 追加
+        realYields: [{ year: 1, value: 4.5 }], // 追加
+        preTaxCashFlows: [{ year: 1, value: 80 }], // 追加
+        taxableIncomes: [{ year: 1, value: 70 }], // 追加
+        totalPaymentAmount: 10000, // 追加
+        initialAnnualIncome: 120, // 追加
+        finalAssetValue: 5000, // 追加
       },
       loading: false,
       error: null,
@@ -101,3 +114,4 @@ describe('SimulationResultContainer', () => {
     expect(screen.queryByText('シミュレーション結果を計算中...')).not.toBeInTheDocument();
     expect(screen.queryByText('シミュレーション中にエラーが発生しました。')).not.toBeInTheDocument();
   });
+});

@@ -9,7 +9,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Card } from '@/components/atoms/Card'; // Cardコンポーネントをインポート
+import { Card } from '@/components/atoms/Card';
+import { LoadingSpinner } from '@/components/molecules/LoadingSpinner'; // LoadingSpinnerをインポート
 
 import { ChartData } from '@/types/chart';
 
@@ -31,9 +32,8 @@ export const CashFlowChart: React.FC<CashFlowChartProps> = ({
 }) => {
   if (loading) {
     return (
-      <Card className="animate-pulse">
-        <div className="h-8 bg-gray-200 rounded mb-4"></div>
-        <div className={`h-${height} bg-gray-200 rounded`}></div>
+      <Card className="flex items-center justify-center h-full min-h-[400px]">
+        <LoadingSpinner message="チャートを読み込み中..." />
       </Card>
     );
   }

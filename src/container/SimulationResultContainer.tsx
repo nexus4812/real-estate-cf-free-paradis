@@ -12,12 +12,26 @@ import { MetricCardProps } from '@/components/molecules/MetricCard';
  * シミュレーション結果のContainer
  * シミュレーション結果の取得、表示制御を担当
  */
+import { LoadingSpinner } from '@/components/molecules/LoadingSpinner';
+import { ErrorMessage } from '@/components/molecules/ErrorMessage';
+
 export const SimulationResultContainer: React.FC = () => {
   const { results, loading, error } = useSimulationStore();
 
+  if (loading) {
+    return <LoadingSpinner message="シミュレーション結果を計算中..." />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
+  if (!results) {
+    return null; // 結果がない場合は何も表示しない
+  }
+
   // CashFlowChart用のデータ変換
   const cashFlowChartData: ChartData[] = React.useMemo(() => {
-    if (!results) return [];
     return [
       {
         data: results.annualBalances.map((item) => ({
@@ -33,7 +47,6 @@ export const SimulationResultContainer: React.FC = () => {
 
   // YieldChart用のデータ変換
   const yieldChartData: ChartData[] = React.useMemo(() => {
-    if (!results) return [];
     return [
       {
         data: results.grossYields.map((item) => ({
@@ -131,7 +144,6 @@ export const SimulationResultContainer: React.FC = () => {
 
   // MetricsDashboard用のデータ
   const metricsData = React.useMemo(() => {
-    if (!results) return [];
     return formatMetricsForDisplay(results.metrics);
   }, [results]);
 
@@ -139,7 +151,7 @@ export const SimulationResultContainer: React.FC = () => {
     <div className="space-y-8">
       <SimulationResultPanel results={results} loading={loading} error={error} />
       <MetricsDashboard metrics={metricsData} loading={loading} />
-      <CashFlowChart data={cashFlowChartData[0].data} loading={loading} />
+      <CashFlowChart data={cashFlowChartData} loading={loading} />
       <YieldChart data={yieldChartData} loading={loading} />
     </div>
   );
